@@ -23,6 +23,11 @@ Menu::Menu() : window(nullptr), playButton(nullptr), quitButton(nullptr), startG
     Fl_Image* buttonQuit = quit_button->copy(150, 40);
     delete quit_button;
     quitButton = new Fl_Button(400, 450, buttonQuit->w(), buttonQuit->h());
+
+    //esto hace que el boton sea transparente
+    //quitButton->box(FL_NO_BOX);
+    //quitButton->clear_visible_focus();
+
     quitButton->image(buttonQuit);
     quitButton->callback(clickQuit, this);
 

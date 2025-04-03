@@ -9,8 +9,7 @@ Game::Game(){
 void Game::run(){
     menu.show();
     
-    //board.show();
-    //Fl::run();
+    
 
     while (!menu.shouldStartGame() && !menu.shouldQuitGame()) {
         Fl::wait();

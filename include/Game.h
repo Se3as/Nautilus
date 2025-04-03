@@ -12,6 +12,8 @@ private:
     Board board;
     //Postgame postgame;
 
+    
+
 public:
     Game();
     void run();
