@@ -11,8 +11,8 @@ private:
     Fl_Button* goMenuButton;
     //quiza agregar algo para save results?
 
-    bool goMenu = false;
-    bool justQuit = false;
+    bool goMenu;
+    bool justQuit;
 
     static void clickJustQuit(Fl_Widget*, void* action);
     static void clickGoMenu(Fl_Widget*, void* action);

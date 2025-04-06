@@ -10,13 +10,22 @@ void Game::run(){
     menu.show();
     
     
-
-    while (!menu.shouldStartGame() && !menu.shouldQuitGame()) {
+    while(!menu.shouldStartGame() && !menu.shouldQuitGame()){
         Fl::wait();
     }
     
     if (!menu.shouldQuitGame()) {
         board.show();
-        Fl::run();
+        //Fl::run();
     }
+
+    while(board.playerSurrender()){
+        Fl::wait();
+    }
+
+    if(board.playerSurrender()){
+        postgame.show();
+    }
+
+    Fl::run();
 }

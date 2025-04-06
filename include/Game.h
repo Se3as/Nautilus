@@ -3,16 +3,15 @@
 #include "Menu.h"
 #include "Board.h"
 #include "Music.h"
-//#include "Postgame.h"
+#include "Postgame.h"
 
 class Game {
 private:
     Music music;
     Menu menu;
     Board board;
-    //Postgame postgame;
+    Postgame postgame;
 
-    
 
 public:
     Game();

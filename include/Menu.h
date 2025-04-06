@@ -2,6 +2,7 @@
 //includes para la ventana
 #include <Fl/Fl_Window.H>
 #include <Fl/Fl_Button.H>
+#include <FL/Fl_PNG_Image.H>
 
 class Menu {
 

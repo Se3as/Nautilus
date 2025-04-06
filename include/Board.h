@@ -14,19 +14,25 @@ using namespace std;
 class Board {
 private:
     Fl_Window* window;
-    Fl_Button* surrenderButton; //por ahora solo cierra el juego
+    
+    Fl_Button* surrenderButton; 
     Fl_Button* menuButton;
+    Fl_Button* moneyButton1;
+    Fl_Button* moneyButton2;
+    Fl_Button* decoyButton1;
+    Fl_Button* decoyButton2;
+    Fl_Button* upgradeButton1;
+    Fl_Button* upgradeButton2;
+    Fl_Button* spiesButton1;
+    Fl_Button* spiesButton2;
 
-
-    unordered_map<string, Fl_PNG_Image*> vesselSprites;
+    unordered_map<string, Fl_Image*> vesselSprites;
 
     bool surrender;
     bool goMenu;
 
     static void clickSurrender(Fl_Widget*, void* action);
-    //static void clickMenu(Fl_Widget*, void* action);
 
-    
 
 public:
     Board();

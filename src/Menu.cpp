@@ -6,23 +6,37 @@ Menu::Menu() : window(nullptr), playButton(nullptr), quitButton(nullptr), startG
     
     window = new Fl_Window(960, 540, "Menu");
     
-    Fl_JPEG_Image* nauti_menu3 = new Fl_JPEG_Image("assets/gfx/backgrounds/nauti_menu3.jpg");
-    Fl_Image* menuQHD = nauti_menu3->copy(960, 540);
-    delete nauti_menu3;
+
+    Fl_PNG_Image* nauti_menu = new Fl_PNG_Image("assets/gfx/backgrounds/nauti_menu.png");
+    Fl_Image* menuQHD = nauti_menu->copy(960, 540);
+    delete nauti_menu;
     Fl_Box* menuBg = new Fl_Box(0, 0, menuQHD->w(), menuQHD->h());
     menuBg->image(menuQHD);
+
+
 
     Fl_JPEG_Image* play_button = new Fl_JPEG_Image("assets/gfx/ui/play_button.jpg");
     Fl_Image* buttonPlay = play_button->copy(150, 40);
     delete play_button;
     playButton = new Fl_Button(400, 400, buttonPlay->w(), buttonPlay->h());
+    
+    
+    //playButton->box(FL_NO_BOX);
+    //playButton->clear_visible_focus();
+    
     playButton->image(buttonPlay);
     playButton->callback(clickPlay, this);
 
+
+
+    
     Fl_JPEG_Image* quit_button = new Fl_JPEG_Image("assets/gfx/ui/quit_button.jpg");
-    Fl_Image* buttonQuit = quit_button->copy(150, 40);
+    Fl_Image* buttonQuit = quit_button->copy(27, 12);
     delete quit_button;
-    quitButton = new Fl_Button(400, 450, buttonQuit->w(), buttonQuit->h());
+    
+    //quitButton = new Fl_Button(400, 450, buttonQuit->w(), buttonQuit->h());
+
+    quitButton = new Fl_Button(55, 460, buttonQuit->w(), buttonQuit->h());
 
     //esto hace que el boton sea transparente
     //quitButton->box(FL_NO_BOX);
