@@ -26,6 +26,26 @@ private:
     Fl_Button* spiesButton1;
     Fl_Button* spiesButton2;
 
+    Fl_Button* buyVenture1;
+    Fl_Button* buyTyphon1;
+    Fl_Button* buyDugong1;
+    Fl_Button* buyCamel1;
+    Fl_Button* buyRemora1;
+    Fl_Button* buyWinterhalter1;
+
+    Fl_Button* buyVenture2;
+    Fl_Button* buyTyphon2;
+    Fl_Button* buyDugong2;
+    Fl_Button* buyCamel2;
+    Fl_Button* buyRemora2;
+    Fl_Button* buyWinterhalter2;
+
+    Fl_Button* terrain11;
+    Fl_Button* terrain12;
+    Fl_Button* terrain13;
+    Fl_Button* terrain14;
+
+
     unordered_map<string, Fl_Image*> vesselSprites;
 
     bool surrender;
@@ -33,6 +53,10 @@ private:
 
     static void clickSurrender(Fl_Widget*, void* action);
 
+    static void terrain11Click(Fl_Widget*, void* action);
+    static void terrain12Click(Fl_Widget*, void* action);
+    static void terrain13Click(Fl_Widget*, void* action);
+    static void terrain14Click(Fl_Widget*, void* action);
 
 public:
     Board();

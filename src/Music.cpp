@@ -3,6 +3,10 @@
 #include <SDL2/SDL_mixer.h>
 #include <iostream>
 
+
+//cambiar todo esto
+
+
 Music::Music() : music(nullptr) {
     if (SDL_Init(SDL_INIT_AUDIO) < 0 || Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
         std::cerr << "Audio init error: " << Mix_GetError() << std::endl;

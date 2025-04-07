@@ -39,12 +39,17 @@ Menu::Menu() : window(nullptr), playButton(nullptr), quitButton(nullptr), startG
     quitButton = new Fl_Button(55, 460, buttonQuit->w(), buttonQuit->h());
 
     //esto hace que el boton sea transparente
-    //quitButton->box(FL_NO_BOX);
-    //quitButton->clear_visible_focus();
+    quitButton->box(FL_NO_BOX);
+    quitButton->clear_visible_focus();
 
-    quitButton->image(buttonQuit);
+    //quitButton->image(buttonQuit);
     quitButton->callback(clickQuit, this);
 
+
+
+
+
+    
 }
 
 void Menu::clickPlay(Fl_Widget*, void* action){

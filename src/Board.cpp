@@ -1,6 +1,5 @@
 #include "Board.h"
 
-
 Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr), surrender(false), goMenu(false){
     
     window = new Fl_Window(1280, 720, "Nautilus Game");
@@ -68,13 +67,95 @@ Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr),
     spiesButton2->box(FL_NO_BOX);
 
 
-   
-    //esto es para probar los vessels
-    Fl_Box* subBox = new Fl_Box(197, 220, 62, 30);
-    subBox->image(vesselSprites["selkie"]);
+
+    buyVenture1 = new Fl_Button(64, 150, 60, 30);
+    buyVenture1->image(vesselSprites["venture"]);
+    buyVenture1->box(FL_NO_BOX);
+
+    buyTyphon1 = new Fl_Button(64, 220, 60, 30);
+    buyTyphon1->image(vesselSprites["typhon"]);
+    buyTyphon1->box(FL_NO_BOX);
+
+    buyDugong1 = new Fl_Button(64, 286, 60, 30);
+    buyDugong1->image(vesselSprites["dugong"]);
+    buyDugong1->box(FL_NO_BOX);
+
+    buyCamel1 = new Fl_Button(64, 351, 60, 30);
+    buyCamel1->image(vesselSprites["camel"]);
+    buyCamel1->box(FL_NO_BOX);
+
+    buyRemora1 = new Fl_Button(64, 421, 60, 30);
+    buyRemora1->image(vesselSprites["remora"]);
+    buyRemora1->box(FL_NO_BOX);
+
+    buyWinterhalter1 = new Fl_Button(64, 491, 60, 30);
+    buyWinterhalter1->image(vesselSprites["winterhalter"]);
+    buyWinterhalter1->box(FL_NO_BOX);
+
+
+    buyVenture2 = new Fl_Button(1078, 150, 60, 30);
+    buyVenture2->image(vesselSprites["venture"]);
+    buyVenture2->box(FL_NO_BOX);
+
+    buyTyphon2 = new Fl_Button(1078, 220, 60, 30);
+    buyTyphon2->image(vesselSprites["typhon"]);
+    buyTyphon2->box(FL_NO_BOX);
+
+    buyDugong2 = new Fl_Button(1078, 286, 60, 30);
+    buyDugong2->image(vesselSprites["dugong"]);
+    buyDugong2->box(FL_NO_BOX);
+
+    buyCamel2 = new Fl_Button(1078, 351, 60, 30);
+    buyCamel2->image(vesselSprites["camel"]);
+    buyCamel2->box(FL_NO_BOX);
+
+    buyRemora2 = new Fl_Button(1078, 421, 60, 30);
+    buyRemora2->image(vesselSprites["remora"]);
+    buyRemora2->box(FL_NO_BOX);
+
+    buyWinterhalter2 = new Fl_Button(1078, 491, 60, 30);
+    buyWinterhalter2->image(vesselSprites["winterhalter"]);
+    buyWinterhalter2->box(FL_NO_BOX);
+
+
+
+    //crear botones para cada celda en el mapa
+    terrain11 = new Fl_Button(400, 208, 60, 60);
+
+    terrain12 = new Fl_Button(700, 400, 60, 60);
+
+    terrain13 = new Fl_Button(400, 400, 60, 60);
+
+    terrain14 = new Fl_Button(700, 208, 60, 60);
+
 
 
 }
+
+
+void Board::terrain11Click(Fl_Widget*, void* action){
+    Board* board = static_cast<Board*>(action);
+    //meter logica de los nodos terreno aqui
+}
+
+void Board::terrain12Click(Fl_Widget*, void* action){
+    Board* board = static_cast<Board*>(action);
+    //meter logica de los nodos terreno aqui
+}
+
+void Board::terrain13Click(Fl_Widget*, void* action){
+    Board* board = static_cast<Board*>(action);
+    //meter logica de los nodos terreno aqui
+}
+
+void Board::terrain14Click(Fl_Widget*, void* action){
+    Board* board = static_cast<Board*>(action);
+    //meter logica de los nodos terreno aqui
+}
+
+
+
+
 
 void::Board::loadVessel(){
     Fl_PNG_Image* selkiepx800 = new Fl_PNG_Image("assets/gfx/vessels/800px-Selkie.png");

@@ -27,5 +27,9 @@ void Game::run(){
         postgame.show();
     }
 
+
+
+    // jugador atacante tipo de barco la operacion y las iteraciones 
+
     Fl::run();
 }
