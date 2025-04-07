@@ -1,19 +1,22 @@
 #include "Node.h"
 
+#include <iostream>
+using namespace std;
+
 Node::Node() {
   posX = 0;
   posY = 0;
-  isShip = false;
+  isVessel = false;
 }
 
 Node::Node(int newPosX, int newPosY) {
   posX = newPosX;
   posY = newPosY;
-  isShip = false;
+  isVessel = false;
 }
 
 Node::~Node() {
-  
+  delete vessel;
 }
 
 int Node::getPosX() {
@@ -24,10 +27,21 @@ int Node::getPosY() {
   return posY;
 }
 
-bool Node::isNodeShip() {
-  return isShip;
+void Node::setIsVessel() {
+  this->isVessel = true;
 }
 
-Vessel Node::whichVessel() {
-  return &vessel;
+bool Node::isNodeVessel() {
+  return isVessel;
 }
+
+// It could change
+Vessel* Node::whichVessel(Vessel* vessel) {
+  return vessel;
+}
+
+// Attibutes of vessel isUnderAttack()
+/*
+bool Node::vesselUnderAttack(Vessel* vessel) {
+  return Vessel->isUnderAttack();
+}*/
