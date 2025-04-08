@@ -6,6 +6,23 @@ using namespace std;
 #include "Player.h"
 #include "Vessel.h"
 
+  /**
+   * Currently established costs
+   * 
+   * Upgrade cost: 20
+   * 
+   * Spies cost: 10
+   * 
+   * Vessel cost: 
+   * Decoy: 10
+   * Set: 120
+   * Splay: 40
+   * List: 20
+   * Array: 60
+   * Red-Black tree: 100
+   * Btree: 80
+   */
+
 Board::Board() {
  _init(0, 0);
 }
@@ -20,20 +37,6 @@ void Board::runGame() {
   const int initial_coins = 120;  // initial coins
   int coins_per_rounds = 30;
   int action_points = 3;
-  /**
-   * Upgrade cost: 20
-   * 
-   * Spies cost: 10
-   * 
-   * Vessel cost: 
-   * Decoy: 10
-   * Set: 120
-   * Splay: 40
-   * List: 20
-   * Array: 60
-   * Red-Black tree: 100
-   * Btree: 80
-   */
 
   Board board(rows, cols);
 
@@ -96,7 +99,7 @@ void Board::battle(Board *board) {
   }
 }
 
-bool whoIsPlayer(bool playerID) {
+bool Board::whoIsPlayer(bool playerID) {
   return playerID;
 }
 
@@ -124,18 +127,6 @@ bool Board::attackPositionValid(int row, int col) {
   return attackPositionValid;
 }
 
-// vessel can attack, so clicked on node and select other node to attack
-void Board::attackClicked() {
-  selectPlayerVesselOnBoard();
-  int posX, posY;
-  if (node.isNodeVessel()) {
-    if (attackPositionValid(posX, posY)) {
-      showNode(posX, posY);
-    } 
-  }
-  undoAction();
-}
-
 bool Board::enoughPoints(bool playerID, int cost) {
   bool enoughPoints = 0;
   if (whoIsPlayer(playerID) == 0) {
@@ -147,37 +138,91 @@ bool Board::enoughPoints(bool playerID, int cost) {
   return enoughPoints;
 }
 
-void Board::buyVesselClicked() {
-  int cost = playerSelectVesselStore();
-  bool player = playerID;
-  if (enoughPoints(player, cost)) {
-    buyVessel();
-    selectPosition();
-    if (isPositionValid()) {
-      placeVessel();
+void Board::placeVesselClicked() {
+  int posX = node.getPosX();
+  int posY = node.getPosY();
+  if (isPositionValid(posX, posY)) {
+    if(node.isNodeVessel()) {
+      // spray of vessel place on the board
+      player->coins = player->coins - cost;
     }
   }
-  undoAction();
 }
 
-void Board::buyUpgradePointsClicked() {
+void Board::buyVessel1Clicked() {
   bool player = whoIsPlayer(playerID);
-  int cost = playerSelectBuyUpgradePoints();
+  int cost = 1;
   if (enoughPoints(player, cost)) {
-    buyUpgradePoints();
+    placeVesselClicked();
+  }
+}
+
+void Board::buyVessel2Clicked() {
+  bool player = whoIsPlayer(playerID);
+  int cost = 2;
+  if (enoughPoints(player, cost)) {
+    placeVesselClicked();
+  }
+}
+
+void Board::buyVessel3Clicked() {
+  bool player = whoIsPlayer(playerID);
+  int cost = 3;
+  if (enoughPoints(player, cost)) {
+    placeVesselClicked();
+  }
+}
+
+void Board::buyVessel4Clicked() {
+  bool player = whoIsPlayer(playerID);
+  int cost = 4;
+  if (enoughPoints(player, cost)) {
+    placeVesselClicked();
+  }
+}
+
+void Board::buyVessel5Clicked() {
+  bool player = whoIsPlayer(playerID);
+  int cost = 5;
+  if (enoughPoints(player, cost)) {
+    placeVesselClicked();
+  }
+}
+
+void Board::buyVessel6Clicked() {
+  bool player = whoIsPlayer(playerID);
+  int cost = 6;
+  if (enoughPoints(player, cost)) {
+    placeVesselClicked();
+  }
+}
+
+// Suppose Decoy vessel is any of 6 vessels
+void Board::buyDecoyClicked() {
+  bool player = whoIsPlayer(playerID);
+  int cost = 7;
+  if (enoughPoints(player, cost)) {
+    placeVesselClicked();
+  }
+}
+
+void Board::buyUpgradePointsBottomClicked() {
+  bool player = whoIsPlayer(playerID);
+  int cost = 20;
+  if (enoughPoints(player, cost)) {
+    player->coins = player->coins - cost;
   } 
-  undoAction();
 }
 
 void Board::upgradeVesselClicked() {
-  selectPlayerVesselOnBoard();
+  int posX = node.getPosX();
+  int posY = node.getPosY();
   if (node.isNodeVessel()) {
     upgradeVessel();
   }
-  undoAction();
 }
 
-void Board::moveVesselClicked() {
+void Board::moveVesselBottomClicked() {
   selectPlayerVesselOnBoard();
   selectNodePlace();
   if (selectNodePlace()) {
@@ -238,8 +283,11 @@ void Board::hideBoard(Board *board, bool playerID) {
 // bool vesselUnderAttacked Attribute of vessel
 // attacked() --> addSpies()
 
-void Board::addSpiesClicked() {
-  
+void Board::addSpiesBottomClicked() {
+  if enoughPoints()
+    if selectedNodeisVessel()
+      if vesselUnderAttack()
+        addspies()
 }
 // bool isVesselAttacked()
 // showNode()
