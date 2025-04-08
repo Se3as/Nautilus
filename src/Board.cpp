@@ -32,9 +32,11 @@ Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr),
     moneyButton1 = new Fl_Button(5, 208, moneyIcon->w(), moneyIcon->h());
     moneyButton1->image(moneyIcon);
     moneyButton1->box(FL_NO_BOX);
+    moneyButton1->callback(money1Click, this);
     moneyButton2 = new Fl_Button(1150, 208, moneyIcon->w(), moneyIcon->h());
     moneyButton2->image(moneyIcon);
     moneyButton2->box(FL_NO_BOX);
+    moneyButton2->callback(money2Click, this);
 
     Fl_PNG_Image* decoy_icon = new Fl_PNG_Image("assets/gfx/ui/Decoy_Icon.png");
     Fl_Image* decoyIcon = decoy_icon->copy(50, 50);
@@ -42,9 +44,11 @@ Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr),
     decoyButton1 = new Fl_Button(5, 278, decoyIcon->w(), decoyIcon->h());
     decoyButton1->image(decoyIcon);
     decoyButton1->box(FL_NO_BOX);
+    decoyButton1->callback(decoy1Click, this);
     decoyButton2 = new Fl_Button(1150, 278, decoyIcon->w(), decoyIcon->h());
     decoyButton2->image(decoyIcon);
     decoyButton2->box(FL_NO_BOX);
+    decoyButton2->callback(decoy2Click, this);
 
     Fl_PNG_Image* upgrade_icon = new Fl_PNG_Image("assets/gfx/ui/Upgrade_Icon.png");
     Fl_Image* upgradeIcon = upgrade_icon->copy(50, 50);
@@ -52,9 +56,11 @@ Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr),
     upgradeButton1 = new Fl_Button(5, 340, upgradeIcon->w(), upgradeIcon->h());
     upgradeButton1->image(upgradeIcon);
     upgradeButton1->box(FL_NO_BOX);
+    upgradeButton1->callback(upgrade1Click, this);
     upgradeButton2 = new Fl_Button(1150, 340, upgradeIcon->w(), upgradeIcon->h());
     upgradeButton2->image(upgradeIcon);
     upgradeButton2->box(FL_NO_BOX);
+    upgradeButton2->callback(upgrade2Click, this);
 
     Fl_PNG_Image* spies_icon = new Fl_PNG_Image("assets/gfx/ui/Spies_Icon.png");
     Fl_Image* spiesIcon = spies_icon->copy(50, 50);
@@ -62,95 +68,242 @@ Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr),
     spiesButton1 = new Fl_Button(5, 410, spiesIcon->w(), spiesIcon->h());
     spiesButton1->image(spiesIcon);
     spiesButton1->box(FL_NO_BOX);
+    spiesButton1->callback(spies1Click, this);
     spiesButton2 = new Fl_Button(1150, 410, spiesIcon->w(), spiesIcon->h());
     spiesButton2->image(spiesIcon);
     spiesButton2->box(FL_NO_BOX);
-
+    spiesButton2->callback(spies2Click, this);
 
 
     buyVenture1 = new Fl_Button(64, 150, 60, 30);
     buyVenture1->image(vesselSprites["venture"]);
     buyVenture1->box(FL_NO_BOX);
+    buyVenture1->callback(venture1Click, this);
 
     buyTyphon1 = new Fl_Button(64, 220, 60, 30);
     buyTyphon1->image(vesselSprites["typhon"]);
     buyTyphon1->box(FL_NO_BOX);
+    buyTyphon1->callback(typhon1Click, this);
 
     buyDugong1 = new Fl_Button(64, 286, 60, 30);
     buyDugong1->image(vesselSprites["dugong"]);
     buyDugong1->box(FL_NO_BOX);
+    buyDugong1->callback(dugong1Click, this);
 
     buyCamel1 = new Fl_Button(64, 351, 60, 30);
     buyCamel1->image(vesselSprites["camel"]);
     buyCamel1->box(FL_NO_BOX);
+    buyCamel1->callback(camel1Click, this);
 
     buyRemora1 = new Fl_Button(64, 421, 60, 30);
     buyRemora1->image(vesselSprites["remora"]);
     buyRemora1->box(FL_NO_BOX);
+    buyRemora1->callback(remora1Click, this);
 
     buyWinterhalter1 = new Fl_Button(64, 491, 60, 30);
     buyWinterhalter1->image(vesselSprites["winterhalter"]);
     buyWinterhalter1->box(FL_NO_BOX);
+    buyWinterhalter1->callback(winterhalter1Click, this);
 
 
     buyVenture2 = new Fl_Button(1078, 150, 60, 30);
     buyVenture2->image(vesselSprites["venture"]);
     buyVenture2->box(FL_NO_BOX);
+    buyVenture2->callback(venture2Click, this);
 
     buyTyphon2 = new Fl_Button(1078, 220, 60, 30);
     buyTyphon2->image(vesselSprites["typhon"]);
     buyTyphon2->box(FL_NO_BOX);
+    buyTyphon2->callback(typhon2Click, this);
 
     buyDugong2 = new Fl_Button(1078, 286, 60, 30);
     buyDugong2->image(vesselSprites["dugong"]);
     buyDugong2->box(FL_NO_BOX);
+    buyDugong2->callback(dugong2Click, this);
 
     buyCamel2 = new Fl_Button(1078, 351, 60, 30);
     buyCamel2->image(vesselSprites["camel"]);
     buyCamel2->box(FL_NO_BOX);
+    buyCamel2->callback(camel2Click, this);
 
     buyRemora2 = new Fl_Button(1078, 421, 60, 30);
     buyRemora2->image(vesselSprites["remora"]);
     buyRemora2->box(FL_NO_BOX);
+    buyRemora2->callback(remora2Click, this);
 
     buyWinterhalter2 = new Fl_Button(1078, 491, 60, 30);
     buyWinterhalter2->image(vesselSprites["winterhalter"]);
     buyWinterhalter2->box(FL_NO_BOX);
+    buyWinterhalter2->callback(winterhalter2Click, this);
 
 
 
-    //crear botones para cada celda en el mapa
-    terrain11 = new Fl_Button(400, 208, 60, 60);
+    //ajustar tama;o del grid luego
+    for (int row = 0; row < rows; ++row) {
+        for (int col = 0; col < cols; ++col) {
 
-    terrain12 = new Fl_Button(700, 400, 60, 60);
+        int posX = axisX + col * (buttonSize + deadSpace);
+        int posY = axisY + row * (buttonSize + deadSpace);
 
-    terrain13 = new Fl_Button(400, 400, 60, 60);
+        terrainGrid[row][col] = new Fl_Button(posX, posY, buttonSize, buttonSize);
 
-    terrain14 = new Fl_Button(700, 208, 60, 60);
+        TerrainPosition* location = new TerrainPosition{row, col};
 
-
+        terrainGrid[row][col]->callback(terrainClick, location);
+        }
+    }
 
 }
 
 
-void Board::terrain11Click(Fl_Widget*, void* action){
-    Board* board = static_cast<Board*>(action);
-    //meter logica de los nodos terreno aqui
+void Board::terrainClick(Fl_Widget* widget, void* actioned) {
+    TerrainPosition* location = static_cast<TerrainPosition*>(actioned);
+    Board* board = static_cast<Board*>(widget->parent()->user_data());
+    
+    // Aquí puedes acceder a la posición con pos->row y pos->col
+    // y hacer lo que necesites con esa información
+    
+    //COMO USAR: creas un Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
+    //luego puedes meter logica en triggered button, ejemplo abajo
+
+    Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
+    triggeredButton->color(FL_RED);
+    triggeredButton->redraw();
 }
 
-void Board::terrain12Click(Fl_Widget*, void* action){
-    Board* board = static_cast<Board*>(action);
-    //meter logica de los nodos terreno aqui
+//CLICK PARA LOS BOTONES DE ACCION
+void Board::money1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+void Board::money2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
 }
 
-void Board::terrain13Click(Fl_Widget*, void* action){
-    Board* board = static_cast<Board*>(action);
-    //meter logica de los nodos terreno aqui
+void Board::decoy1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+void Board::decoy2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
 }
 
-void Board::terrain14Click(Fl_Widget*, void* action){
-    Board* board = static_cast<Board*>(action);
-    //meter logica de los nodos terreno aqui
+void Board::upgrade1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+void Board::upgrade2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+
+void Board::spies1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+void Board::spies2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+
+
+
+
+//CLICKS PARA LOS BOTONES DE SUBMARINOS
+void Board::venture1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+void Board::venture2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+
+void Board::typhon1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+void Board::typhon2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+
+void Board::dugong1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+void Board::dugong2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+
+void Board::camel1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+void Board::camel2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+
+void Board::remora1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+void Board::remora2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+
+void Board::winterhalter1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
+}
+void Board::winterhalter2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+
+    //a;adir logica del boton
+
 }
 
 
@@ -209,8 +362,8 @@ void::Board::loadVessel(){
     vesselSprites["winterhalter"] = winterhalter;
 }
 
-void Board::clickSurrender(Fl_Widget*, void* action){
-    Board* board = static_cast<Board*>(action);
+void Board::clickSurrender(Fl_Widget*, void* actioned){
+    Board* board = static_cast<Board*>(actioned);
     board->surrender = true;
     board->window->hide();
 }
