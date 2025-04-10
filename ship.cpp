@@ -54,10 +54,18 @@ bool Ship4::insert_iterations(int num, int& iterations){
     return redblack_tree->insert(num,iterations);
 }
 bool Ship4::remove_iterations(int num, int& up_points, int& iterations){
-    return redblack_tree->remove(num, up_points, iterations);
+    int temporal = 0; 
+    bool success = b_tree->remove(num,iterations);
+    if(up_points<iterations){
+        elements.insert(num);
+        b_tree->insert(num,temporal);
+        return false;
+    }
+    elements.erase(num);
+    return success;
 }*/
 
-/*
+
 bool Ship5::search_iterations(int num, int& iterations){
     return b_tree->search(num,iterations);
 }
@@ -66,9 +74,17 @@ bool Ship5::insert_iterations(int num, int& iterations){
     return b_tree->insert(num,iterations);
 }
 bool Ship5::remove_iterations(int num, int& up_points, int& iterations){
-    return b_tree->remove(num, up_points, iterations);
+    int temporal = 0; 
+    bool success = b_tree->remove(num,iterations);
+    if(up_points<iterations){
+        elements.insert(num);
+        b_tree->insert(num,temporal);
+        return false;
+    }
+    elements.erase(num);
+    return success;
 }
-*/
+
 bool Ship6::search_iterations(int num, int& iterations){
     return splay_tree->search(num,iterations);
 }
@@ -77,5 +93,13 @@ bool Ship6::insert_iterations(int num, int& iterations){
     return splay_tree->insert(num,iterations);
 }
 bool Ship6::remove_iterations(int num, int& up_points, int& iterations){
-    return splay_tree->remove(num, up_points, iterations);
+    int temporal = 0; 
+    bool success = splay_tree->remove(num,iterations);
+    if(up_points<iterations){
+        elements.insert(num);
+        splay_tree->insert(num,temporal);
+        return false;
+    }
+    elements.erase(num);
+    return success;
 }

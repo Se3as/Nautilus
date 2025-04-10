@@ -1,6 +1,10 @@
 #ifndef SHIP_H
 #define SHIP_H
-#include "algorithms.h"
+#include "btree.h"
+#include "array.h"
+#include "linkedList.h"
+#include "splay.h"
+//#include "redBlackTree.h"
 using namespace std; 
 
 class Ship {
@@ -61,12 +65,13 @@ class Ship3 : public Ship{
 	bool remove_iterations(int num, int& up_points, int& iterations){
 		return redblack_tree->remove(num, up_points, iterations);
 	}
-};
+};*/
+
 class Ship5 : public Ship{
 	public:
-	B_tree* b_tree;
+	BTree* b_tree;
 	Ship5(string n, int l, int p): Ship(n, l, p){
-		b_tree = new B_tree();
+		b_tree = new BTree(2);
 	}
 	bool search_iterations(int num, int& iterations){
 		return b_tree->search(num,iterations);
@@ -76,9 +81,9 @@ class Ship5 : public Ship{
 		return b_tree->insert(num,iterations);
 	}
 	bool remove_iterations(int num, int& up_points, int& iterations){
-		return b_tree->remove(num, up_points, iterations);
+		return b_tree->remove(num,iterations);
 	}
-};*/
+};
 class Ship6 : public Ship{
 	public:
 	Splay_tree* splay_tree;

@@ -1,10 +1,4 @@
-
-#include "algorithms.h"
-
-using namespace std;
-
-
-
+#include "linkedList.h"
 
 Linked_list::~Linked_list(){
     Node* curr = head;
@@ -75,5 +69,3 @@ bool Linked_list::remove(int data, int& iterations, int& up_points) {
     }
     return false;
 }
-
-
