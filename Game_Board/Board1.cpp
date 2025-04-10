@@ -47,7 +47,7 @@ void Board::runGame() {
     player1->points += points;
     player2->points += points;
     while (!player1->actionPointOver())
-      battle(playerID);
+      battle(Player::playerID);
 
   } else {
 
@@ -74,7 +74,7 @@ void Board::_init(const int rows, const int cols) {
 		}
 		this->rows = rows;
 		this->cols = cols;
-    this->playerID = 0;  // Start player 1
+    this->Player::playerID = 0;  // Start player 1
     this->player1StartCol = 0;
     this->player1EndCol = cols / 2;
     this->player2StartCol = cols / 2;
@@ -90,22 +90,22 @@ Board::~Board(){
 }
  
 void Board::battle(Board *board) {
-  if (whoIsPlayer(playerID) == 0) {
-    showBoard(board, playerID);
-    hideBoard(board, playerID);
+  if (whoIsPlayer(Player::playerID) == 0) {
+    showBoard(board, Player::playerID);
+    hideBoard(board, Player::playerID);
   } else {
-    hideBoard(board, playerID);
-    showBoard(board, playerID);
+    hideBoard(board, Player::playerID);
+    showBoard(board, Player::playerID);
   }
 }
 
-bool Board::whoIsPlayer(bool playerID) {
-  return playerID;
+bool Board::whoIsPlayer(bool Player::playerID) {
+  return Player::playerID;
 }
 
 int Board::isPositionValid(int row, int col) {
   int positionValid = 0;
-  if (whoIsPlayer(playerID) == 0) {  // player 1 board side
+  if (whoIsPlayer(Player::playerID) == 0) {  // player 1 board side
     positionValid = (int) (0 <= row && 0 <= player1StartCol && row < rows 
       && col < player1EndCol);
   } else {  // player 2 board side
@@ -117,7 +117,7 @@ int Board::isPositionValid(int row, int col) {
 
 bool Board::attackPositionValid(int row, int col) {
   int attackPositionValid = 0;
-  if (whoIsPlayer(playerID) == 0) {  // attack player 2 board side
+  if (whoIsPlayer(Player::playerID) == 0) {  // attack player 2 board side
     attackPositionValid = (int) (0 <= row && 0 <= player2StartCol && row < rows 
       && col < player2EndCol);
   } else {  // attack player 1 board side
@@ -127,9 +127,9 @@ bool Board::attackPositionValid(int row, int col) {
   return attackPositionValid;
 }
 
-bool Board::enoughPoints(bool playerID, int cost) {
+bool Board::enoughPoints(bool Player::playerID, int cost) {
   bool enoughPoints = 0;
-  if (whoIsPlayer(playerID) == 0) {
+  if (whoIsPlayer(Player::playerID) == 0) {
     // Pre-calculate to know if is enough points
     if (calculatePoints(cost)) {
       enoughPoints = true;
@@ -150,7 +150,7 @@ void Board::placeVesselClicked() {
 }
 
 void Board::buyVessel1Clicked() {
-  bool player = whoIsPlayer(playerID);
+  bool player = whoIsPlayer(Player::playerID);
   int cost = 1;
   if (enoughPoints(player, cost)) {
     placeVesselClicked();
@@ -158,7 +158,7 @@ void Board::buyVessel1Clicked() {
 }
 
 void Board::buyVessel2Clicked() {
-  bool player = whoIsPlayer(playerID);
+  bool player = whoIsPlayer(Player::playerID);
   int cost = 2;
   if (enoughPoints(player, cost)) {
     placeVesselClicked();
@@ -166,7 +166,7 @@ void Board::buyVessel2Clicked() {
 }
 
 void Board::buyVessel3Clicked() {
-  bool player = whoIsPlayer(playerID);
+  bool player = whoIsPlayer(Player::playerID);
   int cost = 3;
   if (enoughPoints(player, cost)) {
     placeVesselClicked();
@@ -174,7 +174,7 @@ void Board::buyVessel3Clicked() {
 }
 
 void Board::buyVessel4Clicked() {
-  bool player = whoIsPlayer(playerID);
+  bool player = whoIsPlayer(Player::playerID);
   int cost = 4;
   if (enoughPoints(player, cost)) {
     placeVesselClicked();
@@ -182,7 +182,7 @@ void Board::buyVessel4Clicked() {
 }
 
 void Board::buyVessel5Clicked() {
-  bool player = whoIsPlayer(playerID);
+  bool player = whoIsPlayer(Player::playerID);
   int cost = 5;
   if (enoughPoints(player, cost)) {
     placeVesselClicked();
@@ -190,7 +190,7 @@ void Board::buyVessel5Clicked() {
 }
 
 void Board::buyVessel6Clicked() {
-  bool player = whoIsPlayer(playerID);
+  bool player = whoIsPlayer(Player::playerID);
   int cost = 6;
   if (enoughPoints(player, cost)) {
     placeVesselClicked();
@@ -199,7 +199,7 @@ void Board::buyVessel6Clicked() {
 
 // Suppose Decoy vessel is any of 6 vessels
 void Board::buyDecoyClicked() {
-  bool player = whoIsPlayer(playerID);
+  bool player = whoIsPlayer(Player::Player::playerID);
   int cost = 7;
   if (enoughPoints(player, cost)) {
     placeVesselClicked();
@@ -207,7 +207,7 @@ void Board::buyDecoyClicked() {
 }
 
 void Board::buyUpgradePointsBottomClicked() {
-  bool player = whoIsPlayer(playerID);
+  bool player = whoIsPlayer(Player::Player::playerID);
   int cost = 20;
   if (enoughPoints(player, cost)) {
     player->coins = player->coins - cost;
@@ -231,8 +231,8 @@ void Board::moveVesselBottomClicked() {
   undoAction();
 }
 
-void Board::showBoard(Board *board, bool playerID) {
-  if (playerID == 0) {
+void Board::showBoard(Board *board, bool Player::playerID) {
+  if (Player::playerID == 0) {
     for (int i = 0; i < rows; ++i) {
       for (int j = player1StartCol; j < player1EndCol; ++j) {
         window->show(node[i][j]);
@@ -247,8 +247,8 @@ void Board::showBoard(Board *board, bool playerID) {
   }
 }
 
-void Board::hideBoard(Board *board, bool playerID) {
-  if (playerID == 0) {
+void Board::hideBoard(Board *board, bool Player::playerID) {
+  if (Player::playerID == 0) {
     for (int i = 0; i < rows; ++i) {
       for (int j = player1StartCol; j < player1EndCol; ++j) {
         if (node[i][j].isNodeVessel()) {
