@@ -8,15 +8,19 @@ class Node {
   private:
     int posX;
     int posY;
-    bool isShip;
+    bool isVessel;
     Vessel* vessel;
   public:
     Node();
     Node(int, int);
     int getPosX();
     int getPosY();
-    bool isNodeShip();
-    Vessel whichVessel();
+    void setIsVessel();
+    bool isNodeVessel();
+    // It could change
+    Vessel* whichVessel(Vessel*);
+    // Function to vessel
+    // bool vesselUnderAttack(Vessel*);
     ~Node();
 };
 
