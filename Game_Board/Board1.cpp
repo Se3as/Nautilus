@@ -131,7 +131,7 @@ bool Board::enoughPoints(bool Player::playerID, int cost) {
   bool enoughPoints = 0;
   if (whoIsPlayer(Player::playerID) == 0) {
     // Pre-calculate to know if is enough points
-    if (calculatePoints(cost)) {
+    if (Player::CalculatePoints(cost)) { //Def in Player.cpp
       enoughPoints = true;
     }
   }
@@ -199,7 +199,7 @@ void Board::buyVessel6Clicked() {
 
 // Suppose Decoy vessel is any of 6 vessels
 void Board::buyDecoyClicked() {
-  bool player = whoIsPlayer(Player::Player::playerID);
+  bool player = whoIsPlayer(Player::playerID);
   int cost = 7;
   if (enoughPoints(player, cost)) {
     placeVesselClicked();
@@ -207,7 +207,7 @@ void Board::buyDecoyClicked() {
 }
 
 void Board::buyUpgradePointsBottomClicked() {
-  bool player = whoIsPlayer(Player::Player::playerID);
+  bool player = whoIsPlayer(Player::playerID);
   int cost = 20;
   if (enoughPoints(player, cost)) {
     player->coins = player->coins - cost;

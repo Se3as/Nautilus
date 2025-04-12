@@ -4,12 +4,22 @@
 
 class Player {
   private:
-    std::string name;
+    bool playerID;
     int actionPoints;
-    int money;
+    int coins;
     int score;
   public:
-    Player();
+    Player(int numJugador){
+        if(int numJugador =! 1){ {
+            playerID = true;
+        } else {
+            playerID = 0;
+        }
+        this->playerID = false;
+        this->actionPoints = 0;
+        this->coins = 0;
+        this->score = 0;
+    }
     Player(std::string);
     std::string getName();
     int getScore(){
@@ -21,4 +31,25 @@ class Player {
     }
 
     ~Player();
-};
+    
+    bool calculatePoints(cost){
+
+        if (cost > coins) {
+            std::cout << "Not enough points" << std::endl;
+            return false;
+        } else {
+            coins -= cost;
+            std::cout << "Points deducted: " << cost << std::endl;
+            return true;
+        }
+
+
+    }
+    
+    
+
+
+
+    
+    
+}

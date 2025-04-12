@@ -8,7 +8,7 @@ class Player {
   private:
     std::string name;
     int actionPoints;
-    int money;
+    int coins;
     int score;
   public:
     Player();
@@ -17,5 +17,6 @@ class Player {
     int getScore();
     void setScore(int);
     ~Player();
-};
+}
+
 #endif
