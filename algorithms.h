@@ -19,7 +19,4 @@ public:
 	Node(int d) : data(d), left(NULL), right(NULL) {}
 };
 
-
-
-
 #endif

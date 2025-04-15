@@ -1,4 +1,4 @@
-#include "linkedList.h"
+#include "LinkedList.h"
 
 Linked_list::~Linked_list(){
     Node* curr = head;

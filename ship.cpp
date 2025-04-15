@@ -45,7 +45,7 @@ bool Ship3::remove_iterations(int num, int& up_points, int& iterations){
     }
     return 0;
 }
-/*
+
 bool Ship4::search_iterations(int num, int& iterations){	
     return redblack_tree->search(num,iterations);
 }
@@ -54,6 +54,9 @@ bool Ship4::insert_iterations(int num, int& iterations){
     return redblack_tree->insert(num,iterations);
 }
 bool Ship4::remove_iterations(int num, int& up_points, int& iterations){
+    return true;
+}
+/*
     int temporal = 0; 
     bool success = b_tree->remove(num,iterations);
     if(up_points<iterations){

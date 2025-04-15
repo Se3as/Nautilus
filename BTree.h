@@ -31,15 +31,15 @@ public:
 
     void splitChild(int index, BTreeNode *child, int& iterations);
 
-    void remove(int key);
+    void remove(int key, int& iterations);
 
     void removeFromLeaf(int index);
 
-    void removeFromNonLeaf(int index);
+    void removeFromNonLeaf(int index, int& iterations);
 
-    int getPred(int index);
+    int getPred(int index, int& iterations);
 
-    int getSucc(int index);
+    int getSucc(int index, int& iterations);
 
     void fill(int index);
 

@@ -1,7 +1,7 @@
-#include "splay.h"
+#include "SplayTree.h"
 
 Node* Splay_tree::rightRotate(Node* x, int& iterations) {
-    std::cout << "RightRotate at node " << x->data << std::endl;
+    //std::cout << "RightRotate at node " << x->data << std::endl;
     Node* y = x->left;
     x->left = y->right;
     y->right = x;
@@ -9,7 +9,7 @@ Node* Splay_tree::rightRotate(Node* x, int& iterations) {
 }
 
 Node* Splay_tree::leftRotate(Node* x, int& iterations) {
-    std::cout << "LeftRotate at node " << x->data << std::endl;
+    //std::cout << "LeftRotate at node " << x->data << std::endl;
     Node* y = x->right;
     x->right = y->left;
     y->left = x;
@@ -20,7 +20,7 @@ Node* Splay_tree::splay(Node* root, int data, int& iterations) {
     iterations++;
     if (!root || root->data == data)
         return root;
-        std::cout << "Splay at node " << root->data << std::endl;
+        //std::cout << "Splay at node " << root->data << std::endl;
     if (data < root->data) {
         if (!root->left)
             return root;
@@ -55,7 +55,7 @@ Node* Splay_tree::splay(Node* root, int data, int& iterations) {
 }
 bool Splay_tree::insert(int data, int& iterations) {
     
-    std::cout << "Insert called for " << data << std::endl;
+    //std::cout << "Insert called for " << data << std::endl;
     if (!root) {
         root = new Node(data);
         iterations++;
@@ -81,7 +81,6 @@ bool Splay_tree::insert(int data, int& iterations) {
     return true;
 }
 bool Splay_tree::search(int data, int& iterations) {
-    iterations++;
     if (!root) return false;
     root = splay(root, data, iterations);
     return (root->data == data);
@@ -89,8 +88,10 @@ bool Splay_tree::search(int data, int& iterations) {
 
 bool Splay_tree::remove(int data, int& iterations) {
     iterations++;
-    if (!root)
+    if (!root){
+        iterations++;
         return false;
+    }
     
     root = splay(root, data, iterations);
     if (root->data != data)

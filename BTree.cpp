@@ -1,4 +1,4 @@
-#include "btree.h"
+#include "BTree.h"
 
 BTreeNode::BTreeNode(int minDegree, bool isLeafNode)
 {
@@ -17,16 +17,16 @@ int BTreeNode::findKey(int key)
     return index;
 }
 
-void BTreeNode::remove(int key)
+void BTreeNode::remove(int key, int& iterations)
 {
     int index = findKey(key);
-
+    iterations++;
     if (index < numKeys && keys[index] == key)
     {
         if (isLeaf)
             removeFromLeaf(index);
         else
-            removeFromNonLeaf(index);
+            removeFromNonLeaf(index, iterations);
     }
     else
     {
@@ -42,9 +42,9 @@ void BTreeNode::remove(int key)
             fill(index);
 
         if (flag && index > numKeys)
-            children[index - 1]->remove(key);
+            children[index - 1]->remove(key, iterations);
         else
-            children[index]->remove(key);
+            children[index]->remove(key, iterations);
     }
     return;
 }
@@ -57,43 +57,50 @@ void BTreeNode::removeFromLeaf(int index)
     return;
 }
 
-void BTreeNode::removeFromNonLeaf(int index)
+void BTreeNode::removeFromNonLeaf(int index, int& iterations)
 {
     int key = keys[index];
-
+    iterations++;
     if (children[index]->numKeys >= degree)
     {
-        int pred = getPred(index);
+        int pred = getPred(index, iterations);
         keys[index] = pred;
-        children[index]->remove(pred);
+        //iterations++;
+        children[index]->remove(pred, iterations);
     }
     else if (children[index + 1]->numKeys >= degree)
     {
-        int succ = getSucc(index);
+        int succ = getSucc(index, iterations);
         keys[index] = succ;
-        children[index + 1]->remove(succ);
+        //iterations++;
+        children[index + 1]->remove(succ, iterations);
     }
     else
     {
         merge(index);
-        children[index]->remove(key);
+        //iterations++;
+        children[index]->remove(key, iterations);
     }
     return;
 }
 
-int BTreeNode::getPred(int index)
+int BTreeNode::getPred(int index, int& iterations)
 {
     BTreeNode *cur = children[index];
-    while (!cur->isLeaf)
+    while (!cur->isLeaf){
         cur = cur->children[cur->numKeys];
+        iterations++;
+    }
     return cur->keys[cur->numKeys - 1];
 }
 
-int BTreeNode::getSucc(int index)
+int BTreeNode::getSucc(int index, int& iterations)
 {
     BTreeNode *cur = children[index + 1];
-    while (!cur->isLeaf)
+    while (!cur->isLeaf){
         cur = cur->children[0];
+        iterations++;
+    }
     return cur->keys[0];
 }
 
@@ -199,7 +206,7 @@ void BTreeNode::merge(int index)
 void BTreeNode::insertNonFull(int key, int& iterations)
 {
     int i = numKeys - 1;
-
+    iterations++;
     if (isLeaf)
     {
         while (i >= 0 && keys[i] > key)
@@ -209,12 +216,12 @@ void BTreeNode::insertNonFull(int key, int& iterations)
         }
         keys[i + 1] = key;
         numKeys += 1;
+        //iterations++;
     }
     else
     {
         while (i >= 0 && keys[i] > key)
             i--;
-
         if (children[i + 1]->numKeys == 2 * degree - 1)
         {
             splitChild(i + 1, children[i + 1], iterations);
@@ -222,7 +229,7 @@ void BTreeNode::insertNonFull(int key, int& iterations)
             if (keys[i + 1] < key)
                 i++;
         }
-        iterations++;
+        //iterations++;
         children[i + 1]->insertNonFull(key, iterations);
     }
 }
@@ -276,7 +283,6 @@ BTreeNode *BTreeNode::search(int key, int& iterations)
     iterations++;
     int i = 0;
     while (i < numKeys && key > keys[i]){
-        iterations++;
         i++;
     }
     if (keys[i] == key)
@@ -290,13 +296,13 @@ BTreeNode *BTreeNode::search(int key, int& iterations)
 
 bool BTree::insert(int key, int& iterations)
 {
-    iterations++;
     
     if (root == NULL)
     {
         root = new BTreeNode(minDegree, true);
         root->keys[0] = key;
         root->numKeys = 1;
+        iterations++;
     }
     else
     {
@@ -309,14 +315,12 @@ bool BTree::insert(int key, int& iterations)
             int i = 0;
             if (newRoot->keys[0] < key)
                 i++;
-            iterations++;
             newRoot->children[i]->insertNonFull(key, iterations);
 
             root = newRoot;
         }
         else
         {   
-            iterations++;
             root->insertNonFull(key, iterations);
         }
     }
@@ -330,7 +334,7 @@ bool BTree::remove(int key,int& iterations){
         return false;
     }
 
-    root->remove(key);
+    root->remove(key, iterations);
 
     if (root->numKeys == 0)
     {

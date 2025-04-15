@@ -38,7 +38,7 @@ bool Array::insert(int data, int& iterations) {
     
     arr[index] = data;
     size++;
-    iterations++;
+    //iterations++;
 
 return true;
 }
