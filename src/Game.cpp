@@ -3,7 +3,7 @@
 
 Game::Game(){
     music.load("assets/sfx/Barotrauma OST_ Embrace the Abyss (Menu Theme).mp3");
-    music.play();
+    //music.play();
 }
 
 void Game::run(){

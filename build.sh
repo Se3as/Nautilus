@@ -30,11 +30,11 @@ g++ $SOURCES -I"$INCLUDE_DIR" $FLTK_FLAGS $SDL2_FLAGS $FLTK_LIBS $EXTRA_LIBS -o 
 
 if [ $? -eq 0 ]; then
     echo "✅ Compilado correctamente: ./$OUTPUT"
+
+    echo
+    ./game
+    echo "Press Enter to continue..."
+    read
 else
     echo "❌ Error de compilación"
-echo
-./game
-echo "Press Enter to continue..."
-read
-
-
+fi

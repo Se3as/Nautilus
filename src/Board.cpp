@@ -156,6 +156,22 @@ Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr),
 }
 
 
+//ADDING ALEX
+// int Board::whoIsPlayer(int Player::playerID) {
+//     return Player::playerID;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
 void Board::terrainClick(Fl_Widget* widget, void* actioned) {
     TerrainPosition* location = static_cast<TerrainPosition*>(actioned);
     Board* board = static_cast<Board*>(widget->parent()->user_data());
@@ -167,9 +183,11 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
     //luego puedes meter logica en triggered button, ejemplo abajo
 
     Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
-    triggeredButton->color(FL_RED);
+    triggeredButton->color(FL_BLUE);
     triggeredButton->redraw();
 }
+
+
 
 //CLICK PARA LOS BOTONES DE ACCION
 void Board::money1Click(Fl_Widget* widget, void* actioned) {
@@ -231,9 +249,23 @@ void Board::spies2Click(Fl_Widget* widget, void* actioned) {
 void Board::venture1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
 
-    //a;adir logica del boton
+    
+
+    //ADDING ALEX
+    // bool player = whoIsPlayer(Player::playerID);
+    // int cost = 1;
+    // if (enoughPoints(player, cost)) {
+    //   placeVesselClicked();
+    // }
+
 
 }
+
+
+
+
+
+
 void Board::venture2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
 

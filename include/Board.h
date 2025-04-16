@@ -9,6 +9,8 @@
 #include <FL/Fl_PNG_Image.H>
 #include <Fl/Fl_Box.H>
 
+#include "Player.h"
+
 using namespace std;
 
 struct TerrainPosition {
@@ -54,9 +56,9 @@ private:
     Fl_Button* terrain14;
 
     //filas de la matriz   
-    static const int rows = 10;
+    static const int rows = 8;
     //columnas de la matriz
-    static const int cols = 10;
+    static const int cols = 12;
 
     Fl_Button* terrainGrid[rows][cols];
 
@@ -105,6 +107,12 @@ private:
 
     static void winterhalter1Click(Fl_Widget*, void* action);
     static void winterhalter2Click(Fl_Widget*, void* action);
+
+
+    //ADDING ALEX
+    int whoIsPlayer(bool);
+
+
 
 public:
     Board();

@@ -6,12 +6,14 @@ using namespace std;
 class Game {
 	public:
 	std::ofstream csv;
-	Game(){
+	Game(){ //en GAME
 		csv.open("resultado.csv");
 		csv << "Barco,operacion,iteraciones,daño\n";
 		srand(time(0));
 	}
 
+
+	// PARA EL LOG
 	void register_insert(int& iterations, string& name){
 		csv << name <<","<<"insert,"<<iterations<<",0\n";
 	}
@@ -24,6 +26,11 @@ class Game {
 	void close(){
 		csv.close();
 	}
+
+
+
+
+	//BOARD ALEX
 	void load_ship(Ship* ship){
 		unordered_set<int> initial_elements;
 		int iterations = 0;
@@ -44,6 +51,10 @@ class Game {
 			iterations = 0;
 		}
 	}
+
+
+
+	//LUIS VESSEL
 	int select_random (Ship* ship){
 		int num = 0;
 		bool in_set = false;
@@ -55,6 +66,9 @@ class Game {
 		}
 		return num;
 	}
+
+
+	//LUIS VESSEL
 	double attack(Ship* ship){
 		int iterations = 0;
 		int num = select_random(ship);
@@ -63,6 +77,9 @@ class Game {
 		register_search(iterations, ship->name, damage);
 		return damage;
 	}
+
+
+	//REPORTE
 	void searches(Ship* ship){
 		int iterations = 0;
 		for(int i=0; i < 100; i++){
@@ -73,6 +90,9 @@ class Game {
 		iterations = 0;
 		}
 	}
+
+
+	//REPORTE
 	void deletions(Ship* ship){
 		int iterations = 0;
 		for(int i=0; i < 50; i++){
@@ -82,6 +102,9 @@ class Game {
 		iterations = 0;
 		}
 	}
+
+
+	//VESSEL LUIS
 	bool upgrade(Ship* ship, int up_points){
 		int iterations = 0;
 		bool sucess = false;
@@ -90,17 +113,23 @@ class Game {
 		register_remove(iterations, ship->name);
 		return sucess;
 	}
+
+	//VESSEL LUIS
 	void send_spy(Ship* ship){
 		int iterations = 0;
 		int num = rand() % 100 + 101;
 		ship->insert_iterations(num, iterations);
 		register_insert(iterations, ship->name);
 	}
+
+
+	//BOARD ALEX
 	void shoot(Ship* attacker, Ship* objective){
 		double damage = attack(attacker);
 		objective->life -= (int) damage;
 	}
 };
+
 
 
 int main() {
