@@ -1,6 +1,6 @@
 #include "Board.h"
 
-Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr), surrender(false), goMenu(false){
+Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr), surrender(false), goMenu(false), docking(false){
     
     window = new Fl_Window(1280, 720, "Nautilus Game");
 
@@ -145,6 +145,8 @@ Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr),
         int posX = axisX + col * (buttonSize + deadSpace);
         int posY = axisY + row * (buttonSize + deadSpace);
 
+        terrainNodes[row][col] = new Terrain(row, col);
+
         terrainGrid[row][col] = new Fl_Button(posX, posY, buttonSize, buttonSize);
 
         TerrainPosition* location = new TerrainPosition{row, col};
@@ -152,6 +154,9 @@ Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr),
         terrainGrid[row][col]->callback(terrainClick, location);
         }
     }
+
+
+    window->user_data(this);
 
 }
 
@@ -166,25 +171,41 @@ Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr),
 
 
 
+void Board::dockingMode() {
+    docking = true;
+}
 
-
-
-
+void Board::abortDocking() {
+    docking = false;
+}
 
 
 void Board::terrainClick(Fl_Widget* widget, void* actioned) {
     TerrainPosition* location = static_cast<TerrainPosition*>(actioned);
     Board* board = static_cast<Board*>(widget->parent()->user_data());
     
+    Terrain* terrain = board->terrainNodes[location->longitude][location->latitude];
+
+    Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
+
+
+    if(board->docking == true){
+        triggeredButton->color(FL_GREEN);
+        triggeredButton->redraw();
+        board->abortDocking();
+    } else {
+        triggeredButton->color(FL_BLUE);
+        triggeredButton->redraw();
+    }
+
+
     // Aquí puedes acceder a la posición con pos->row y pos->col
     // y hacer lo que necesites con esa información
     
     //COMO USAR: creas un Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
     //luego puedes meter logica en triggered button, ejemplo abajo
 
-    Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
-    triggeredButton->color(FL_BLUE);
-    triggeredButton->redraw();
+
 }
 
 
@@ -250,6 +271,10 @@ void Board::venture1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
 
     
+    //Vessel* newVenture = new Vessel(venture, 100, 3);
+
+    board->dockingMode();
+
 
     //ADDING ALEX
     // bool player = whoIsPlayer(Player::playerID);
@@ -257,7 +282,6 @@ void Board::venture1Click(Fl_Widget* widget, void* actioned) {
     // if (enoughPoints(player, cost)) {
     //   placeVesselClicked();
     // }
-
 
 }
 

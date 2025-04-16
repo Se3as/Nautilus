@@ -10,6 +10,7 @@
 #include <Fl/Fl_Box.H>
 
 #include "Player.h"
+#include "Terrain.h"
 
 using namespace std;
 
@@ -62,6 +63,12 @@ private:
 
     Fl_Button* terrainGrid[rows][cols];
 
+    //grid de nodos terreno
+    Terrain* terrainNodes[rows][cols];
+
+    //booleano para indicar que un barco esta siendo colocado o "atracado"
+    bool docking;
+
     unordered_map<string, Fl_Image*> vesselSprites;
 
     bool surrender;
@@ -110,7 +117,7 @@ private:
 
 
     //ADDING ALEX
-    int whoIsPlayer(bool);
+    //int whoIsPlayer(bool);
 
 
 
@@ -122,6 +129,10 @@ public:
 
     void hide();
 
+
+    void dockingMode();
+
+    void abortDocking();
 
     bool playerSurrender() const;
 
