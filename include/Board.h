@@ -68,6 +68,9 @@ private:
 
     //booleano para indicar que un barco esta siendo colocado o "atracado"
     bool docking;
+    bool attacking;
+    string vesselClicked;
+    int damage;
 
     unordered_map<string, Fl_Image*> vesselSprites;
 
@@ -129,12 +132,25 @@ public:
 
     void hide();
 
+    void setVesselClicked(string nameVessel);
+    
+    string getVesselClicked();
 
     void dockingMode();
 
     void abortDocking();
 
+    void attackingMode();
+
+    void abortAttaking();
+
+    void setDamage(int d);
+    int getDamage();
+
     bool playerSurrender() const;
+
+    void callPirates(Terrain* terrain);
+    int callAttack(Terrain* terrain);
 
     void loadVessel();
 

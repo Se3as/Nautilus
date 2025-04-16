@@ -32,6 +32,9 @@ public:
     virtual bool insert_iterations(int num, int& iterations) = 0;
     virtual bool remove_iterations(int num, int& up_points, int& iterations) = 0;
     
+    int getLife();
+    void setLife(int l);
+    int select_random();
     bool search_element(int num);
 
     //metodo set

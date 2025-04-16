@@ -1,10 +1,25 @@
 #include "Vessel.h"
 
-
+int Vessel::select_random(){
+    int num = 0;
+    bool in_set = false;
+    while(!in_set){
+        num = rand() % 100 + 1;
+        if(search_element(num)){
+            in_set = true;
+        }
+    }
+    return num;
+}
 bool Vessel::search_element(int num){
 	return elements.find(num) != elements.end();
 }
-
+int Vessel::getLife(){
+    return life;
+}
+void Vessel::setLife(int l){
+    life = l;
+}
 
 VesselLinkedList::VesselLinkedList(string n, int l, int p): Vessel(n, l, p) {
     linked_list = new Linked_list();

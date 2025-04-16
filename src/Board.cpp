@@ -178,7 +178,25 @@ void Board::dockingMode() {
 void Board::abortDocking() {
     docking = false;
 }
+void Board::attackingMode() {
+    attacking = true;
+}
 
+void Board::abortAttaking() {
+    attacking = false;
+}
+void Board::setVesselClicked(string nameVessel){
+    vesselClicked = nameVessel;
+}
+string Board::getVesselClicked(){
+    return vesselClicked;
+}
+void Board::setDamage(int d){
+    damage = d;
+}
+int Board::getDamage(){
+    return damage;
+}
 
 void Board::terrainClick(Fl_Widget* widget, void* actioned) {
     TerrainPosition* location = static_cast<TerrainPosition*>(actioned);
@@ -190,10 +208,32 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
 
 
     if(board->docking == true){
-        triggeredButton->color(FL_GREEN);
+        string vesselClicked = board->getVesselClicked();
+        Fl_Image* sprite = board->vesselSprites[vesselClicked]->copy(41, 20);
+        triggeredButton->image(sprite);
         triggeredButton->redraw();
+        terrain->setVessel(vesselClicked);
+        terrain->setOccupied();
+        board->callPirates(terrain);
+        board->abortAttaking();
         board->abortDocking();
-    } else {
+        //cout<<"Aqui1"<<endl;
+        return;
+    } else if(board->docking == false && terrain->isOccupied()
+        && !board->attacking){
+            //cout<<"Aqui2"<<endl;
+            int damage = board->callAttack(terrain);
+            board->setDamage(damage);
+            board->attackingMode();
+            return;
+    } else if(board->docking == false && terrain->isOccupied()
+    && board->attacking){
+        //cout<<"Aqui3"<<endl;
+        terrain->shooted(board->getDamage());
+        terrain->terrainUnderFire();
+        board->abortAttaking();
+    }
+     else{
         triggeredButton->color(FL_BLUE);
         triggeredButton->redraw();
     }
@@ -272,7 +312,7 @@ void Board::venture1Click(Fl_Widget* widget, void* actioned) {
 
     
     //Vessel* newVenture = new Vessel(venture, 100, 3);
-
+    board->setVesselClicked("venture");
     board->dockingMode();
 
 
@@ -293,76 +333,111 @@ void Board::venture1Click(Fl_Widget* widget, void* actioned) {
 void Board::venture2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
 
+    board->setVesselClicked("venture");
+    board->dockingMode();
     //a;adir logica del boton
 
 }
 
 void Board::typhon1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->setVesselClicked("typhon");
+    board->dockingMode();
     //a;adir logica del boton
 
 }
 void Board::typhon2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->setVesselClicked("typhon");
+    board->dockingMode();
     //a;adir logica del boton
 
 }
 
 void Board::dugong1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->setVesselClicked("dugong");
+    board->dockingMode();
     //a;adir logica del boton
 
 }
 void Board::dugong2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->setVesselClicked("dugong");
+    board->dockingMode();
     //a;adir logica del boton
 
 }
 
 void Board::camel1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->setVesselClicked("camel");
+    board->dockingMode();
     //a;adir logica del boton
 
 }
 void Board::camel2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->setVesselClicked("camel");
+    board->dockingMode();
     //a;adir logica del boton
 
 }
 
 void Board::remora1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->setVesselClicked("remora");
+    board->dockingMode();
     //a;adir logica del boton
 
 }
 void Board::remora2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->setVesselClicked("remora");
+    board->dockingMode();
     //a;adir logica del boton
 
 }
 
 void Board::winterhalter1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->setVesselClicked("winterhalter");
+    board->dockingMode();
     //a;adir logica del boton
 
 }
 void Board::winterhalter2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->setVesselClicked("winterhalter");
+    board->dockingMode();
     //a;adir logica del boton
 
 }
 
+void Board::callPirates(Terrain* terrain){
+    unordered_set<int> initial_elements;
+    int iterations = 0;
+    for(int i = 1; i < 101; i++){ 
+        initial_elements.insert(i);                                         
+    }
+    for(int i = 1; i < 101; i++){
+        int num = rand() % 100 + 1;
+        while (initial_elements.find(num) == initial_elements.end()) {
+            num = rand() % 100 + 1; 
+        }
+        terrain->sendPirates(num,iterations);
+        //register_insert(iterations,terrain->getName());
+        iterations = 0;
+    }
+}
 
+int Board::callAttack(Terrain* terrain){
+    int iterations = 0;
+    terrain->callAttack(iterations);
+    double damage = 100/(double)iterations;
+    //register_search(iterations, terrain->getName(), damage);
+    return (int) damage;
+}
 
 
 

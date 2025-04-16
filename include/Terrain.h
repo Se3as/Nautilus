@@ -20,7 +20,12 @@ class Terrain {
       int getPosY();
       void setIsVessel();
       bool isNodeVessel();
+      void setVessel(string& vesselName);
+      Vessel* getVessel();
 
+      void sendPirates(int& num, int& iterations);
+      void callAttack(int& iterations);
+      void shooted(int damage);
       void terrainUnderFire();
       bool isUnderFire();
 
