@@ -1,4 +1,5 @@
 #pragma once
+#include <FL/Fl.H>
 #include <Fl/Fl_Window.H>
 #include <Fl/Fl_Button.H>
 #include <unordered_map>
@@ -28,6 +29,10 @@ private:
     
     Fl_Button* surrenderButton; 
     Fl_Button* menuButton;
+    Fl_Button* healthButton1;
+    Fl_Button* healthButton2;
+    Fl_Button* moveButton1;
+    Fl_Button* moveButton2;
     Fl_Button* moneyButton1;
     Fl_Button* moneyButton2;
     Fl_Button* decoyButton1;
@@ -86,13 +91,16 @@ private:
     //para manejar los clicks en el terreno
     static void terrainClick(Fl_Widget*, void* action);
     //datos de casillas
-    const int buttonSize = 50;
-    const int axisX = 300;
-    const int axisY = 50;
-    const int deadSpace = 5;
+    const int buttonSize = 61;
+    const int axisX = 197;
+    const int axisY = 68;
+    const int deadSpace = 7;
 
     static void money1Click(Fl_Widget*, void* action);
     static void money2Click(Fl_Widget*, void* action);
+
+    static void health1Click(Fl_Widget*, void* action);
+    static void health2Click(Fl_Widget*, void* action);
 
     static void decoy1Click(Fl_Widget*, void* action);
     static void decoy2Click(Fl_Widget*, void* action);
@@ -102,6 +110,9 @@ private:
 
     static void spies1Click(Fl_Widget*, void* action);
     static void spies2Click(Fl_Widget*, void* action);
+
+    static void move1Click(Fl_Widget*, void* action);
+    static void move2Click(Fl_Widget*, void* action);
 
 
     static void venture1Click(Fl_Widget*, void* action);

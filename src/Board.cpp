@@ -14,12 +14,14 @@
 Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr), 
 surrender(false), goMenu(false), docking(false), attacking(false), spying(false),
 upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){ 
+    
     window = new Fl_Window(1280, 720, "Nautilus Game");
+    
 
     loadVessel();
 
     Fl_JPEG_Image* nauti_map1 = new Fl_JPEG_Image("assets/gfx/backgrounds/nauti_map1.jpg");
-    Fl_Image* background = nauti_map1->copy(1280, 720);
+    Fl_Image* background = nauti_map1->copy(window->w(), window->h());
     delete nauti_map1;
     Fl_Box* bgBox = new Fl_Box(0, 0, background->w(), background->h());
     bgBox->image(background);
@@ -38,17 +40,44 @@ upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){
     Fl_Box* linkBox = new Fl_Box(1220, 340, linkSign->w(), linkSign->h());
     linkBox->image(linkSign);
 
+
+   
+
+    //multipurpose label
+    Fl_Box* announcer = new Fl_Box(100, 100, 200, 50, "CREDITS: 3");
+    announcer->labelcolor(fl_rgb_color(163, 202, 179));
+    announcer->align(FL_ALIGN_CENTER);
+    announcer->labelsize(14);
+    announcer->box(FL_NO_BOX);
+
+
+
+
     Fl_PNG_Image* money_icon = new Fl_PNG_Image("assets/gfx/ui/Money_Icon.png");
     Fl_Image* moneyIcon = money_icon->copy(50, 50);
     delete money_icon;
-    moneyButton1 = new Fl_Button(5, 208, moneyIcon->w(), moneyIcon->h());
+    moneyButton1 = new Fl_Button(5, 140, moneyIcon->w(), moneyIcon->h());
     moneyButton1->image(moneyIcon);
     moneyButton1->box(FL_NO_BOX);
     moneyButton1->callback(money1Click, this);
-    moneyButton2 = new Fl_Button(1150, 208, moneyIcon->w(), moneyIcon->h());
+    moneyButton2 = new Fl_Button(1150, 140, moneyIcon->w(), moneyIcon->h());
     moneyButton2->image(moneyIcon);
     moneyButton2->box(FL_NO_BOX);
     moneyButton2->callback(money2Click, this);
+
+
+    Fl_PNG_Image* health_icon = new Fl_PNG_Image("assets/gfx/ui/Health_Icon.png");
+    Fl_Image* healthIcon = health_icon->copy(50, 50);
+    delete health_icon;
+    healthButton1 = new Fl_Button(5, 208, healthIcon->w(), healthIcon->h());
+    healthButton1->image(healthIcon);
+    healthButton1->box(FL_NO_BOX);
+    healthButton1->callback(money1Click, this);
+    healthButton2 = new Fl_Button(1150, 208, healthIcon->w(), healthIcon->h());
+    healthButton2->image(healthIcon);
+    healthButton2->box(FL_NO_BOX);
+    healthButton2->callback(money2Click, this);
+
 
     Fl_PNG_Image* decoy_icon = new Fl_PNG_Image("assets/gfx/ui/Decoy_Icon.png");
     Fl_Image* decoyIcon = decoy_icon->copy(50, 50);
@@ -85,6 +114,23 @@ upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){
     spiesButton2->image(spiesIcon);
     spiesButton2->box(FL_NO_BOX);
     spiesButton2->callback(spies2Click, this);
+
+
+    Fl_PNG_Image* move_icon = new Fl_PNG_Image("assets/gfx/ui/Move_Icon.png");
+    Fl_Image* moveIcon = move_icon->copy(50, 50);
+    delete move_icon;
+    moveButton1 = new Fl_Button(5, 477, moveIcon->w(), moveIcon->h());
+    moveButton1->image(moveIcon);
+    moveButton1->box(FL_NO_BOX);
+    moveButton1->callback(spies1Click, this);
+    moveButton2 = new Fl_Button(1150, 477, moveIcon->w(), moveIcon->h());
+    moveButton2->image(moveIcon);
+    moveButton2->box(FL_NO_BOX);
+    moveButton2->callback(spies2Click, this);
+
+
+
+
 
 
     buyVenture1 = new Fl_Button(64, 150, 60, 30);
@@ -164,6 +210,7 @@ upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){
         TerrainPosition* location = new TerrainPosition{row, col};
 
         terrainGrid[row][col]->callback(terrainClick, location);
+        terrainGrid[row][col]->box(FL_NO_BOX);
         }
     }
 
@@ -266,7 +313,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
 
     Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
 
-
+    
     if(board->moving){
         if(terrain->isOccupied() && board->movingTerrain == nullptr){
             cout<< terrain->getVesselName()<<" is moving"<<endl;
@@ -280,8 +327,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             terrain->setMovingVessel(board->movingTerrain->getVessel());
             string vesselClicked = terrain->getVesselName();
             cout<< vesselClicked<<" has moved"<<endl;
-            Fl_Image* sprite = board->vesselSprites[vesselClicked]->copy(41, 20);
-            triggeredButton->image(sprite);
+            triggeredButton->image(board->vesselSprites[vesselClicked]);
             terrain->setOccupied(true);
             triggeredButton->redraw();
             board->setMovingTerrain (nullptr);
@@ -294,11 +340,11 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
         board->abortMoving();
         return;
     }
+
     else if(board->docking){
         string vesselClicked = board->getVesselClicked();
         cout<< vesselClicked<<" appeared"<<endl;
-        Fl_Image* sprite = board->vesselSprites[vesselClicked]->copy(41, 20);
-        triggeredButton->image(sprite);
+        triggeredButton->image(board->vesselSprites[vesselClicked]);
         triggeredButton->redraw();
         terrain->setVessel(vesselClicked);
         terrain->setOccupied(true);
@@ -326,8 +372,12 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
         cout<< " A decoy has apeared"<< endl;
         string decoy = board->getDecoy();
         //cout<< decoy<< endl;
-        Fl_Image* sprite = board->vesselSprites[decoy]->copy(41, 20);
-        triggeredButton->image(sprite);
+
+        // Fl_Image* sprite = board->vesselSprites[decoy]->copy(41, 20);
+        // triggeredButton->image(sprite);
+
+        triggeredButton->image(board->vesselSprites[decoy]);
+
         triggeredButton->redraw();
         terrain->setOccupied(true);
         terrain->setDecoy(true);
@@ -427,6 +477,26 @@ void Board::money2Click(Fl_Widget* widget, void* actioned) {
     }
 }
 
+
+void Board::health1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+    board->deactivateModes();
+    
+    
+
+}
+
+void Board::health2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+    board->deactivateModes();
+    
+
+
+}
+
+
+
+
 void Board::decoy1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
@@ -467,19 +537,61 @@ void Board::spies1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
     int cost = 0;
-    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
-        board->movingMode();
-    }
+
 }
 
 void Board::spies2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
     int cost = 3;
-    if (board->player2->myTurn(2) && board->player2->purchaseCalc(cost)) {
-        board->spyingMode();
-    }
+
+
 }
+
+
+
+
+
+
+
+void Board::move1Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+    board->deactivateModes();
+    
+
+    //chekear si el jugador tiene acciones disponibles para moverse
+
+    int cost = 0;
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->movingMode();
+    }
+
+}
+
+void Board::move2Click(Fl_Widget* widget, void* actioned) {
+    Board* board = static_cast<Board*>(actioned);
+    board->deactivateModes();
+
+    //chekear si el jugador tiene acciones disponibles para moverse
+
+    int cost = 0;
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->movingMode();
+    }
+
+    
+}
+
+
+
+
+
+
+
+
+
+
+
 
 //CLICKS PARA LOS BOTONES DE SUBMARINOS
 void Board::venture1Click(Fl_Widget* widget, void* actioned) {
