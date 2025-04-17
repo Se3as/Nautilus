@@ -20,6 +20,12 @@ int Vessel::getLife(){
 void Vessel::setLife(int l){
     life = l;
 }
+string Vessel::getName(){
+    return name;
+}
+void Vessel::setName(string n){
+    name = n;
+}
 
 VesselLinkedList::VesselLinkedList(string n, int l, int p): Vessel(n, l, p) {
     linked_list = new Linked_list();
@@ -33,7 +39,15 @@ bool VesselLinkedList::insert_iterations(int num, int& iterations){
     return linked_list->insert(num,iterations);
 }
 bool VesselLinkedList::remove_iterations(int num, int& up_points, int& iterations){
-    return linked_list->remove(num, up_points, iterations);
+    int temporal =0;
+    bool success = linked_list->remove(num,iterations);
+    if(up_points<iterations){
+        elements.insert(num);
+        linked_list->insert(num,temporal);
+        return false;
+    }
+    elements.erase(num);
+    return success;
 }
 
 
@@ -51,7 +65,15 @@ bool VesselArray::insert_iterations(int num, int& iterations){
     return array->insert(num,iterations);
 }
 bool VesselArray::remove_iterations(int num, int& up_points, int& iterations){
-    return array->remove(num, up_points, iterations);
+    int temporal =0;
+    bool success = array->remove(num,iterations);
+    if(up_points<iterations){
+        elements.insert(num);
+        array->insert(num,temporal);
+        return false;
+    }
+    elements.erase(num);
+    return success;
 }
 
 

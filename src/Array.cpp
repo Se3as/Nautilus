@@ -43,7 +43,7 @@ bool Array::insert(int data, int& iterations) {
 return true;
 }
 
-bool Array::remove(int data, int& iterations, int& up_points) {
+bool Array::remove(int data, int& iterations) {
     int index;
     if (!binary_search(data, iterations, index)) {
         return false;
@@ -51,9 +51,7 @@ bool Array::remove(int data, int& iterations, int& up_points) {
 
     for (int i = index; i < size - 1; i++) {
         iterations++;
-        if (up_points >= iterations) {
-            arr[i] = arr[i + 1];
-        }
+        arr[i] = arr[i + 1];
     }
     size--;
     return true;

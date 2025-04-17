@@ -50,18 +50,26 @@ void Terrain::setVessel(string& vesselName) {
   }
 }
 void Terrain::sendPirates(int& num, int& iterations){
+  cout<<vessel->getName()<<" is being filled"<<endl;
   vessel->insert_iterations(num,iterations);
 }
 
 void Terrain::callAttack(int& iterations){
+  cout<<vessel->getName()<<" is attaccking"<<endl;
   int num = vessel->select_random();
   vessel->search_iterations(num, iterations);
 }
 void Terrain::shooted(int damage){
+  cout<<vessel->getName()<<" is being attaccked"<<endl;
   vessel->setLife(vessel->getLife()-damage);
-  cout<<"Aqui4"<<vessel->getLife()<<endl;
+  cout<<vessel->getLife()<<endl;
 }
-
+bool Terrain::callUpgrade(int& iterations, int& upPoints){
+  cout<<vessel->getName()<<" is being upgrading"<<endl;
+  cout<<vessel->getName()<<endl;
+  int num = vessel->select_random();
+  return vessel->remove_iterations(num,upPoints,iterations);
+}
 void Terrain::setOccupied() {
   this->hasVessel = true;
 }

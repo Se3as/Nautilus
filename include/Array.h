@@ -12,6 +12,6 @@ class Array {
         ~Array();
         bool binary_search(int data, int& iterations, int& index);
         bool insert(int data, int& iterations);
-        bool remove(int data, int& iterations, int& up_points);
+        bool remove(int data, int& iterations);
         void resize();
     };

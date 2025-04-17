@@ -8,5 +8,5 @@ class Linked_list {
     ~Linked_list();
     bool lineal_search(int data, int& iterations);
     bool insert(int data, int& iterations);
-    bool remove(int data, int& iterations, int& up_points);
+    bool remove(int data, int& iterations);
 };

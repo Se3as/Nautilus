@@ -32,40 +32,36 @@ bool Linked_list::insert(int data, int& iterations) {
     return true;
 }
 
-bool Linked_list::remove(int data, int& iterations, int& up_points) {
+bool Linked_list::remove(int data, int& iterations) {
     if (head == NULL) {
         iterations++;
         return false;
     }
-
+    
     if (head->data == data) {
         iterations++;
-        if (up_points >= iterations) {
-            Node* temp = head;
-            head = head->right;
-            delete temp;
-            return true;
-        }
-        return false;
+        Node* temp = head;
+        head = head->right;
+        delete temp;
+        return true;
     }
-
+    
     Node* curr = head;
     while (curr->right != NULL && curr->right->data != data) {
         iterations++;
         curr = curr->right;
     }
-
+    
     if (curr->right != NULL) {
         iterations++;
-        if (up_points >= iterations) {
-            Node* temp = curr->right;
-            curr->right = curr->right->right;
-            delete temp;
-            if (curr->right == NULL) {
-                end = curr;
-            }
-            return true;
+        Node* temp = curr->right;
+        curr->right = curr->right->right;
+        delete temp;
+        if (curr->right == NULL) {
+            end = curr;
         }
+        return true;
     }
+    
     return false;
 }

@@ -26,6 +26,8 @@ class Terrain {
       void sendPirates(int& num, int& iterations);
       void callAttack(int& iterations);
       void shooted(int damage);
+      bool callUpgrade(int& iterations, int& upPoints);
+
       void terrainUnderFire();
       bool isUnderFire();
 

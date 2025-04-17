@@ -68,6 +68,9 @@ private:
 
     //booleano para indicar que un barco esta siendo colocado o "atracado"
     bool docking;
+    bool spying;
+    bool upgrading;
+    bool decoying;
     bool attacking;
     string vesselClicked;
     int damage;
@@ -144,13 +147,26 @@ public:
 
     void abortAttaking();
 
+
+    void spyingMode();
+    void abortSpying();
+
+    void upgradingMode();
+    void abortUpgrading();
+
+    void decoyingMode();
+    void abortDecoying();
+
+    void deactivateModes();
     void setDamage(int d);
+
     int getDamage();
 
     bool playerSurrender() const;
 
     void callPirates(Terrain* terrain);
     int callAttack(Terrain* terrain);
+    void callUpgrade(Terrain* terrain);
 
     void loadVessel();
 

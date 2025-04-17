@@ -185,6 +185,35 @@ void Board::attackingMode() {
 void Board::abortAttaking() {
     attacking = false;
 }
+
+void Board::spyingMode(){
+    spying = true; 
+}
+void Board::abortSpying(){
+    spying = false;
+}
+
+void Board::upgradingMode(){
+    upgrading = true;
+}
+void Board::abortUpgrading(){
+    upgrading = false;
+}
+
+void Board::decoyingMode(){
+    decoying = true;
+}
+void Board::abortDecoying(){
+    decoying = false;
+}
+void Board::deactivateModes(){
+    abortDocking();
+    abortAttaking();
+    abortSpying();
+    abortUpgrading();
+    abortDecoying();
+}
+
 void Board::setVesselClicked(string nameVessel){
     vesselClicked = nameVessel;
 }
@@ -219,19 +248,30 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
         board->abortDocking();
         //cout<<"Aqui1"<<endl;
         return;
-    } else if(board->docking == false && terrain->isOccupied()
-        && !board->attacking){
+    } else if(board->spying){
+        return;
+    }
+    else if(board->upgrading && terrain->isOccupied()){
+        board->callUpgrade(terrain);
+        board->abortUpgrading();
+        return;
+    }
+    else if(board->decoying && !terrain->isOccupied()){
+        return;
+    }else if(board->attacking && terrain->isOccupied()){
+        //cout<<"Aqui3"<<endl;
+        terrain->shooted(board->getDamage());
+        terrain->terrainUnderFire();
+        board->abortAttaking();
+        board->setDamage(0);
+        return;
+    }
+    else if(terrain->isOccupied()){
             //cout<<"Aqui2"<<endl;
             int damage = board->callAttack(terrain);
             board->setDamage(damage);
             board->attackingMode();
             return;
-    } else if(board->docking == false && terrain->isOccupied()
-    && board->attacking){
-        //cout<<"Aqui3"<<endl;
-        terrain->shooted(board->getDamage());
-        terrain->terrainUnderFire();
-        board->abortAttaking();
     }
      else{
         triggeredButton->color(FL_BLUE);
@@ -253,52 +293,58 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
 //CLICK PARA LOS BOTONES DE ACCION
 void Board::money1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    //board->buyingMode();??
     //a;adir logica del boton
 
 }
 void Board::money2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    //board->buyingMode();??
     //a;adir logica del boton
 
 }
 
 void Board::decoy1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->deactivateModes();
+    board->decoyingMode();
     //a;adir logica del boton
 
 }
 void Board::decoy2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->deactivateModes();
+    board->decoyingMode();
     //a;adir logica del boton
 
 }
 
 void Board::upgrade1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->deactivateModes();
+    board->upgradingMode();
     //a;adir logica del boton
 
 }
 void Board::upgrade2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->deactivateModes();
+    board->upgradingMode();
     //a;adir logica del boton
 
 }
 
 void Board::spies1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->deactivateModes();
+    board->spyingMode();
     //a;adir logica del boton
 
 }
 void Board::spies2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
+    board->deactivateModes();
+    board->spyingMode();
     //a;adir logica del boton
 
 }
@@ -313,6 +359,7 @@ void Board::venture1Click(Fl_Widget* widget, void* actioned) {
     
     //Vessel* newVenture = new Vessel(venture, 100, 3);
     board->setVesselClicked("venture");
+    board->deactivateModes();
     board->dockingMode();
 
 
@@ -334,6 +381,7 @@ void Board::venture2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
 
     board->setVesselClicked("venture");
+    board->deactivateModes();
     board->dockingMode();
     //a;adir logica del boton
 
@@ -342,6 +390,7 @@ void Board::venture2Click(Fl_Widget* widget, void* actioned) {
 void Board::typhon1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("typhon");
+    board->deactivateModes();
     board->dockingMode();
     //a;adir logica del boton
 
@@ -349,6 +398,7 @@ void Board::typhon1Click(Fl_Widget* widget, void* actioned) {
 void Board::typhon2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("typhon");
+    board->deactivateModes();
     board->dockingMode();
     //a;adir logica del boton
 
@@ -357,6 +407,7 @@ void Board::typhon2Click(Fl_Widget* widget, void* actioned) {
 void Board::dugong1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("dugong");
+    board->deactivateModes();
     board->dockingMode();
     //a;adir logica del boton
 
@@ -364,6 +415,7 @@ void Board::dugong1Click(Fl_Widget* widget, void* actioned) {
 void Board::dugong2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("dugong");
+    board->deactivateModes();
     board->dockingMode();
     //a;adir logica del boton
 
@@ -372,6 +424,7 @@ void Board::dugong2Click(Fl_Widget* widget, void* actioned) {
 void Board::camel1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("camel");
+    board->deactivateModes();
     board->dockingMode();
     //a;adir logica del boton
 
@@ -379,6 +432,7 @@ void Board::camel1Click(Fl_Widget* widget, void* actioned) {
 void Board::camel2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("camel");
+    board->deactivateModes();
     board->dockingMode();
     //a;adir logica del boton
 
@@ -387,6 +441,7 @@ void Board::camel2Click(Fl_Widget* widget, void* actioned) {
 void Board::remora1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("remora");
+    board->deactivateModes();
     board->dockingMode();
     //a;adir logica del boton
 
@@ -394,6 +449,7 @@ void Board::remora1Click(Fl_Widget* widget, void* actioned) {
 void Board::remora2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("remora");
+    board->deactivateModes();
     board->dockingMode();
     //a;adir logica del boton
 
@@ -402,6 +458,7 @@ void Board::remora2Click(Fl_Widget* widget, void* actioned) {
 void Board::winterhalter1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("winterhalter");
+    board->deactivateModes();
     board->dockingMode();
     //a;adir logica del boton
 
@@ -409,6 +466,7 @@ void Board::winterhalter1Click(Fl_Widget* widget, void* actioned) {
 void Board::winterhalter2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("winterhalter");
+    board->deactivateModes();
     board->dockingMode();
     //a;adir logica del boton
 
@@ -436,7 +494,23 @@ int Board::callAttack(Terrain* terrain){
     terrain->callAttack(iterations);
     double damage = 100/(double)iterations;
     //register_search(iterations, terrain->getName(), damage);
+    iterations = 0;
     return (int) damage;
+}
+void Board::callUpgrade(Terrain* terrain){
+    int upPoints = 100; // Arreglar con upPoints de player
+    int iterations = 0;
+    if(terrain->callUpgrade(iterations,upPoints)){
+        //register_remove(iterations, terrain->getName());
+        iterations=0;
+        for(int i=0; i < 29; i++){
+            terrain->callUpgrade(iterations,upPoints);
+            cout<<iterations<<endl;
+            //register_remove(iterations, terrain->getName());
+            iterations = 0;
+        }
+    }
+    iterations=0;
 }
 
 
