@@ -8,7 +8,7 @@ class Terrain {
       int posY;
       bool hasVessel;
       bool underFire;
-
+      bool decoy;
       Vessel* vessel;
 
     public:
@@ -25,14 +25,19 @@ class Terrain {
 
       void sendPirates(int& num, int& iterations);
       void callAttack(int& iterations);
-      void shooted(int damage);
+      bool shooted(int damage);
       bool callUpgrade(int& iterations, int& upPoints);
 
+      void setDecoy(bool d);
+      bool getDecoy();
       void terrainUnderFire();
       bool isUnderFire();
 
+      void setMovingVessel(Vessel* v);
+      
+      string getVesselName();
 
-      void setOccupied();
+      void setOccupied(bool s);
       bool isOccupied();
 
     

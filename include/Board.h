@@ -67,14 +67,15 @@ private:
     Terrain* terrainNodes[rows][cols];
 
     //booleano para indicar que un barco esta siendo colocado o "atracado"
+    Terrain* movingTerrain;
     bool docking;
     bool spying;
     bool upgrading;
     bool decoying;
     bool attacking;
+    bool moving;
     string vesselClicked;
     int damage;
-
     unordered_map<string, Fl_Image*> vesselSprites;
 
     bool surrender;
@@ -147,7 +148,11 @@ private:
 
     void setVesselClicked(string nameVessel);
     
+    
     string getVesselClicked();
+
+    void setMovingTerrain (Terrain* mT);
+    Terrain* getMovingTerrain();
 
     void dockingMode();
 
@@ -157,6 +162,7 @@ private:
 
     void abortAttaking();
 
+    string getDecoy();
 
     void spyingMode();
     void abortSpying();
@@ -167,6 +173,9 @@ private:
     void decoyingMode();
     void abortDecoying();
 
+    void movingMode();
+    void abortMoving();
+
     void deactivateModes();
     void setDamage(int d);
 
@@ -174,7 +183,7 @@ private:
 
     bool playerSurrender() const;
 
-    void callPirates(Terrain* terrain);
+    void callPirates(Terrain* terrain, int pirates);
     int callAttack(Terrain* terrain);
     void callUpgrade(Terrain* terrain);
 

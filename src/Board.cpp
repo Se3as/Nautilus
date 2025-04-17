@@ -11,8 +11,9 @@
 #define BUYREMORA 8
 #define BUYWINTERHALTER 9
 
-Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr), surrender(false), goMenu(false), docking(false){
-    
+Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr), 
+surrender(false), goMenu(false), docking(false), attacking(false), spying(false),
+upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){ 
     window = new Fl_Window(1280, 720, "Nautilus Game");
 
     loadVessel();
@@ -187,7 +188,6 @@ int Board::whoIsPlayer(int ID) {
     return Player::getPlayerID();
 }*/
 
-
 void Board::dockingMode() {
     docking = true;
 }
@@ -195,7 +195,6 @@ void Board::dockingMode() {
 void Board::abortDocking() {
     docking = false;
 }
-
 void Board::attackingMode() {
     attacking = true;
 }
@@ -207,7 +206,6 @@ void Board::abortAttaking() {
 void Board::spyingMode(){
     spying = true; 
 }
-
 void Board::abortSpying(){
     spying = false;
 }
@@ -215,7 +213,6 @@ void Board::abortSpying(){
 void Board::upgradingMode(){
     upgrading = true;
 }
-
 void Board::abortUpgrading(){
     upgrading = false;
 }
@@ -226,6 +223,12 @@ void Board::decoyingMode(){
 void Board::abortDecoying(){
     decoying = false;
 }
+void Board::movingMode(){
+    moving = true;
+}
+void Board::abortMoving(){
+    moving = false;
+}
 
 void Board::deactivateModes(){
     abortDocking();
@@ -233,22 +236,26 @@ void Board::deactivateModes(){
     abortSpying();
     abortUpgrading();
     abortDecoying();
+    //abortMoving();
 }
 
 void Board::setVesselClicked(string nameVessel){
     vesselClicked = nameVessel;
 }
-
 string Board::getVesselClicked(){
     return vesselClicked;
 }
-
 void Board::setDamage(int d){
     damage = d;
 }
-
 int Board::getDamage(){
     return damage;
+}
+void Board::setMovingTerrain (Terrain* mT){
+    movingTerrain = mT;
+}
+Terrain* Board::getMovingTerrain(){
+    return movingTerrain;
 }
 
 void Board::terrainClick(Fl_Widget* widget, void* actioned) {
@@ -260,31 +267,90 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
     Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
 
 
-    if(board->docking == true){
+    if(board->moving){
+        if(terrain->isOccupied() && board->movingTerrain == nullptr){
+            cout<< terrain->getVesselName()<<" is moving"<<endl;
+            board->setMovingTerrain (terrain);
+            triggeredButton->image(nullptr);  
+            triggeredButton->redraw();    
+            terrain->setOccupied(false);
+            return;
+        }
+        else if (!terrain->isOccupied() && board->movingTerrain != nullptr){
+            terrain->setMovingVessel(board->movingTerrain->getVessel());
+            string vesselClicked = terrain->getVesselName();
+            cout<< vesselClicked<<" has moved"<<endl;
+            Fl_Image* sprite = board->vesselSprites[vesselClicked]->copy(41, 20);
+            triggeredButton->image(sprite);
+            terrain->setOccupied(true);
+            triggeredButton->redraw();
+            board->setMovingTerrain (nullptr);
+            board->abortMoving();
+            return;
+        }
+        if(board->movingTerrain != nullptr){
+            return;
+        }
+        board->abortMoving();
+        return;
+    }
+    else if(board->docking){
         string vesselClicked = board->getVesselClicked();
+        cout<< vesselClicked<<" appeared"<<endl;
         Fl_Image* sprite = board->vesselSprites[vesselClicked]->copy(41, 20);
         triggeredButton->image(sprite);
         triggeredButton->redraw();
         terrain->setVessel(vesselClicked);
-        terrain->setOccupied();
-        board->callPirates(terrain);
+        terrain->setOccupied(true);
+        board->callPirates(terrain, 100);
         board->abortAttaking();
         board->abortDocking();
         //cout<<"Aqui1"<<endl;
         return;
     } else if(board->spying){
+        cout<< terrain->getVesselName()<<" is being invaded"<<endl;
+        if (terrain->isOccupied()){
+        board->callPirates(terrain, 30);
+        }
+        board->abortSpying();
         return;
     }
     else if(board->upgrading && terrain->isOccupied()){
+        cout<< terrain->getVesselName()<<" is being upgraded"<<endl;
         board->callUpgrade(terrain);
         board->abortUpgrading();
         return;
     }
+
     else if(board->decoying && !terrain->isOccupied()){
+        cout<< " A decoy has apeared"<< endl;
+        string decoy = board->getDecoy();
+        //cout<< decoy<< endl;
+        Fl_Image* sprite = board->vesselSprites[decoy]->copy(41, 20);
+        triggeredButton->image(sprite);
+        triggeredButton->redraw();
+        terrain->setOccupied(true);
+        terrain->setDecoy(true);
+        board->abortDecoying();
         return;
-    }else if(board->attacking && terrain->isOccupied()){
-        //cout<<"Aqui3"<<endl;
-        terrain->shooted(board->getDamage());
+    }
+    else if(board->attacking ){
+        if (terrain->isOccupied()){
+            //cout<<"Aqui3"<<endl;
+            //comprobacion de que existe barco
+            if(!terrain->getDecoy() && terrain->shooted(board->getDamage())){
+                //cout<<" Abeele"<< endl;
+                triggeredButton->image(nullptr);  
+                triggeredButton->redraw();
+                terrain->setOccupied(false);        
+            }
+            else if (terrain->getDecoy()){
+                triggeredButton->image(nullptr);  
+                triggeredButton->redraw();
+                terrain->setDecoy(false);
+                terrain->setOccupied(false);
+            }
+        }
         terrain->terrainUnderFire();
         board->abortAttaking();
         board->setDamage(0);
@@ -538,17 +604,23 @@ void Board::winterhalter2Click(Fl_Widget* widget, void* actioned) {
         board->dockingMode();
     }
 }
-
-void Board::callPirates(Terrain* terrain){
+void Board::callPirates(Terrain* terrain, int pirates){
     unordered_set<int> initial_elements;
     int iterations = 0;
-    for(int i = 1; i < 101; i++){ 
+    int rango;
+    if(pirates == 100){
+        rango = 1;
+    }
+    else{
+        rango = 100;
+    }
+    for(int i = rango; i < pirates+rango; i++){ 
         initial_elements.insert(i);                                         
     }
-    for(int i = 1; i < 101; i++){
-        int num = rand() % 100 + 1;
+    for(int i = rango; i < pirates+rango; i++){
+        int num = rand() % pirates + rango;
         while (initial_elements.find(num) == initial_elements.end()) {
-            num = rand() % 100 + 1; 
+            num = rand() % pirates + rango; 
         }
         terrain->sendPirates(num,iterations);
         //register_insert(iterations,terrain->getName());
@@ -572,7 +644,7 @@ void Board::callUpgrade(Terrain* terrain){
         iterations=0;
         for(int i=0; i < 29; i++){
             terrain->callUpgrade(iterations,upPoints);
-            cout<<iterations<<endl;
+            //cout<<iterations<<endl;
             //register_remove(iterations, terrain->getName());
             iterations = 0;
         }
@@ -580,6 +652,25 @@ void Board::callUpgrade(Terrain* terrain){
     iterations=0;
 }
 
+string Board::getDecoy(){
+    int num = rand() % 6 + 1;
+    switch(num){
+    case 1:
+        return "venture";
+    case 2:
+        return "typhon";
+    case 3: 
+        return "dugong";
+    case 4: 
+        return "camel";
+    case 5:
+        return "remora";
+    case 6:
+        return "winterhlater";
+    default:
+    return "";
+    }
+}
 
 
 void::Board::loadVessel(){
