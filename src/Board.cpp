@@ -466,9 +466,9 @@ void Board::upgrade2Click(Fl_Widget* widget, void* actioned) {
 void Board::spies1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    int cost = 3;
+    int cost = 0;
     if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
-        board->spyingMode();
+        board->movingMode();
     }
 }
 
