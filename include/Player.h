@@ -6,19 +6,21 @@
 
 class Player {
 private:
-  int playerID;
-  int actionPoints;
-  int coins;
+    int playerID;
+    int actionPoints;
+    int coins;
 
 public:
-  Player(int p);
-  ~Player();
-    
-  int getScore();
-  void setScore(int p);
+    Player(int p);
+    ~Player();
+    int getPlayerID();
 
-  int getPlayerID();
+    int getActionPoints();
+    void setActionPoints(int actualPoints);
 
-  bool purchaseCalc(int cost);
+    bool myTurn(int turn);
+    void showCoins();
+
+    bool purchaseCalc(int cost);
 
 };

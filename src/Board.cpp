@@ -1,4 +1,15 @@
 #include "Board.h"
+#include "Player.h"
+
+#define BUYDECOY 1
+#define BUYUPGRADEPOINTS 2
+#define BUYSPIES 3
+#define BUYVESSEL 4
+#define BUYTYPHON 5
+#define BUYDONG 6
+#define BUYCAMEL 7
+#define BUYREMORA 8
+#define BUYWINTERHALTER 9
 
 Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr), surrender(false), goMenu(false), docking(false){
     
@@ -161,14 +172,20 @@ Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr),
 }
 
 
+void Board::createPlayers() {
+    player1 = new Player(1);
+    player2 = new Player(2);
+    this->player1StartCol = 0;
+    this->player1EndCol = cols / 2;
+    this->player2StartCol = cols / 2;
+    this->player2EndCol = cols;
+}
+
 //ADDING ALEX
-// int Board::whoIsPlayer(int Player::playerID) {
-//     return Player::playerID;
-// }
-
-
-
-
+/* Pienso que ya no es necesario el ID
+int Board::whoIsPlayer(int ID) {
+    return Player::getPlayerID();
+}*/
 
 
 void Board::dockingMode() {
@@ -178,6 +195,7 @@ void Board::dockingMode() {
 void Board::abortDocking() {
     docking = false;
 }
+
 void Board::attackingMode() {
     attacking = true;
 }
@@ -189,6 +207,7 @@ void Board::abortAttaking() {
 void Board::spyingMode(){
     spying = true; 
 }
+
 void Board::abortSpying(){
     spying = false;
 }
@@ -196,6 +215,7 @@ void Board::abortSpying(){
 void Board::upgradingMode(){
     upgrading = true;
 }
+
 void Board::abortUpgrading(){
     upgrading = false;
 }
@@ -206,6 +226,7 @@ void Board::decoyingMode(){
 void Board::abortDecoying(){
     decoying = false;
 }
+
 void Board::deactivateModes(){
     abortDocking();
     abortAttaking();
@@ -217,12 +238,15 @@ void Board::deactivateModes(){
 void Board::setVesselClicked(string nameVessel){
     vesselClicked = nameVessel;
 }
+
 string Board::getVesselClicked(){
     return vesselClicked;
 }
+
 void Board::setDamage(int d){
     damage = d;
 }
+
 int Board::getDamage(){
     return damage;
 }
@@ -288,188 +312,231 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
 
 }
 
+// Verificar la posicion si es valida, será necesario???
+/*
+int Board::isPositionValid(int row, int col) {
+    int positionValid = 0;
+    if (board->player1->myTurn(1) == true) {  // player 1 board side
+      positionValid = (int) (0 <= row && 0 <= player1StartCol && row < rows 
+        && col < player1EndCol);
+    } else {  // player 2 board side
+      positionValid = (int) (0 <= row && 0 <= player2StartCol && row < rows 
+        && col < player2EndCol);
+    }
+    return positionValid;
+}*/
 
+// Verificar la posicion del ataque es valido, será necesario???
+/*
+int Board::attackPositionValid(int row, int col) {
+    int attackPositionValid = 0;
+    if (board->player1->myTurn(1) == true) {  // attack player 2 board side
+      attackPositionValid = (int) (0 <= row && 0 <= player2StartCol && row < rows 
+        && col < player2EndCol);
+    } else {  // attack player 1 board side
+      attackPositionValid = (int) (0 <= row && 0 <= player1StartCol && row < rows 
+        && col < player1EndCol);
+    }
+    return attackPositionValid;
+}*/
 
 //CLICK PARA LOS BOTONES DE ACCION
 void Board::money1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-    //board->buyingMode();??
-    //a;adir logica del boton
-
+    board->deactivateModes();
+    // Mostrar la cantidad de dinero del jugador 1
+    if (board->player1->myTurn(1)) {
+        // Muestra el resultado en el terminal, falta implementarlo como label
+        board->player1->showCoins();
+    }
 }
+
 void Board::money2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-    //board->buyingMode();??
-    //a;adir logica del boton
-
+    board->deactivateModes();
+    // Mostrar la cantidad de dinero del jugador 2
+    if (board->player2->myTurn(2)) {
+        // Muestra el resultado en el terminal, falta implementarlo como label
+        board->player2->showCoins();
+    }
 }
 
 void Board::decoy1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    board->decoyingMode();
-    //a;adir logica del boton
-
+    int cost = 1;
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->decoyingMode();
+    }
 }
+
 void Board::decoy2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    board->decoyingMode();
-    //a;adir logica del boton
-
+    int cost = 1;
+    if (board->player2->myTurn(2) && board->player2->purchaseCalc(cost)) {
+        board->decoyingMode();
+    }
 }
 
 void Board::upgrade1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    board->upgradingMode();
-    //a;adir logica del boton
-
+    int cost = 2;
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->upgradingMode();
+    }
 }
+
 void Board::upgrade2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    board->upgradingMode();
-    //a;adir logica del boton
-
+    int cost = 2;
+    if (board->player2->myTurn(2) && board->player2->purchaseCalc(cost)) {
+        board->upgradingMode();
+    }
 }
 
 void Board::spies1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    board->spyingMode();
-    //a;adir logica del boton
-
+    int cost = 3;
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->spyingMode();
+    }
 }
+
 void Board::spies2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    board->spyingMode();
-    //a;adir logica del boton
-
+    int cost = 3;
+    if (board->player2->myTurn(2) && board->player2->purchaseCalc(cost)) {
+        board->spyingMode();
+    }
 }
-
-
-
 
 //CLICKS PARA LOS BOTONES DE SUBMARINOS
 void Board::venture1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
-
-    
+  
     //Vessel* newVenture = new Vessel(venture, 100, 3);
     board->setVesselClicked("venture");
     board->deactivateModes();
-    board->dockingMode();
-
-
-    //ADDING ALEX
-    // bool player = whoIsPlayer(Player::playerID);
-    // int cost = 1;
-    // if (enoughPoints(player, cost)) {
-    //   placeVesselClicked();
-    // }
-
+    int cost = 4;
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
-
-
-
-
-
 
 void Board::venture2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
 
     board->setVesselClicked("venture");
     board->deactivateModes();
-    board->dockingMode();
-    //a;adir logica del boton
-
+    int cost = 4;
+    if (board->player2->myTurn(2) && board->player2->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
 
 void Board::typhon1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("typhon");
     board->deactivateModes();
-    board->dockingMode();
-    //a;adir logica del boton
-
+    int cost = 5;
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
+
 void Board::typhon2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("typhon");
     board->deactivateModes();
-    board->dockingMode();
-    //a;adir logica del boton
-
+    int cost = 5;
+    if (board->player2->myTurn(2) && board->player2->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
 
 void Board::dugong1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("dugong");
     board->deactivateModes();
-    board->dockingMode();
-    //a;adir logica del boton
-
+    int cost = 6;
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
+
 void Board::dugong2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("dugong");
     board->deactivateModes();
-    board->dockingMode();
-    //a;adir logica del boton
-
+    int cost = 6;
+    if (board->player2->myTurn(2) && board->player2->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
 
 void Board::camel1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("camel");
     board->deactivateModes();
-    board->dockingMode();
-    //a;adir logica del boton
-
+    int cost = 7;
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
+
 void Board::camel2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("camel");
     board->deactivateModes();
-    board->dockingMode();
-    //a;adir logica del boton
-
+    int cost = 7;
+    if (board->player2->myTurn(2) && board->player2->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
 
 void Board::remora1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("remora");
     board->deactivateModes();
-    board->dockingMode();
-    //a;adir logica del boton
-
+    int cost = 8;
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
+
 void Board::remora2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("remora");
     board->deactivateModes();
-    board->dockingMode();
-    //a;adir logica del boton
-
+    int cost = 8;
+    if (board->player2->myTurn(2) && board->player2->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
 
 void Board::winterhalter1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("winterhalter");
     board->deactivateModes();
-    board->dockingMode();
-    //a;adir logica del boton
-
+    int cost = 9;
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
+
 void Board::winterhalter2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("winterhalter");
     board->deactivateModes();
-    board->dockingMode();
-    //a;adir logica del boton
-
+    int cost = 9;
+    if (board->player2->myTurn(2) && board->player2->purchaseCalc(cost)) {
+        board->dockingMode();
+    }
 }
 
 void Board::callPirates(Terrain* terrain){
@@ -584,6 +651,60 @@ void Board::show(){
 void Board::hide(){
     window->hide();
 }
+
+// Mostrar la mitad del board
+// Todavía falta terminar por revisar el código
+/*
+void Board::showBoard(Board *board, bool Player::playerID) {
+    if (Player::playerID == 0) {
+      for (int i = 0; i < rows; ++i) {
+        for (int j = player1StartCol; j < player1EndCol; ++j) {
+          window->show(node[i][j]);
+        }
+      }
+    } else {
+      for (int i = 0; i < rows; ++i) {
+        for (int j = player2StartCol; j < player2EndCol; ++j) {
+          window->show(node[i][j]);
+        }
+      }
+    }
+}
+
+// Ocultar la mitad del board
+// Todavía falta terminar por revisar el código
+void Board::hideBoard(Board *board, bool Player::playerID) {
+    if (Player::playerID == 0) {
+      for (int i = 0; i < rows; ++i) {
+        for (int j = player1StartCol; j < player1EndCol; ++j) {
+          if (node[i][j].isNodeVessel()) {
+            // Vessel detected
+            Vessel* vessel;
+            if(node[i][j].vesselUnderAttack(vessel)) {
+              window->show(node[i][j]);
+            } 
+          } else {
+            window->hide(node[i][j]);
+          }      
+        }
+      }
+    } else {
+      for (int i = 0; i < rows; ++i) {
+        for (int j = player2StartCol; j < player2EndCol; ++j) {
+          if (node[i][j].isNodeVessel()) {
+            // Vessel detected
+            Vessel* vessel;
+            if(node[i][j].vesselUnderAttack(vessel)) {
+              window->show(node[i][j]);
+            } 
+          } else {
+            window->hide(node[i][j]);
+          }
+        }
+      }
+    }
+}
+*/
 
 Board::~Board(){
     if(window) {

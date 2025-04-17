@@ -1,8 +1,10 @@
 #include "Player.h"
 
+#include <iostream>
+using namespace std;
 
 
-Player::Player(int p): actionPoints(3), coins(12){
+Player::Player(int p): playerID(p), actionPoints(3), coins(12){
 }
 
 
@@ -10,6 +12,21 @@ int Player::getPlayerID() {
   return playerID;
 }
 
+int Player::getActionPoints() {
+  return actionPoints;
+}
+
+void Player::setActionPoints(int actualPoints) {
+  this->actionPoints = actualPoints;
+}
+
+bool Player::myTurn(int turn) {
+  return playerID == turn ? true : false;
+}
+
+void Player::showCoins() {
+  cout << coins << endl;
+}
 
 bool Player::purchaseCalc(int cost) {
 

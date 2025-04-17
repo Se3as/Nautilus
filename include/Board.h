@@ -121,19 +121,29 @@ private:
     static void winterhalter1Click(Fl_Widget*, void* action);
     static void winterhalter2Click(Fl_Widget*, void* action);
 
-
-    //ADDING ALEX
-    //int whoIsPlayer(bool);
-
-
-
-public:
+    // Columnas delimitador de los jugadores
+    int player1StartCol;
+    int player1EndCol;
+    int player2StartCol;
+    int player2EndCol;
+    
+    public:
     Board();
     ~Board();
-
+    
     void show();
-
+    
     void hide();
+
+    // Atributos de los jugadores
+    Player* player1;
+    Player* player2;
+    void createPlayers();
+
+    // Buscar posicion valida
+    int isPositionValid(int row, int col);
+    // buscar posicion valida del ataque
+    int attackPositionValid(int row, int col);
 
     void setVesselClicked(string nameVessel);
     

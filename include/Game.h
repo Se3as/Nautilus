@@ -11,6 +11,9 @@ private:
     Menu menu;
     Board board;
     Postgame postgame;
+    
+    int rounds;
+    int turn;
 
 
 public:
