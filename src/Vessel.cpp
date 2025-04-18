@@ -98,7 +98,7 @@ bool VesselSet::remove_iterations(int num, int& up_points, int& iterations){
 
 
 VesselRedBlack::VesselRedBlack(string n, int l, int p): Vessel(n, l, p) {
-    redblack_tree = new RedBlackTree();
+    redblack_tree = new RBTree();
 }
 
 bool VesselRedBlack::search_iterations(int num, int& iterations){	
@@ -109,19 +109,16 @@ bool VesselRedBlack::insert_iterations(int num, int& iterations){
     return redblack_tree->insert(num,iterations);
 }
 bool VesselRedBlack::remove_iterations(int num, int& up_points, int& iterations){
-    return true;
-}
-/*
     int temporal = 0; 
-    bool success = b_tree->remove(num,iterations);
+    bool success = redblack_tree->remove(num,iterations);
     if(up_points<iterations){
         elements.insert(num);
-        b_tree->insert(num,temporal);
+        redblack_tree->insert(num,temporal);
         return false;
     }
     elements.erase(num);
     return success;
-}*/
+}
 
 
 VesselBTree::VesselBTree(string n, int l, int p): Vessel(n, l, p) {
