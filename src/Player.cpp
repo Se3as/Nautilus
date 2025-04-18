@@ -4,7 +4,7 @@
 using namespace std;
 
 
-Player::Player(int p): playerID(p), actionPoints(3), coins(12){
+Player::Player(int p): playerID(p), actionPoints(3), coins(12), isMyTurn(false){
 }
 
 
@@ -20,27 +20,45 @@ void Player::setActionPoints(int actualPoints) {
   this->actionPoints = actualPoints;
 }
 
+void Player::subtractActionPoints() {
+  this->actionPoints -= 1;
+}
+
+void Player::habilitateTurn() {
+  cout << "Entre a habilitar" << endl;
+  this->isMyTurn = true;
+}
+
+void Player::inhabilitateTurn() {
+  cout << "Entre a inhabilidar" << endl;
+  this->isMyTurn = false;
+}
+
 bool Player::myTurn(int turn) {
-  return playerID == turn ? true : false;
+  return this->isMyTurn == turn ? true : false;
+}
+
+void Player::addCoins(int coins) {
+  cout << "Añadir monedas" << endl;
+  this->coins = coins;
 }
 
 void Player::showCoins() {
   cout << coins << endl;
 }
 
-bool Player::purchaseCalc(int cost) {
-
-  if (cost > coins)
-  {
-    std::cout << "Not enough points" << std::endl;
+bool Player::enoughCoins(int cost) {
+  if (cost > coins) {
+    cout << "Not enough coins" << endl;
     return false;
-  }
-  else
-  {
-    coins -= cost;
-    std::cout << "Points deducted: " << cost << std::endl;
+  } else {
+    cout << "Enough coins" << endl;
     return true;
   }
+}
+
+void Player::purchaseCalc(int cost) {
+  this->coins -= cost;
 }
 
 Player::~Player(){

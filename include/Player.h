@@ -9,6 +9,7 @@ private:
     int playerID;
     int actionPoints;
     int coins;
+    bool isMyTurn;
 
 public:
     Player(int p);
@@ -17,10 +18,15 @@ public:
 
     int getActionPoints();
     void setActionPoints(int actualPoints);
+    void subtractActionPoints();
 
+    void habilitateTurn();
+    void inhabilitateTurn();
     bool myTurn(int turn);
+
+    void addCoins(int coins);
     void showCoins();
 
-    bool purchaseCalc(int cost);
-
+    bool enoughCoins(int cost);
+    void purchaseCalc(int cost);
 };

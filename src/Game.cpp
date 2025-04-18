@@ -28,65 +28,52 @@ void Game::run(){
     if(board.playerSurrender()){
         postgame.show();
     }
-
+    /*
     // Crear jugadores
     board.createPlayers();
     bool start = true;
+    int actions = 3;
+    int addCoins = 30;
     rounds = 1;
     turn = 1;
     // Empezar el juego en el jugador 1
-    // Todavía no sirve como el main del juego
-    
-    /*while (start) {
-        int actions = 3;
+    while (start) {
         if (rounds == 1) {
+            board.player1->habilitateTurn();
             while(board.player1->myTurn(turn) && board.player1->getActionPoints() > 0) {
-                // show player1 board
-                // hide player2 board
                 // solamente habilitar comprar submarinos
-                
-                cout << "Entre aqui player1 " << board.player1->getActionPoints() << endl;
-                actions--;
-                board.player1->setActionPoints(actions);
             }
             turn++;
-            actions = 3;
+            board.player1->inhabilitateTurn();
+            board.player2->habilitateTurn();
             while(board.player2->myTurn(turn) && board.player2->getActionPoints() > 0) {
-                // show player1 board
-                // hide player2 board
                 // solamente habilitar comprar submarinos
-                cout << "Entre aqui player2 " << board.player2->getActionPoints() << endl;
-                actions--;
-                board.player2->setActionPoints(actions);
             }
             turn--;
             rounds++;
+            board.player2->inhabilitateTurn();
+        } else {
+            board.player1->habilitateTurn();
+            while(board.player1->myTurn(turn) && board.player1->getActionPoints() > 0) {
+                board.player1->setActionPoints(actions);
+            }
+            board.player1->inhabilitateTurn();
+            turn++;
+            board.player2->habilitateTurn();
+            while(board.player2->myTurn(turn) && board.player2->getActionPoints() > 0) {
+                board.player2->setActionPoints(actions);
+            }
+            board.player2->inhabilitateTurn();
+            turn--;
+            rounds++;
         }
-        board.player1->setActionPoints(3);
-        while(board.player1->myTurn(turn) && board.player1->getActionPoints() > 0) {
-            // show player1 board
-            // hide player2 board
-            cout << "Entre aqui player1 " << board.player1->getActionPoints() << endl;
-            actions--;
-            board.player1->setActionPoints(actions); 
-        }
-        actions = 3;
-        turn++;
-        board.player1->setActionPoints(3);
-        while(board.player2->myTurn(turn) && 
-            board.player2->getActionPoints() > 0) {
-            // show player1 board
-            // hide player2 board
-            cout << "Entre aqui player2 " << board.player2->getActionPoints() << endl;
-            actions--;
-            board.player2->setActionPoints(actions);
-        }
-        turn--;
-        rounds++;
         if (rounds == 3) {
             break;
         }
-    }*/
+        board.player1->addCoins(addCoins);
+        board.player2->addCoins(addCoins);
+    }
+     */
 
     // jugador atacante tipo de barco la operacion y las iteraciones 
 

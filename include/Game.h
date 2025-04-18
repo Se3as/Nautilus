@@ -14,8 +14,7 @@ private:
     
     int rounds;
     int turn;
-
-
+    
 public:
     Game();
     void run();
