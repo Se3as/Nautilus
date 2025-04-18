@@ -27,6 +27,9 @@ class Board {
 private:
     Fl_Window* window;
     
+    Fl_Box* announcer;
+    Fl_Box* playerLog;
+
     Fl_Button* surrenderButton; 
     Fl_Button* menuButton;
     Fl_Button* healthButton1;
@@ -56,11 +59,6 @@ private:
     Fl_Button* buyRemora2;
     Fl_Button* buyWinterhalter2;
 
-    Fl_Button* terrain11;
-    Fl_Button* terrain12;
-    Fl_Button* terrain13;
-    Fl_Button* terrain14;
-
     //filas de la matriz   
     static const int rows = 8;
     //columnas de la matriz
@@ -73,6 +71,7 @@ private:
 
     //booleano para indicar que un barco esta siendo colocado o "atracado"
     Terrain* movingTerrain;
+    bool inspect;
     bool docking;
     bool spying;
     bool upgrading;
@@ -85,6 +84,8 @@ private:
 
     bool surrender;
     bool goMenu;
+
+    void terrainVeil(int player);
 
     static void clickSurrender(Fl_Widget*, void* action);
 
@@ -164,6 +165,10 @@ private:
 
     void setMovingTerrain (Terrain* mT);
     Terrain* getMovingTerrain();
+
+    void inspectMode();
+
+    void abortInspection();
 
     void dockingMode();
 

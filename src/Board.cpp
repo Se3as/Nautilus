@@ -12,7 +12,7 @@
 #define BUYWINTERHALTER 9
 
 Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr), 
-surrender(false), goMenu(false), docking(false), attacking(false), spying(false),
+surrender(false), goMenu(false), inspect(false), docking(false), attacking(false), spying(false),
 upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){ 
     
     window = new Fl_Window(1280, 720, "Nautilus Game");
@@ -41,18 +41,6 @@ upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){
     linkBox->image(linkSign);
 
 
-   
-
-    //multipurpose label
-    Fl_Box* announcer = new Fl_Box(100, 100, 200, 50, "CREDITS: 3");
-    announcer->labelcolor(fl_rgb_color(163, 202, 179));
-    announcer->align(FL_ALIGN_CENTER);
-    announcer->labelsize(14);
-    announcer->box(FL_NO_BOX);
-
-
-
-
     Fl_PNG_Image* money_icon = new Fl_PNG_Image("assets/gfx/ui/Money_Icon.png");
     Fl_Image* moneyIcon = money_icon->copy(50, 50);
     delete money_icon;
@@ -72,11 +60,11 @@ upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){
     healthButton1 = new Fl_Button(5, 208, healthIcon->w(), healthIcon->h());
     healthButton1->image(healthIcon);
     healthButton1->box(FL_NO_BOX);
-    healthButton1->callback(money1Click, this);
+    healthButton1->callback(health1Click, this);
     healthButton2 = new Fl_Button(1150, 208, healthIcon->w(), healthIcon->h());
     healthButton2->image(healthIcon);
     healthButton2->box(FL_NO_BOX);
-    healthButton2->callback(money2Click, this);
+    healthButton2->callback(health2Click, this);
 
 
     Fl_PNG_Image* decoy_icon = new Fl_PNG_Image("assets/gfx/ui/Decoy_Icon.png");
@@ -122,11 +110,11 @@ upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){
     moveButton1 = new Fl_Button(5, 477, moveIcon->w(), moveIcon->h());
     moveButton1->image(moveIcon);
     moveButton1->box(FL_NO_BOX);
-    moveButton1->callback(spies1Click, this);
+    moveButton1->callback(move1Click, this);
     moveButton2 = new Fl_Button(1150, 477, moveIcon->w(), moveIcon->h());
     moveButton2->image(moveIcon);
     moveButton2->box(FL_NO_BOX);
-    moveButton2->callback(spies2Click, this);
+    moveButton2->callback(move2Click, this);
 
 
 
@@ -214,6 +202,20 @@ upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){
         }
     }
 
+    //player playering label
+    playerLog = new Fl_Box(1, 10, 0, 0, "PLAYER 1 MAKING A MOVE...");
+    playerLog->labelcolor(fl_rgb_color(163, 202, 179));
+    playerLog->align(FL_ALIGN_RIGHT);
+    playerLog->labelsize(14);
+
+
+    //multipurpose label
+    announcer = new Fl_Box(1, 40, 0, 0, "HAUL: 100%");
+    announcer->labelcolor(fl_rgb_color(163, 202, 179));
+    announcer->align(FL_ALIGN_RIGHT);
+    announcer->labelsize(14);
+    announcer->hide();
+
 
     window->user_data(this);
 
@@ -234,6 +236,15 @@ void Board::createPlayers() {
 int Board::whoIsPlayer(int ID) {
     return Player::getPlayerID();
 }*/
+
+
+void Board:: inspectMode() {
+    inspect = true;
+}
+
+void Board:: abortInspection() {
+    inspect = false;
+}
 
 void Board::dockingMode() {
     docking = true;
@@ -305,6 +316,92 @@ Terrain* Board::getMovingTerrain(){
     return movingTerrain;
 }
 
+
+
+void Board::terrainVeil(int player) {
+    int p = player;
+    
+    int col;
+    int colEnd;
+
+    if(p == 1){
+        int col = 0;
+        int colEnd = 5;
+    } else if(p == 2) {
+        int col = 6;
+        int colEnd = 11;
+    }
+
+    for(int i = col; col < colEnd; ++i){
+        
+    }
+
+
+}
+
+
+// Mostrar la mitad del board
+// Todavía falta terminar por revisar el código
+/*
+void Board::showBoard(Board *board, bool Player::playerID) {
+    if (Player::playerID == 0) {
+      for (int i = 0; i < rows; ++i) {
+        for (int j = player1StartCol; j < player1EndCol; ++j) {
+          window->show(node[i][j]);
+        }
+      }
+    } else {
+      for (int i = 0; i < rows; ++i) {
+        for (int j = player2StartCol; j < player2EndCol; ++j) {
+          window->show(node[i][j]);
+        }
+      }
+    }
+}
+
+// Ocultar la mitad del board
+// Todavía falta terminar por revisar el código
+void Board::hideBoard(Board *board, bool Player::playerID) {
+    if (Player::playerID == 0) {
+      for (int i = 0; i < rows; ++i) {
+        for (int j = player1StartCol; j < player1EndCol; ++j) {
+          if (node[i][j].isNodeVessel()) {
+            // Vessel detected
+            Vessel* vessel;
+            if(node[i][j].vesselUnderAttack(vessel)) {
+              window->show(node[i][j]);
+            } 
+          } else {
+            window->hide(node[i][j]);
+          }      
+        }
+      }
+    } else {
+      for (int i = 0; i < rows; ++i) {
+        for (int j = player2StartCol; j < player2EndCol; ++j) {
+          if (node[i][j].isNodeVessel()) {
+            // Vessel detected
+            Vessel* vessel;
+            if(node[i][j].vesselUnderAttack(vessel)) {
+              window->show(node[i][j]);
+            } 
+          } else {
+            window->hide(node[i][j]);
+          }
+        }
+      }
+    }
+}
+*/
+
+
+
+
+
+
+
+
+
 void Board::terrainClick(Fl_Widget* widget, void* actioned) {
     TerrainPosition* location = static_cast<TerrainPosition*>(actioned);
     Board* board = static_cast<Board*>(widget->parent()->user_data());
@@ -313,7 +410,11 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
 
     Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
 
-    
+    board->window->redraw();
+
+    board->announcer->hide();
+
+
     if(board->moving){
         if(terrain->isOccupied() && board->movingTerrain == nullptr){
             cout<< terrain->getVesselName()<<" is moving"<<endl;
@@ -339,6 +440,23 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
         }
         board->abortMoving();
         return;
+
+    } else if(board->inspect && terrain->isOccupied()){
+        cout<<"checking haul integrity"<<endl;
+
+        cout<<terrain->getVessel()->getLife()<<endl;
+
+        board->deactivateModes();
+        board->announcer->position(triggeredButton->x() - 5, triggeredButton->y() + 60);
+        string vesselData = "HAUL: " + to_string(terrain->getVessel()->getLife()) + "%";
+        board->announcer->copy_label(vesselData.c_str());
+        board->announcer->show();
+        board->abortInspection();
+        
+    } else if(board->inspect && !terrain->isOccupied()) {
+
+        board->deactivateModes();
+        board->abortInspection();
     }
 
     else if(board->docking){
@@ -413,11 +531,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             board->attackingMode();
             return;
     }
-     else{
-        triggeredButton->color(FL_BLUE);
-        triggeredButton->redraw();
-    }
-
+     
 
     // Aquí puedes acceder a la posición con pos->row y pos->col
     // y hacer lo que necesites con esa información
@@ -425,7 +539,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
     //COMO USAR: creas un Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
     //luego puedes meter logica en triggered button, ejemplo abajo
 
-
+    board->window->redraw();
 }
 
 // Verificar la posicion si es valida, será necesario???
@@ -465,6 +579,7 @@ void Board::money1Click(Fl_Widget* widget, void* actioned) {
         // Muestra el resultado en el terminal, falta implementarlo como label
         board->player1->showCoins();
     }
+    board->window->redraw();
 }
 
 void Board::money2Click(Fl_Widget* widget, void* actioned) {
@@ -475,23 +590,19 @@ void Board::money2Click(Fl_Widget* widget, void* actioned) {
         // Muestra el resultado en el terminal, falta implementarlo como label
         board->player2->showCoins();
     }
+    board->window->redraw();
 }
-
 
 void Board::health1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    
-    
-
+    board->inspectMode();
 }
 
 void Board::health2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    
-
-
+    board->inspectMode();
 }
 
 
@@ -536,7 +647,11 @@ void Board::upgrade2Click(Fl_Widget* widget, void* actioned) {
 void Board::spies1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    int cost = 0;
+    int cost = 3;
+
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->spyingMode();
+    }
 
 }
 
@@ -545,6 +660,9 @@ void Board::spies2Click(Fl_Widget* widget, void* actioned) {
     board->deactivateModes();
     int cost = 3;
 
+    if (board->player1->myTurn(1) && board->player1->purchaseCalc(cost)) {
+        board->spyingMode();
+    }
 
 }
 
@@ -855,59 +973,7 @@ void Board::hide(){
     window->hide();
 }
 
-// Mostrar la mitad del board
-// Todavía falta terminar por revisar el código
-/*
-void Board::showBoard(Board *board, bool Player::playerID) {
-    if (Player::playerID == 0) {
-      for (int i = 0; i < rows; ++i) {
-        for (int j = player1StartCol; j < player1EndCol; ++j) {
-          window->show(node[i][j]);
-        }
-      }
-    } else {
-      for (int i = 0; i < rows; ++i) {
-        for (int j = player2StartCol; j < player2EndCol; ++j) {
-          window->show(node[i][j]);
-        }
-      }
-    }
-}
 
-// Ocultar la mitad del board
-// Todavía falta terminar por revisar el código
-void Board::hideBoard(Board *board, bool Player::playerID) {
-    if (Player::playerID == 0) {
-      for (int i = 0; i < rows; ++i) {
-        for (int j = player1StartCol; j < player1EndCol; ++j) {
-          if (node[i][j].isNodeVessel()) {
-            // Vessel detected
-            Vessel* vessel;
-            if(node[i][j].vesselUnderAttack(vessel)) {
-              window->show(node[i][j]);
-            } 
-          } else {
-            window->hide(node[i][j]);
-          }      
-        }
-      }
-    } else {
-      for (int i = 0; i < rows; ++i) {
-        for (int j = player2StartCol; j < player2EndCol; ++j) {
-          if (node[i][j].isNodeVessel()) {
-            // Vessel detected
-            Vessel* vessel;
-            if(node[i][j].vesselUnderAttack(vessel)) {
-              window->show(node[i][j]);
-            } 
-          } else {
-            window->hide(node[i][j]);
-          }
-        }
-      }
-    }
-}
-*/
 
 Board::~Board(){
     if(window) {
