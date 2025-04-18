@@ -6,14 +6,14 @@
 class Music {
 private:
     Mix_Music* music;
-    bool isInitialized = false;
-    
+    bool trackOn = false;
+
     
 public:
     Music();
     ~Music();
     
-    void load(const std::string& path);
+    void toThePlaylist(const std::string& path);
     void play(int loops = -1);
     void stop();
 };

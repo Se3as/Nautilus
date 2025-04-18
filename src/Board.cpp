@@ -318,23 +318,41 @@ Terrain* Board::getMovingTerrain(){
 
 
 
-void Board::terrainVeil(int player) {
+void Board::terrainVeil(Fl_Widget* widget, int player) {
+
+    Board* board = static_cast<Board*>(widget->parent()->user_data());
+    
     int p = player;
     
     int col;
     int colEnd;
 
     if(p == 1){
-        int col = 0;
-        int colEnd = 5;
+        col = 0;
+        colEnd = 5;
     } else if(p == 2) {
-        int col = 6;
-        int colEnd = 11;
+        col = 6;
+        colEnd = 11;
     }
 
-    for(int i = col; col < colEnd; ++i){
-        
+    //board->moneyButton1->hide();
+
+
+    //esto pone la imagen del boton nula
+    for(int i = col; i < colEnd; ++i){
+        for(int j = 0; j < 8; ++j){
+            //board->terrainGrid[j][i]->hide();
+
+            if(board->terrainGrid[j][i]->image() != nullptr){
+                board->terrainGrid[j][i]->image(nullptr);
+            }
+
+        }
     }
+
+
+    //crear un doble for que le pregunte a terrainNode que barco tiene adentro y vuelva a poner la imagen
+
 
 
 }
@@ -414,6 +432,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
 
     board->announcer->hide();
 
+    //board->terrainVeil(widget, 1);
 
     if(board->moving){
         if(terrain->isOccupied() && board->movingTerrain == nullptr){
@@ -452,7 +471,12 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
         board->announcer->copy_label(vesselData.c_str());
         board->announcer->show();
         board->abortInspection();
+
         
+        //board->terrainVeil(widget, 1);
+
+
+
     } else if(board->inspect && !terrain->isOccupied()) {
 
         board->deactivateModes();

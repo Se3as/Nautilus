@@ -3,8 +3,9 @@
 #include <Fl/Fl.H>
 
 Game::Game(){
-    music.load("assets/sfx/Barotrauma OST_ Embrace the Abyss (Menu Theme).mp3");
-    //music.play();
+    music.toThePlaylist("assets/sfx/Barotrauma OST_ Embrace the Abyss (Menu Theme).mp3");
+    //music.toThePlaylist();
+    music.play();
 }
 
 void Game::run(){

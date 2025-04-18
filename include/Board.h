@@ -85,7 +85,7 @@ private:
     bool surrender;
     bool goMenu;
 
-    void terrainVeil(int player);
+    void terrainVeil(Fl_Widget* widget, int player);
 
     static void clickSurrender(Fl_Widget*, void* action);
 
