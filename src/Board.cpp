@@ -522,7 +522,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
     }
     else if(board->docking){
 
-        if (board->getPlayer() == 1 && board->isPositionValid(terrain)) {
+        if (board->isPositionValid(terrain) && !terrain->isOccupied()) {
             string vesselClicked = board->getVesselClicked();
             cout<< vesselClicked<<" appeared"<<endl;
             triggeredButton->image(board->vesselSprites[vesselClicked]);
@@ -533,8 +533,8 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             board->abortAttaking();
             board->abortDocking();
             // TODO: Cobrar coins
-            board->player1->deductAction();
-        } else if (board->getPlayer() == 2 && board->isPositionValid(terrain)) {
+            currentPlayer->deductAction();
+        } /*else if (board->getPlayer() == 2 && board->isPositionValid(terrain)) {
             string vesselClicked = board->getVesselClicked();
             cout<< vesselClicked<<" appeared"<<endl;
             triggeredButton->image(board->vesselSprites[vesselClicked]);
@@ -546,13 +546,14 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             board->abortDocking();   
             // TODO: Cobrar coins 
             board->player2->deductAction();       
-        } else {
+        } */else {
             board->abortAttaking();
             board->abortDocking();     
         }
         return;
     } else if(board->spying){
-        if (board->getPlayer() == 1 && board->attackPositionValid(terrain)) {
+        if (/*board->getPlayer() == 1 && */board->attackPositionValid(terrain) 
+             && terrain->isOccupied()) {
             cout<< terrain->getVesselName()<<" is being invaded"<<endl;
             if (terrain->isOccupied()){
                 board->callPirates(terrain, 30);
@@ -560,8 +561,9 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             board->abortSpying();
             // Opcional 
             // TODO: Cobrar coins
-            board->player1->deductAction();
-        } else if (board->getPlayer() == 2 && board->attackPositionValid(terrain)) {
+            //board->player1->deductAction();
+            currentPlayer->deductAction();
+        }/* else if (board->getPlayer() == 2 && board->attackPositionValid(terrain)) {
             cout<< terrain->getVesselName()<<" is being invaded"<<endl;
             if (terrain->isOccupied()){
                 board->callPirates(terrain, 30);
@@ -569,7 +571,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             board->abortSpying();
             // TODO: Cobrar coins
             board->player2->deductAction();
-        } else {
+        }*/ else {
             board->abortSpying();
         }
         return;
