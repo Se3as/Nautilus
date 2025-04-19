@@ -328,16 +328,25 @@ void Board::terrainVeil(Fl_Widget* widget, int player) {
     int col;
     int colEnd;
 
+    int reshowCol;
+    int reshowColEnd;
+
     if(p == 1){
-        col = 0;
-        colEnd = 5;
-    } else if(p == 2) {
         col = 6;
         colEnd = 11;
+
+        reshowCol = 0;
+        reshowColEnd = 5;
+
+    } else if(p == 2) {
+        col = 0;
+        colEnd = 5;
+
+        reshowCol = 6;
+        reshowColEnd = 11;
     }
 
     //board->moneyButton1->hide();
-
 
     //esto pone la imagen del boton nula
     for(int i = col; i < colEnd; ++i){
@@ -350,12 +359,18 @@ void Board::terrainVeil(Fl_Widget* widget, int player) {
 
         }
     }
-
-
+    
     //crear un doble for que le pregunte a terrainNode que barco tiene adentro y vuelva a poner la imagen
+    for(int i = reshowCol; i < reshowColEnd; ++i){
+        for(int j = 0; j < 8; ++j){
+            //board->terrainGrid[j][i]->hide();
 
+            if(board->terrainGrid[j][i]->image() == nullptr && board->terrainNodes[j][i]->isOccupied()){
+                board->terrainGrid[j][i]->image(board->vesselSprites[board->terrainNodes[j][i]->getVesselName()]);       
+            }
 
-
+        }
+    }
 }
 
 
