@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "Player.h"
 #include <Fl/Fl.H>
+#include <fstream>
 
 Game::Game() {
     music.toThePlaylist("assets/sfx/Barotrauma OST_ Embrace the Abyss (Menu Theme).mp3");

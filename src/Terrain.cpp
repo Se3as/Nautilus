@@ -1,6 +1,8 @@
 #include "Terrain.h"
+#include "log.h"
 
 #include <iostream>
+#include <chrono>
 using namespace std;
 
 Terrain::Terrain() {
@@ -51,15 +53,26 @@ void Terrain::setVessel(string& vesselName) {
 }
 void Terrain::sendPirates(int& num, int& iterations){
   //cout<<vessel->getName()<<" is being filled"<<endl;
+  chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
   vessel->insert_iterations(num,iterations);
+  chrono::high_resolution_clock::time_point end = chrono::high_resolution_clock::now();
+  chrono::duration<double> elapsed = chrono::duration_cast<chrono::duration<double>>(end - start);
+  Log::getInstance().register_insert(iterations, vessel->getName(), elapsed.count());
 }
 
-void Terrain::callAttack(int& iterations){
+void Terrain::callAttack(int iterations, int damage){
   cout<<vessel->getName()<<" is attaccking"<<endl;
   int num = vessel->select_random();
+  //empezar chrono
+  chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
   vessel->search_iterations(num, iterations);
+  //terminar chrono
+  chrono::high_resolution_clock::time_point end = chrono::high_resolution_clock::now();
+  chrono::duration<double> elapsed = chrono::duration_cast<chrono::duration<double>>(end - start);
+  Log::getInstance().register_search(iterations, vessel->getName(), damage, elapsed.count());
 }
-bool Terrain::shooted(int damage){
+
+bool Terrain::shooted(int damage){ //Interesting grammar
   cout<<vessel->getName()<<" is being attaccked"<<endl;
   vessel->setLife(vessel->getLife()-damage);
   cout<<vessel->getLife()<<endl;
@@ -74,7 +87,13 @@ bool Terrain::callUpgrade(int& iterations, int& upPoints){
   //cout<<vessel->getName()<<" is being upgrading"<<endl;
   //cout<<vessel->getName()<<endl;
   int num = vessel->select_random();
+  //empezar chrono
+  chrono::high_resolution_clock::time_point start = chrono::high_resolution_clock::now();
   return vessel->remove_iterations(num,upPoints,iterations);
+  //terminar chrono
+  chrono::high_resolution_clock::time_point end = chrono::high_resolution_clock::now();
+  chrono::duration<double> elapsed = chrono::duration_cast<chrono::duration<double>>(end - start);
+  Log::getInstance().register_remove(iterations, vessel->getName(), elapsed.count());
 }
 string Terrain::getVesselName(){
   return vessel->getName();

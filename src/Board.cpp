@@ -904,17 +904,6 @@ void Board::move2Click(Fl_Widget* widget, void* actioned) {
     
 }
 
-
-
-
-
-
-
-
-
-
-
-
 //CLICKS PARA LOS BOTONES DE SUBMARINOS
 void Board::venture1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
@@ -1132,7 +1121,7 @@ void Board::callPirates(Terrain* terrain, int pirates){
 
 int Board::callAttack(Terrain* terrain){
     int iterations = 0;
-    terrain->callAttack(iterations);
+    terrain->callAttack(iterations, damage);
     double damage = 100/(double)iterations;
     //register_search(iterations, terrain->getName(), damage);
     iterations = 0;

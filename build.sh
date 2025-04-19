@@ -23,10 +23,11 @@ SDL2_FLAGS=$(sdl2-config --cflags --libs)
 
 # Librerías manuales extra
 EXTRA_LIBS="-lfltk_images -lSDL2_mixer"
+DEBUG_FLAGS="-g -Og"
 
 echo "Compilando con FLTK, SDL2 y soporte de imágenes..."
 
-g++ $SOURCES -I"$INCLUDE_DIR" $FLTK_FLAGS $SDL2_FLAGS $FLTK_LIBS $EXTRA_LIBS -o $OUTPUT
+g++ $SOURCES -I"$INCLUDE_DIR" $FLTK_FLAGS $SDL2_FLAGS $FLTK_LIBS $EXTRA_LIBS $DEBUG_FLAGS -o $OUTPUT
 
 if [ $? -eq 0 ]; then
     echo "✅ Compilado correctamente: ./$OUTPUT"
