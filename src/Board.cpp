@@ -500,19 +500,23 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
         return;
 
     } else if(board->inspect && terrain->isOccupied()){
-        cout<<"checking haul integrity"<<endl;
+        if(board->isPositionValid(terrain)){
+            cout<<"checking haul integrity"<<endl;
 
-        cout<<terrain->getVessel()->getLife()<<endl;
+            cout<<terrain->getVessel()->getLife()<<endl;
 
-        board->deactivateModes();
-        board->announcer->position(triggeredButton->x() - 5, triggeredButton->y() + 60);
-        string vesselData = "HAUL: " + to_string(terrain->getVessel()->getLife()) + "%";
-        board->announcer->copy_label(vesselData.c_str());
-        board->announcer->show();
-        board->abortInspection();
-
+            board->deactivateModes();
+            board->announcer->position(triggeredButton->x() - 5, triggeredButton->y() + 60);
+            string vesselData = "HAUL: " + to_string(terrain->getVessel()->getLife()) + "%";
+            board->announcer->copy_label(vesselData.c_str());
+            board->announcer->show();
+            board->abortInspection();
+        }
+        else {
+            board->deactivateModes();
+            board->abortInspection();
+        }
     } else if(board->inspect && !terrain->isOccupied()) {
-
         board->deactivateModes();
         board->abortInspection();
     }
