@@ -1,19 +1,17 @@
 #include "log.h"
-#include <ctime>
 
 // Constructor
 Log::Log() {
     srand(static_cast<unsigned>(time(0)));
 }
-
-// Singleton Instance
-Log& Log::getInstance() {
-    static Log instance;
-    return instance;
+Log::~Log() {
+    if (csv.is_open()) {
+        csv.close();
+    }
 }
 
 // Get CSV Stream
-std::ofstream& Log::getCsv() {
+ofstream& Log::getCsv() {
     return csv;
 }
 
@@ -33,16 +31,20 @@ void Log::closeCsv() {
 }
 
 // Register Insert Operation
-void Log::register_insert(int iterations, std::string name, double time) {
+void Log::register_insert(int& iterations, string name, double time) {
+    std::cout << name << "," << "insert," << iterations << ",0," << time << "\n";
     csv << name << "," << "insert," << iterations << ",0," << time << "\n";
+    csv.flush(); 
 }
 
 // Register Remove Operation
-void Log::register_remove(int iterations, std::string name, double time) {
+void Log::register_remove(int& iterations, string name, double time) {
     csv << name << "," << "deletion," << iterations << ",0," << time << "\n";
+    csv.flush(); 
 }
 
 // Register Search Operation
-void Log::register_search(int iterations, std::string name, double damage, double time) {
-    csv << name << "," << "search," << iterations << "," << damage << "," << time << "\n";
+void Log::register_search(int& iterations, string name, double& damage, double time) {
+    csv << name << "," << "search," << iterations << "," << damage << "," << time<< "\n";
+    csv.flush(); 
 }

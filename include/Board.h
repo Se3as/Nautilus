@@ -12,6 +12,7 @@
 
 #include "Player.h"
 #include "Terrain.h"
+#include "log.h"
 
 using namespace std;
 
@@ -86,6 +87,9 @@ private:
     string vesselClicked;
     int damage;
     unordered_map<string, Fl_Image *> vesselSprites;
+
+    // puntero a log
+    Log* log;
 
     bool surrender;
     bool goMenu;

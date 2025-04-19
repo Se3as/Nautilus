@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Vessel.h"
+#include <chrono>
+using namespace std::chrono;
 
 class Terrain {
     private:
@@ -10,6 +12,7 @@ class Terrain {
       bool underFire;
       bool decoy;
       Vessel* vessel;
+      duration<double> elapsed;
 
     public:
       Terrain();
@@ -43,6 +46,7 @@ class Terrain {
       bool isOccupied();
 
     
+      duration<double> getElapsed();
 
       bool vesselUnderAttack(Vessel*);
   };

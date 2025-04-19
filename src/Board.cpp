@@ -1,6 +1,6 @@
 #include "Board.h"
-#include "Game.h"
-#include "Player.h"
+//#include "Game.h"
+//#include "Player.h"
 
 #define BUYDECOY 1
 #define BUYUPGRADEPOINTS 2
@@ -15,7 +15,8 @@
 Board::Board() : window(nullptr), player(1), surrenderButton(nullptr), menuButton(nullptr), 
 surrender(false), goMenu(false), inspect(false), docking(false), attacking(false), spying(false),
 upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){ 
-    
+    log = new Log();
+    log->openCsv();
     window = new Fl_Window(1280, 720, "Nautilus Game");
     
 
@@ -1061,7 +1062,9 @@ void Board::callPirates(Terrain* terrain, int pirates){
             num = rand() % pirates + rango; 
         }
         terrain->sendPirates(num,iterations);
-        //register_insert(iterations,terrain->getName());
+
+        double time = (terrain->getElapsed().count() * 1000000.0);
+        log->register_insert(iterations,terrain->getVesselName(),time);
         iterations = 0;
     }
 }
@@ -1072,7 +1075,9 @@ int Board::callAttack(Terrain* terrain){
     int iterations = 0;
     terrain->callAttack(iterations, damage);
     double damage = 100/(double)iterations;
-    //register_search(iterations, terrain->getName(), damage);
+    double time = (terrain->getElapsed().count() * 1000000.0);
+    log->register_search(iterations, terrain->getVesselName(), damage, time);
+        
     iterations = 0;
     return (int) damage;
 }
@@ -1080,12 +1085,13 @@ void Board::callUpgrade(Terrain* terrain){
     int upPoints = 100; // Arreglar con upPoints de player
     int iterations = 0;
     if(terrain->callUpgrade(iterations,upPoints)){
-        //register_remove(iterations, terrain->getName());
+        log->register_remove(iterations, terrain->getVesselName(),
+           terrain->getElapsed().count());
         iterations=0;
         for(int i=0; i < 29; i++){
             terrain->callUpgrade(iterations,upPoints);
-            //cout<<iterations<<endl;
-            //register_remove(iterations, terrain->getName());
+            double time = (terrain->getElapsed().count() * 1000000.0);
+            log->register_remove(iterations, terrain->getVesselName(), time);
             iterations = 0;
         }
     }
@@ -1206,5 +1212,6 @@ Board::~Board(){
     if(window) {
         window->hide();  
         delete window; 
+        delete log;
     }
 }
