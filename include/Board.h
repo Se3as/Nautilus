@@ -32,9 +32,6 @@ private:
 
     int player;
 
-    Fl_Box* announcer;
-    Fl_Box* playerLog;
-
     Fl_Box *announcer;
     Fl_Box *playerLog;
 
@@ -167,9 +164,9 @@ private:
     void createPlayers();
 
     // Buscar posicion valida
-    int isPositionValid(int row, int col);
+    int isPositionValid(Terrain* terrain);
     // buscar posicion valida del ataque
-    int attackPositionValid(int row, int col);
+    int attackPositionValid(Terrain* terrain);
 
     void setVesselClicked(string nameVessel);
 
@@ -201,6 +198,7 @@ private:
     void decoyingMode();
     void abortDecoying();
 
+    Fl_Button* currentButton;
     void movingMode();
     void abortMoving();
 

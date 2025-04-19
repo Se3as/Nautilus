@@ -224,22 +224,14 @@ upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){
 
 
 
-
 void Board::createPlayers() {
     player1 = new Player(1);
     player2 = new Player(2);
+    this->player1StartCol = 0;
+    this->player1EndCol = cols / 2;
+    this->player2StartCol = cols / 2;
+    this->player2EndCol = cols;
 }
-
-
-
-// void Board::createPlayers() {
-//     player1 = new Player(1);
-//     player2 = new Player(2);
-//     this->player1StartCol = 0;
-//     this->player1EndCol = cols / 2;
-//     this->player2StartCol = cols / 2;
-//     this->player2EndCol = cols;
-// }
 
 
 
@@ -468,22 +460,44 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
     if(board->moving){
         if(terrain->isOccupied() && board->movingTerrain == nullptr){
             cout<< terrain->getVesselName()<<" is moving"<<endl;
-            board->setMovingTerrain (terrain);
-            triggeredButton->image(nullptr);  
-            triggeredButton->redraw();    
-            terrain->setOccupied(false);
+            board->setMovingTerrain(terrain);
+            board->currentButton = triggeredButton;
+            // triggeredButton->image(nullptr);  
+            // triggeredButton->redraw();    
+            // terrain->setOccupied(false);
             return;
         }
         else if (!terrain->isOccupied() && board->movingTerrain != nullptr){
-            terrain->setMovingVessel(board->movingTerrain->getVessel());
-            string vesselClicked = terrain->getVesselName();
-            cout<< vesselClicked<<" has moved"<<endl;
-            triggeredButton->image(board->vesselSprites[vesselClicked]);
-            terrain->setOccupied(true);
-            triggeredButton->redraw();
-            board->setMovingTerrain (nullptr);
-            board->abortMoving();
-            return;
+            if (board->getPlayer() == 1 && board->isPositionValid(terrain)) {
+                terrain->setMovingVessel(board->movingTerrain->getVessel());
+                string vesselClicked = terrain->getVesselName();
+                cout<< vesselClicked<<" has moved"<<endl;
+                triggeredButton->image(board->vesselSprites[vesselClicked]);
+                terrain->setOccupied(true);
+                board->currentButton->image(nullptr);
+                board->movingTerrain->setOccupied(true);
+                board->setMovingTerrain(nullptr);
+                triggeredButton->redraw();
+                board->player1->deductAction();
+                board->abortMoving();
+                return;
+            } else if (board->getPlayer() == 2 && board->isPositionValid(terrain)) {
+                terrain->setMovingVessel(board->movingTerrain->getVessel());
+                string vesselClicked = terrain->getVesselName();
+                cout<< vesselClicked<<" has moved"<<endl;
+                triggeredButton->image(board->vesselSprites[vesselClicked]);
+                terrain->setOccupied(true);
+                board->currentButton->image(nullptr);
+                board->movingTerrain->setOccupied(true);
+                board->setMovingTerrain(nullptr);
+                triggeredButton->redraw();
+                board->player2->deductAction();
+                board->abortMoving();
+                return;
+            } else {
+                board->setMovingTerrain(nullptr);
+                board->abortMoving();
+            }
         }
         if(board->movingTerrain != nullptr){
             return;
@@ -585,30 +599,26 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
         return;
     }
     else if(board->upgrading && terrain->isOccupied()){
-
-
-
-
-        //if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
+        if (board->getPlayer() == 1) {
             cout<< terrain->getVesselName()<<" is being upgraded"<<endl;
             board->callUpgrade(terrain);
             board->abortUpgrading();
+            board->player1->deductAction();
             //board->player1->subtractActionPoints();
             // obtener el costo del upgrade aquí
             //int cost = 3;
             //board->player1->purchaseCalc(cost);
             //cout<<"Aqui1"<<endl;
-        // } 
-        // if (board->player2->myTurn(2) && (board->player2->getActionPoints() > 0)) {
-        //     cout<< terrain->getVesselName()<<" is being upgraded"<<endl;
-        //     board->callUpgrade(terrain);
-        //     board->abortUpgrading();
-        //     board->player2->subtractActionPoints();
+        } else {
+            cout<< terrain->getVesselName()<<" is being upgraded"<<endl;
+            board->callUpgrade(terrain);
+            board->abortUpgrading();
+            board->player2->deductAction();
         //     // obtener el costo del upgrade aquí
         //     int cost = 3;
         //     board->player2->purchaseCalc(cost);
         //     //cout<<"Aqui1"<<endl;     
-        // }
+        }
         return;
     }
 
@@ -737,34 +747,35 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
     board->window->redraw();
 }
 
-// Verificar la posicion si es valida, será necesario???
-/*
 int Board::isPositionValid(Terrain* terrain) {
-    terrain 
+    int row = terrain->getPosX();
+    int col = terrain->getPosY();
     int positionValid = 0;
-    if (board->player1->myTurn(1) == true) {  // player 1 board side
+    if (this->getPlayer() == 1) {  // player 1 board side
       positionValid = (int) (0 <= row && 0 <= player1StartCol && row < rows 
         && col < player1EndCol);
-    } else {  // player 2 board side
-      positionValid = (int) (0 <= row && 0 <= player2StartCol && row < rows 
-        && col < player2EndCol);
+    } 
+    if (this->getPlayer() == 2) {  // player 2 board side
+      positionValid = (int) (0 <= row &&  player2StartCol <= col
+        && row < rows && col < player2EndCol);
     }
     return positionValid;
-}*/
+}
 
-// Verificar la posicion del ataque es valido, será necesario???
-/*
-int Board::attackPositionValid(int row, int col) {
+int Board::attackPositionValid(Terrain* terrain) {
+    int row = terrain->getPosX();
+    int col = terrain->getPosY();
     int attackPositionValid = 0;
-    if (board->player1->myTurn(1) == true) {  // attack player 2 board side
-      attackPositionValid = (int) (0 <= row && 0 <= player2StartCol && row < rows 
+    if (this->getPlayer() == 1) {  // attack player 2 board side
+      attackPositionValid = (int) (0 <= row && player2StartCol <= col && row < rows 
         && col < player2EndCol);
-    } else {  // attack player 1 board side
+    }
+    if (this->getPlayer() == 2) {  // attack player 1 board side
       attackPositionValid = (int) (0 <= row && 0 <= player1StartCol && row < rows 
         && col < player1EndCol);
     }
     return attackPositionValid;
-}*/
+}
 
 //CLICK PARA LOS BOTONES DE ACCION
 void Board::money1Click(Fl_Widget* widget, void* actioned) {
