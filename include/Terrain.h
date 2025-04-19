@@ -11,6 +11,7 @@ class Terrain {
       bool hasVessel;
       bool underFire;
       bool decoy;
+      string nameDecoy;
       Vessel* vessel;
       duration<double> elapsed;
 
@@ -35,6 +36,10 @@ class Terrain {
 
       void setDecoy(bool d);
       bool getDecoy();
+
+      void setNameDecoy(string nD);
+      string getNameDecoy();
+
       void terrainUnderFire();
       bool isUnderFire();
 

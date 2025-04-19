@@ -436,8 +436,13 @@ void Board::terrainVeil(int player) {
         for(int j = 0; j < 8; ++j){
         
             if(this->terrainGrid[j][i]->image() == nullptr && this->terrainNodes[j][i]->isOccupied()){
+                if (this->terrainNodes[j][i]->getDecoy()){
+                    this->terrainGrid[j][i]->image(this->vesselSprites[this->terrainNodes[j][i]->getNameDecoy()]);
+                }else{
                 this->terrainGrid[j][i]->image(this->vesselSprites[this->terrainNodes[j][i]->getVesselName()]);
-            }
+                }
+            }   
+
         }
     }
 }
@@ -577,19 +582,19 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
         return;
     }
     else if(board->upgrading && terrain->isOccupied()){
-        if (board->getPlayer() == 1) {
+        if (board->isPositionValid(terrain)) {
             cout<< terrain->getVesselName()<<" is being upgraded"<<endl;
             board->callUpgrade(terrain);
             board->abortUpgrading();
             // TODO: Cobrar coins
-            board->player1->deductAction();
-        } else if (board->getPlayer() == 2) {
+            currentPlayer->deductAction();
+        }/* else if (board->getPlayer() == 2) {
             cout<< terrain->getVesselName()<<" is being upgraded"<<endl;
             board->callUpgrade(terrain);
             board->abortUpgrading();
             // TODO: Cobrar coins
             board->player2->deductAction();  
-        } else {
+        }*/ else {
             board->abortUpgrading();
         }
         return;
@@ -601,7 +606,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             cout<< " A decoy has apeared"<< endl;
             string decoy = board->getDecoy();
             triggeredButton->image(board->vesselSprites[decoy]);
-    
+            terrain->setNameDecoy(decoy);
             triggeredButton->redraw();
             terrain->setOccupied(true);
             terrain->setDecoy(true);
@@ -613,7 +618,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             string decoy = board->getDecoy();
     
             triggeredButton->image(board->vesselSprites[decoy]);
-    
+            terrain->setNameDecoy(decoy);
             triggeredButton->redraw();
             terrain->setOccupied(true);
             terrain->setDecoy(true);

@@ -113,6 +113,12 @@ void Terrain:: setDecoy(bool d){
 bool Terrain::getDecoy(){
   return decoy;
 }
+void Terrain::setNameDecoy(string nD){
+  nameDecoy = nD;
+}
+string Terrain:: getNameDecoy(){
+  return nameDecoy;
+}
 void Terrain::setMovingVessel(Vessel* v){
   vessel = v;
 }
