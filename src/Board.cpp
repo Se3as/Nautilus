@@ -452,6 +452,14 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
 
     Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
 
+    Player* currentPlayer;
+    if (board->getPlayer() == 1){
+        currentPlayer = board->player1;
+    }
+    else{
+        currentPlayer = board->player2;
+    }
+
     board->window->redraw();
 
     board->announcer->hide();
@@ -463,13 +471,10 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             cout<< terrain->getVesselName()<<" is moving"<<endl;
             board->setMovingTerrain(terrain);
             board->currentButton = triggeredButton;
-            // triggeredButton->image(nullptr);  
-            // triggeredButton->redraw();    
-            // terrain->setOccupied(false);
             return;
         }
         else if (!terrain->isOccupied() && board->movingTerrain != nullptr){
-            if (board->getPlayer() == 1 && board->isPositionValid(terrain)) {
+            if (board->isPositionValid(terrain)) {
                 terrain->setMovingVessel(board->movingTerrain->getVessel());
                 string vesselClicked = terrain->getVesselName();
                 cout<< vesselClicked<<" has moved"<<endl;
@@ -480,21 +485,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
                 board->movingTerrain->vesselNuker();
                 board->setMovingTerrain(nullptr);
                 triggeredButton->redraw();
-                board->player1->deductAction();
-                board->abortMoving();
-                return;
-            } else if (board->getPlayer() == 2 && board->isPositionValid(terrain)) {
-                terrain->setMovingVessel(board->movingTerrain->getVessel());
-                string vesselClicked = terrain->getVesselName();
-                cout<< vesselClicked<<" has moved"<<endl;
-                triggeredButton->image(board->vesselSprites[vesselClicked]);
-                terrain->setOccupied(true);
-                board->currentButton->image(nullptr);
-                board->movingTerrain->setOccupied(false);
-                board->movingTerrain->vesselNuker();
-                board->setMovingTerrain(nullptr);
-                triggeredButton->redraw();
-                board->player2->deductAction();
+                currentPlayer->deductAction();
                 board->abortMoving();
                 return;
             } else {
