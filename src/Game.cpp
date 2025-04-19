@@ -33,16 +33,16 @@ void Game::run(){
         cout<<" en turno" <<endl;
 
         board.hudHide(board.getPlayer());
-        cout<<" 1" <<endl;
+        //cout<<" 1" <<endl;
         board.terrainVeil(board.getPlayer());
-        cout<<" 2" <<endl;
+        //cout<<" 2" <<endl;
         if(board.getPlayer() == 1){
             while(board.player1->getActions() > 0){
-                cout<<" 4" <<endl;
+                //cout<<" 4" <<endl;
                 if(board.warMode()){
-                    cout<<" 5" <<endl;
+                    //cout<<" 5" <<endl;
                     board.hide();
-                    cout<<" 6" <<endl;
+                    //cout<<" 6" <<endl;
                     break;
                 }
                 Fl::wait();

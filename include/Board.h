@@ -33,6 +33,8 @@ private:
 
     int player;
 
+    int cost;
+
     Fl_Box *announcer;
     Fl_Box *playerLog;
 
