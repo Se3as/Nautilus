@@ -24,7 +24,7 @@ class Terrain {
       Vessel* getVessel();
 
       void sendPirates(int& num, int& iterations);
-      void callAttack(int& iterations);
+      void callAttack(int iterations, int damage);
       bool shooted(int damage);
       bool callUpgrade(int& iterations, int& upPoints);
 

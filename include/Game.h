@@ -4,6 +4,7 @@
 #include "Board.h"
 #include "Music.h"
 #include "Postgame.h"
+#include <fstream>
 
 class Game {
 private:
@@ -18,5 +19,4 @@ private:
 public:
     Game();
     void run();
-
 };

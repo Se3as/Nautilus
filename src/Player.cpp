@@ -35,7 +35,7 @@ void Player::inhabilitateTurn() {
 }
 
 bool Player::myTurn(int turn) {
-  return this->isMyTurn == turn ? true : false;
+  return this->isMyTurn == turn;
 }
 
 void Player::addCoins(int coins) {

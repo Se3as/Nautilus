@@ -222,7 +222,6 @@ upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){
 
 }
 
-
 void Board::createPlayers() {
     player1 = new Player(1);
     player2 = new Player(2);
@@ -316,8 +315,6 @@ void Board::setMovingTerrain (Terrain* mT){
 Terrain* Board::getMovingTerrain(){
     return movingTerrain;
 }
-
-
 
 void Board::terrainVeil(Fl_Widget* widget, int player) {
 
@@ -851,17 +848,6 @@ void Board::move2Click(Fl_Widget* widget, void* actioned) {
     
 }
 
-
-
-
-
-
-
-
-
-
-
-
 //CLICKS PARA LOS BOTONES DE SUBMARINOS
 void Board::venture1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
@@ -1011,7 +997,7 @@ void Board::callPirates(Terrain* terrain, int pirates){
 
 int Board::callAttack(Terrain* terrain){
     int iterations = 0;
-    terrain->callAttack(iterations);
+    terrain->callAttack(iterations, damage);
     double damage = 100/(double)iterations;
     //register_search(iterations, terrain->getName(), damage);
     iterations = 0;
