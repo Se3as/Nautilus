@@ -3,7 +3,7 @@
 
 #include "BTree.h"
 #include "SplayTree.h"
-#include "RedBlackTree.h"
+#include "RBTree.h"
 #include "Array.h"  //cambiar A mayuscula
 #include "LinkedList.h"
 using namespace std;
@@ -81,7 +81,7 @@ public:
     
 class VesselRedBlack : public Vessel {
 public:
-    RedBlackTree* redblack_tree;
+    RBTree* redblack_tree;
     VesselRedBlack(string n, int l, int p);
     bool search_iterations(int num, int& iterations);
     bool insert_iterations(int num, int& iterations);
