@@ -27,6 +27,9 @@ class Board {
 private:
     Fl_Window* window;
     
+
+    int player;
+
     Fl_Box* announcer;
     Fl_Box* playerLog;
 
@@ -85,8 +88,6 @@ private:
     bool surrender;
     bool goMenu;
 
-    void terrainVeil(Fl_Widget* widget, int player);
-
     static void clickSurrender(Fl_Widget*, void* action);
 
     //para manejar los clicks en el terreno
@@ -141,12 +142,20 @@ private:
     int player2EndCol;
     
     public:
+
     Board();
     ~Board();
     
     void show();
     
     void hide();
+
+    void terrainVeil(int player);
+
+    void hudHide(int player);
+
+    void swapPlayer();
+    int getPlayer();
 
     // Atributos de los jugadores
     Player* player1;
@@ -197,7 +206,9 @@ private:
 
     int getDamage();
 
-    bool playerSurrender() const;
+    bool warMode() const;
+
+    void endWarMode();
 
     void callPirates(Terrain* terrain, int pirates);
     int callAttack(Terrain* terrain);

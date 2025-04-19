@@ -1,32 +1,31 @@
 #pragma once
 
 #include <iostream>
-
+using namespace std;
 
 
 class Player {
 private:
+    
     int playerID;
-    int actionPoints;
-    int coins;
-    bool isMyTurn;
+    int actions;
+    int credits;
+
 
 public:
-    Player(int p);
+    Player(int player);
     ~Player();
-    int getPlayerID();
 
-    int getActionPoints();
-    void setActionPoints(int actualPoints);
-    void subtractActionPoints();
+    int getID();
 
-    void habilitateTurn();
-    void inhabilitateTurn();
-    bool myTurn(int turn);
+    void refreshActions();
+    int getActions();
+    void deductAction();
 
-    void addCoins(int coins);
-    void showCoins();
+    void addCredits();
+    int getCredits();
+    bool verifyCredit(int cost);
+    void spendCredits(int cost);
+    
 
-    bool enoughCoins(int cost);
-    void purchaseCalc(int cost);
 };

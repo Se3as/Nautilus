@@ -12,7 +12,7 @@
 #define BUYREMORA 8
 #define BUYWINTERHALTER 9
 
-Board::Board() : window(nullptr), surrenderButton(nullptr), menuButton(nullptr), 
+Board::Board() : window(nullptr), player(1), surrenderButton(nullptr), menuButton(nullptr), 
 surrender(false), goMenu(false), inspect(false), docking(false), attacking(false), spying(false),
 upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){ 
     
@@ -223,20 +223,24 @@ upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){
 }
 
 
+
+
 void Board::createPlayers() {
     player1 = new Player(1);
     player2 = new Player(2);
-    this->player1StartCol = 0;
-    this->player1EndCol = cols / 2;
-    this->player2StartCol = cols / 2;
-    this->player2EndCol = cols;
 }
 
-//ADDING ALEX
-/* Pienso que ya no es necesario el ID
-int Board::whoIsPlayer(int ID) {
-    return Player::getPlayerID();
-}*/
+
+
+// void Board::createPlayers() {
+//     player1 = new Player(1);
+//     player2 = new Player(2);
+//     this->player1StartCol = 0;
+//     this->player1EndCol = cols / 2;
+//     this->player2StartCol = cols / 2;
+//     this->player2EndCol = cols;
+// }
+
 
 
 void Board:: inspectMode() {
@@ -319,26 +323,105 @@ Terrain* Board::getMovingTerrain(){
 
 
 
-void Board::terrainVeil(Fl_Widget* widget, int player) {
+void Board::hudHide(int player) {
+    
+    if(player == 1){
 
-    Board* board = static_cast<Board*>(widget->parent()->user_data());
-    
-    int p = player;
-    
+        this->playerLog->copy_label("PLAYER 1 MAKING A MOVE...");
+        this->window->redraw();
+
+        this->moneyButton1->show();
+        this->moneyButton2->hide();
+
+        this->healthButton1->show();
+        this->healthButton2->hide();
+
+        this->moveButton1->show();
+        this->moveButton2->hide();
+   
+        this->decoyButton1->show();
+        this->decoyButton2->hide();
+
+        this->upgradeButton1->show();
+        this->upgradeButton2->hide();
+
+        this->spiesButton1->show();
+        this->spiesButton2->hide();
+
+        this->buyVenture1->show();
+        this->buyTyphon1->show();
+        this->buyDugong1->show();
+        this->buyCamel1->show();
+        this->buyRemora1->show();
+        this->buyWinterhalter1->show();
+
+        this->buyVenture2->hide();
+        this->buyTyphon2->hide();
+        this->buyDugong2->hide();
+        this->buyCamel2->hide();
+        this->buyRemora2->hide();
+        this->buyWinterhalter2->hide();
+
+
+    } else if(player == 2){
+
+        this->playerLog->copy_label("PLAYER 2 MAKING A MOVE...");
+        this->window->redraw();
+
+        this->moneyButton1->hide();
+        this->moneyButton2->show(); 
+
+        this->healthButton1->hide();
+        this->healthButton2->show();
+
+        this->moveButton1->hide();
+        this->moveButton2->show();
+   
+        this->decoyButton1->hide();
+        this->decoyButton2->show();
+
+        this->upgradeButton1->hide();
+        this->upgradeButton2->show();
+
+        this->spiesButton1->hide();
+        this->spiesButton2->show();
+
+        this->buyVenture1->hide();
+        this->buyTyphon1->hide();
+        this->buyDugong1->hide();
+        this->buyCamel1->hide();
+        this->buyRemora1->hide();
+        this->buyWinterhalter1->hide();
+
+        this->buyVenture2->show();
+        this->buyTyphon2->show();
+        this->buyDugong2->show();
+        this->buyCamel2->show();
+        this->buyRemora2->show();
+        this->buyWinterhalter2->show();
+    }
+}
+
+
+
+
+
+void Board::terrainVeil(int player) {
+
     int col;
     int colEnd;
 
     int reshowCol;
     int reshowColEnd;
 
-    if(p == 1){
+    if(player == 1){
         col = 6;
         colEnd = 11;
 
         reshowCol = 0;
         reshowColEnd = 5;
 
-    } else if(p == 2) {
+    } else if(player == 2) {
         col = 0;
         colEnd = 5;
 
@@ -346,93 +429,25 @@ void Board::terrainVeil(Fl_Widget* widget, int player) {
         reshowColEnd = 11;
     }
 
-    //board->moneyButton1->hide();
-
     //esto pone la imagen del boton nula
     for(int i = col; i < colEnd; ++i){
         for(int j = 0; j < 8; ++j){
-            //board->terrainGrid[j][i]->hide();
-
-            if(board->terrainGrid[j][i]->image() != nullptr){
-                board->terrainGrid[j][i]->image(nullptr);
+            if(this->terrainGrid[j][i]->image() != nullptr){
+                this->terrainGrid[j][i]->image(nullptr);
             }
-
         }
     }
     
     //crear un doble for que le pregunte a terrainNode que barco tiene adentro y vuelva a poner la imagen
     for(int i = reshowCol; i < reshowColEnd; ++i){
         for(int j = 0; j < 8; ++j){
-            //board->terrainGrid[j][i]->hide();
-
-            if(board->terrainGrid[j][i]->image() == nullptr && board->terrainNodes[j][i]->isOccupied()){
-                board->terrainGrid[j][i]->image(board->vesselSprites[board->terrainNodes[j][i]->getVesselName()]);       
+        
+            if(this->terrainGrid[j][i]->image() == nullptr && this->terrainNodes[j][i]->isOccupied()){
+                this->terrainGrid[j][i]->image(this->vesselSprites[this->terrainNodes[j][i]->getVesselName()]);
             }
-
         }
     }
 }
-
-
-// Mostrar la mitad del board
-// Todavía falta terminar por revisar el código
-/*
-void Board::showBoard(Board *board, bool Player::playerID) {
-    if (Player::playerID == 0) {
-      for (int i = 0; i < rows; ++i) {
-        for (int j = player1StartCol; j < player1EndCol; ++j) {
-          window->show(node[i][j]);
-        }
-      }
-    } else {
-      for (int i = 0; i < rows; ++i) {
-        for (int j = player2StartCol; j < player2EndCol; ++j) {
-          window->show(node[i][j]);
-        }
-      }
-    }
-}
-
-// Ocultar la mitad del board
-// Todavía falta terminar por revisar el código
-void Board::hideBoard(Board *board, bool Player::playerID) {
-    if (Player::playerID == 0) {
-      for (int i = 0; i < rows; ++i) {
-        for (int j = player1StartCol; j < player1EndCol; ++j) {
-          if (node[i][j].isNodeVessel()) {
-            // Vessel detected
-            Vessel* vessel;
-            if(node[i][j].vesselUnderAttack(vessel)) {
-              window->show(node[i][j]);
-            } 
-          } else {
-            window->hide(node[i][j]);
-          }      
-        }
-      }
-    } else {
-      for (int i = 0; i < rows; ++i) {
-        for (int j = player2StartCol; j < player2EndCol; ++j) {
-          if (node[i][j].isNodeVessel()) {
-            // Vessel detected
-            Vessel* vessel;
-            if(node[i][j].vesselUnderAttack(vessel)) {
-              window->show(node[i][j]);
-            } 
-          } else {
-            window->hide(node[i][j]);
-          }
-        }
-      }
-    }
-}
-*/
-
-
-
-
-
-
 
 
 
@@ -500,7 +515,8 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
     }
 
     else if(board->docking){
-        if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
+
+        //if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
             string vesselClicked = board->getVesselClicked();
             cout<< vesselClicked<<" appeared"<<endl;
             triggeredButton->image(board->vesselSprites[vesselClicked]);
@@ -510,82 +526,97 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             board->callPirates(terrain, 100);
             board->abortAttaking();
             board->abortDocking();
-            board->player1->subtractActionPoints();
+            //board->player1->subtractActionPoints();
             // obtener el costo del vessel aquí
-            int cost = 1;
-            board->player1->purchaseCalc(cost);
+            //int cost = 1;
+            //board->player1->purchaseCalc(cost);
             //cout<<"Aqui1"<<endl;
-        } 
-        if (board->player2->myTurn(2) && (board->player2->getActionPoints() > 0)) {
-            string vesselClicked = board->getVesselClicked();
-            cout<< vesselClicked<<" appeared"<<endl;
-            triggeredButton->image(board->vesselSprites[vesselClicked]);
-            triggeredButton->redraw();
-            terrain->setVessel(vesselClicked);
-            terrain->setOccupied(true);
-            board->callPirates(terrain, 100);
-            board->abortAttaking();
-            board->abortDocking();
-            board->player2->subtractActionPoints();
+        //} 
+        
+
+        //if (board->player2->myTurn(2) && (board->player2->getActionPoints() > 0)) {
+            //string vesselClicked = board->getVesselClicked();
+            //cout<< vesselClicked<<" appeared"<<endl;
+            //triggeredButton->image(board->vesselSprites[vesselClicked]);
+            //triggeredButton->redraw();
+            //terrain->setVessel(vesselClicked);
+            //terrain->setOccupied(true);
+            //board->callPirates(terrain, 100);
+            //board->abortAttaking();
+            //board->abortDocking();
+            //board->player2->subtractActionPoints();
             // obtener el costo del vessel aquí
-            int cost = 1;
-            board->player2->purchaseCalc(cost);
+            //int cost = 1;
+            //board->player2->purchaseCalc(cost);
             //cout<<"Aqui1"<<endl;     
-        }
+        //}
         return;
+
+
+
+
     } else if(board->spying){
-        if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
+
+
+        //if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
             cout<< terrain->getVesselName()<<" is being invaded"<<endl;
             if (terrain->isOccupied()){
                 board->callPirates(terrain, 30);
             }
             board->abortSpying();
-            board->player1->subtractActionPoints();
+            //board->player1->subtractActionPoints();
             // obtener el costo del spy aquí
-            int cost = 2;
-            board->player1->purchaseCalc(cost);
+            //int cost = 2;
+            //board->player1->purchaseCalc(cost);
             //cout<<"Aqui1"<<endl;
-        } 
-        if (board->player2->myTurn(2) && (board->player2->getActionPoints() > 0)) {
-            cout<< terrain->getVesselName()<<" is being invaded"<<endl;
-            if (terrain->isOccupied()){
-                board->callPirates(terrain, 30);
-            }
-            board->abortSpying();
-            board->player2->subtractActionPoints();
-            // obtener el costo del spy aquí
-            int cost = 2;
-            board->player2->purchaseCalc(cost);
-            //cout<<"Aqui1"<<endl;     
-        }
+        //} 
+        //if (board->player2->myTurn(2) && (board->player2->getActionPoints() > 0)) {
+            //cout<< terrain->getVesselName()<<" is being invaded"<<endl;
+            //if (terrain->isOccupied()){
+                //board->callPirates(terrain, 30);
+        //     }
+        //     board->abortSpying();
+        //     board->player2->subtractActionPoints();
+        //     // obtener el costo del spy aquí
+        //     int cost = 2;
+        //     board->player2->purchaseCalc(cost);
+        //     //cout<<"Aqui1"<<endl;     
+        // }
         return;
     }
     else if(board->upgrading && terrain->isOccupied()){
-        if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
+
+
+
+
+        //if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
             cout<< terrain->getVesselName()<<" is being upgraded"<<endl;
             board->callUpgrade(terrain);
             board->abortUpgrading();
-            board->player1->subtractActionPoints();
+            //board->player1->subtractActionPoints();
             // obtener el costo del upgrade aquí
-            int cost = 3;
-            board->player1->purchaseCalc(cost);
+            //int cost = 3;
+            //board->player1->purchaseCalc(cost);
             //cout<<"Aqui1"<<endl;
-        } 
-        if (board->player2->myTurn(2) && (board->player2->getActionPoints() > 0)) {
-            cout<< terrain->getVesselName()<<" is being upgraded"<<endl;
-            board->callUpgrade(terrain);
-            board->abortUpgrading();
-            board->player2->subtractActionPoints();
-            // obtener el costo del upgrade aquí
-            int cost = 3;
-            board->player2->purchaseCalc(cost);
-            //cout<<"Aqui1"<<endl;     
-        }
+        // } 
+        // if (board->player2->myTurn(2) && (board->player2->getActionPoints() > 0)) {
+        //     cout<< terrain->getVesselName()<<" is being upgraded"<<endl;
+        //     board->callUpgrade(terrain);
+        //     board->abortUpgrading();
+        //     board->player2->subtractActionPoints();
+        //     // obtener el costo del upgrade aquí
+        //     int cost = 3;
+        //     board->player2->purchaseCalc(cost);
+        //     //cout<<"Aqui1"<<endl;     
+        // }
         return;
     }
 
     else if(board->decoying && !terrain->isOccupied()){
-        if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
+
+
+
+        //if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
             cout<< " A decoy has apeared"<< endl;
             string decoy = board->getDecoy();
             //cout<< decoy<< endl;
@@ -599,37 +630,38 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             terrain->setOccupied(true);
             terrain->setDecoy(true);
             board->abortDecoying();
-            board->player1->subtractActionPoints();
+            //board->player1->subtractActionPoints();
             // obtener el costo del decoy aquí
-            int cost = 4;
-            board->player1->purchaseCalc(cost);
+            //int cost = 4;
+            //board->player1->purchaseCalc(cost);
             //cout<<"Aqui1"<<endl;
-        } 
-        if (board->player2->myTurn(2) && (board->player2->getActionPoints() > 0)) {
-            cout<< " A decoy has apeared"<< endl;
-            string decoy = board->getDecoy();
-            //cout<< decoy<< endl;
+        //} 
+        // if (board->player2->myTurn(2) && (board->player2->getActionPoints() > 0)) {
+        //     cout<< " A decoy has apeared"<< endl;
+        //     string decoy = board->getDecoy();
+        //     //cout<< decoy<< endl;
     
-            // Fl_Image* sprite = board->vesselSprites[decoy]->copy(41, 20);
-            // triggeredButton->image(sprite);
+        //     // Fl_Image* sprite = board->vesselSprites[decoy]->copy(41, 20);
+        //     // triggeredButton->image(sprite);
     
-            triggeredButton->image(board->vesselSprites[decoy]);
+        //     triggeredButton->image(board->vesselSprites[decoy]);
     
-            triggeredButton->redraw();
-            terrain->setOccupied(true);
-            terrain->setDecoy(true);
-            board->abortDecoying();
-            board->player2->subtractActionPoints();
-            // obtener el costo del decoy aquí
-            int cost = 4;
-            board->player2->purchaseCalc(cost);
-            //cout<<"Aqui1"<<endl;     
-        }
+        //     triggeredButton->redraw();
+        //     terrain->setOccupied(true);
+        //     terrain->setDecoy(true);
+        //     board->abortDecoying();
+        //     board->player2->subtractActionPoints();
+        //     // obtener el costo del decoy aquí
+        //     int cost = 4;
+        //     board->player2->purchaseCalc(cost);
+        //     //cout<<"Aqui1"<<endl;     
+        // }
 
         return;
     }
-    else if(board->attacking ){
-        if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
+    else if(board->attacking){
+
+        //if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
             if (terrain->isOccupied()){
                 //cout<<"Aqui3"<<endl;
                 //comprobacion de que existe barco
@@ -649,46 +681,48 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             terrain->terrainUnderFire();
             board->abortAttaking();
             board->setDamage(0);
-            board->player1->subtractActionPoints();
+            //board->player1->subtractActionPoints();
             //cout<<"Aqui1"<<endl;
-        } 
-        if (board->player2->myTurn(2) && (board->player2->getActionPoints() > 0)) {
-            if (terrain->isOccupied()){
-                //cout<<"Aqui3"<<endl;
-                //comprobacion de que existe barco
-                if(!terrain->getDecoy() && terrain->shooted(board->getDamage())){
-                    //cout<<" Abeele"<< endl;
-                    triggeredButton->image(nullptr);  
-                    triggeredButton->redraw();
-                    terrain->setOccupied(false);        
-                }
-                else if (terrain->getDecoy()){
-                    triggeredButton->image(nullptr);  
-                    triggeredButton->redraw();
-                    terrain->setDecoy(false);
-                    terrain->setOccupied(false);
-                }
-            }
-            terrain->terrainUnderFire();
-            board->abortAttaking();
-            board->setDamage(0);
-            board->player2->subtractActionPoints();
-            //cout<<"Aqui1"<<endl;     
-        }
+        //} 
+        // if (board->player2->myTurn(2) && (board->player2->getActionPoints() > 0)) {
+        //     if (terrain->isOccupied()){
+        //         //cout<<"Aqui3"<<endl;
+        //         //comprobacion de que existe barco
+        //         if(!terrain->getDecoy() && terrain->shooted(board->getDamage())){
+        //             //cout<<" Abeele"<< endl;
+        //             triggeredButton->image(nullptr);  
+        //             triggeredButton->redraw();
+        //             terrain->setOccupied(false);        
+        //         }
+        //         else if (terrain->getDecoy()){
+        //             triggeredButton->image(nullptr);  
+        //             triggeredButton->redraw();
+        //             terrain->setDecoy(false);
+        //             terrain->setOccupied(false);
+        //         }
+        //     }
+        //     terrain->terrainUnderFire();
+        //     board->abortAttaking();
+        //     board->setDamage(0);
+        //     board->player2->subtractActionPoints();
+        //     //cout<<"Aqui1"<<endl;     
+        // }
         return;
     }
     else if(terrain->isOccupied()) {
-        if (board->player1->myTurn(1)) {
+
+
+        //if (board->player1->myTurn(1)) {
             //cout<<"Aqui2"<<endl;
             int damage = board->callAttack(terrain);
             board->setDamage(damage);
             board->attackingMode();
-        } else {
-            //cout<<"Aqui2"<<endl;
-            int damage = board->callAttack(terrain);
-            board->setDamage(damage);
-            board->attackingMode();
-        }
+        // } else {
+        //     //cout<<"Aqui2"<<endl;
+        //     int damage = board->callAttack(terrain);
+        //     board->setDamage(damage);
+        //     board->attackingMode();
+        // }
 
         return;
     }
@@ -734,41 +768,45 @@ int Board::attackPositionValid(int row, int col) {
 
 //CLICK PARA LOS BOTONES DE ACCION
 void Board::money1Click(Fl_Widget* widget, void* actioned) {
-    Board* board = static_cast<Board*>(actioned);
+    Board* board = static_cast<Board*>(widget->parent()->user_data());
+    Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
+
     board->deactivateModes();
-    // Mostrar la cantidad de dinero del jugador 1
-    if (board->player1->myTurn(1)) {
-        // Muestra el resultado en el terminal, falta implementarlo como label
-        board->player1->showCoins();
-    }
+
+    board->announcer->position(triggeredButton->x() + 13, triggeredButton->y() - 30);
+    int moneyData = board->player1->getCredits();
+    board->announcer->copy_label(to_string(moneyData).c_str());
+    board->announcer->show();
     board->window->redraw();
 }
 
 void Board::money2Click(Fl_Widget* widget, void* actioned) {
-    Board* board = static_cast<Board*>(actioned);
+    Board* board = static_cast<Board*>(widget->parent()->user_data());
+    Fl_Button* triggeredButton = static_cast<Fl_Button*>(widget);
+
     board->deactivateModes();
-    // Mostrar la cantidad de dinero del jugador 2
-    if (board->player2->myTurn(2)) {
-        // Muestra el resultado en el terminal, falta implementarlo como label
-        board->player2->showCoins();
-    }
+
+    board->announcer->position(triggeredButton->x() + 13, triggeredButton->y() - 30);
+    int moneyData = board->player1->getCredits();
+    board->announcer->copy_label(to_string(moneyData).c_str());
+    board->announcer->show();
+    board->window->redraw();
     board->window->redraw();
 }
 
 void Board::health1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    if (board->player1->myTurn(1)) {
-        board->inspectMode();
-    }
+
+    board->inspectMode();
 }
 
 void Board::health2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    if (board->player2->myTurn(2)) {
-        board->inspectMode();
-    }
+
+    board->inspectMode();
+
 }
 
 
@@ -777,58 +815,58 @@ void Board::health2Click(Fl_Widget* widget, void* actioned) {
 void Board::decoy1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    int cost = 1;
-    if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
+    //int cost = 1;
+    //if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
         board->decoyingMode();
-    }
+    //}
 }
 
 void Board::decoy2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    int cost = 1;
-    if (board->player2->myTurn(2) && board->player2->enoughCoins(cost)) {
+    //int cost = 1;
+    //if (board->player2->myTurn(2) && board->player2->enoughCoins(cost)) {
         board->decoyingMode();
-    }
+    //}
 }
 
 void Board::upgrade1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    int cost = 2;
-    if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
+    //int cost = 2;
+    //if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
         board->upgradingMode();
-    }
+    //}
 }
 
 void Board::upgrade2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    int cost = 2;
-    if (board->player2->myTurn(2) && board->player2->enoughCoins(cost)) {
+    //int cost = 2;
+    //if (board->player2->myTurn(2) && board->player2->enoughCoins(cost)) {
         board->upgradingMode();
-    }
+    //}
 }
 
 void Board::spies1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    int cost = 3;
+    //int cost = 3;
 
-    if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
+    //if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
         board->spyingMode();
-    }
+    //}
 
 }
 
 void Board::spies2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->deactivateModes();
-    int cost = 3;
+    //int cost = 3;
 
-    if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
+    //if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
         board->spyingMode();
-    }
+    //}
 
 }
 
@@ -845,10 +883,10 @@ void Board::move1Click(Fl_Widget* widget, void* actioned) {
 
     //chekear si el jugador tiene acciones disponibles para moverse
 
-    int cost = 0;
-    if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
+    //int cost = 0;
+    //if (board->player1->myTurn(1) && (board->player1->getActionPoints() > 0)) {
         board->movingMode();
-    }
+    //}
 
 }
 
@@ -858,10 +896,10 @@ void Board::move2Click(Fl_Widget* widget, void* actioned) {
 
     //chekear si el jugador tiene acciones disponibles para moverse
 
-    int cost = 0;
-    if (board->player1->myTurn(1) && (board->player2->getActionPoints() > 0)) {
+    //int cost = 0;
+    //if (board->player1->myTurn(1) && (board->player2->getActionPoints() > 0)) {
         board->movingMode();
-    }
+    //}
 
     
 }
@@ -881,23 +919,34 @@ void Board::move2Click(Fl_Widget* widget, void* actioned) {
 void Board::venture1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
   
-    //Vessel* newVenture = new Vessel(venture, 100, 3);
     board->setVesselClicked("venture");
     board->deactivateModes();
-    int cost = 4;
-    if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
+    int cost = 3;
+
+    if(board->player1->verifyCredit(cost)){
+        board->player1->deductAction();
+        board->player1->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
+
 }
+
 
 void Board::venture2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
 
     board->setVesselClicked("venture");
     board->deactivateModes();
-    int cost = 4;
-    if (board->player2->myTurn(2) && board->player2->enoughCoins(cost)) {
+    int cost = 3;
+    
+    if(board->player2->verifyCredit(cost)){
+        board->player2->deductAction();
+        board->player2->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
 }
 
@@ -905,19 +954,30 @@ void Board::typhon1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("typhon");
     board->deactivateModes();
-    int cost = 5;
-    if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
+    int cost = 4;
+
+    if(board->player1->verifyCredit(cost)){
+        board->player1->deductAction();
+        board->player1->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
+
 }
 
 void Board::typhon2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("typhon");
     board->deactivateModes();
-    int cost = 5;
-    if (board->player2->myTurn(2) && board->player2->enoughCoins(cost)) {
+    int cost = 4;
+
+    if(board->player2->verifyCredit(cost)){
+        board->player2->deductAction();
+        board->player2->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
 }
 
@@ -925,9 +985,14 @@ void Board::dugong1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("dugong");
     board->deactivateModes();
-    int cost = 6;
-    if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
+    int cost = 5;
+
+    if(board->player1->verifyCredit(cost)){
+        board->player1->deductAction();
+        board->player1->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
 }
 
@@ -935,9 +1000,14 @@ void Board::dugong2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("dugong");
     board->deactivateModes();
-    int cost = 6;
-    if (board->player2->myTurn(2) && board->player2->enoughCoins(cost)) {
+    int cost = 5;
+    
+    if(board->player2->verifyCredit(cost)){
+        board->player2->deductAction();
+        board->player2->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
 }
 
@@ -945,9 +1015,14 @@ void Board::camel1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("camel");
     board->deactivateModes();
-    int cost = 7;
-    if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
+    int cost = 6;
+    
+    if(board->player1->verifyCredit(cost)){
+        board->player1->deductAction();
+        board->player1->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
 }
 
@@ -955,9 +1030,14 @@ void Board::camel2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("camel");
     board->deactivateModes();
-    int cost = 7;
-    if (board->player2->myTurn(2) && board->player2->enoughCoins(cost)) {
+    int cost = 6;
+    
+    if(board->player2->verifyCredit(cost)){
+        board->player2->deductAction();
+        board->player2->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
 }
 
@@ -965,9 +1045,14 @@ void Board::remora1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("remora");
     board->deactivateModes();
-    int cost = 8;
-    if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
+    int cost = 7;
+    
+    if(board->player1->verifyCredit(cost)){
+        board->player1->deductAction();
+        board->player1->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
 }
 
@@ -975,9 +1060,14 @@ void Board::remora2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("remora");
     board->deactivateModes();
-    int cost = 8;
-    if (board->player2->myTurn(2) && board->player2->enoughCoins(cost)) {
+    int cost = 7;
+    
+    if(board->player2->verifyCredit(cost)){
+        board->player2->deductAction();
+        board->player2->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
 }
 
@@ -985,9 +1075,14 @@ void Board::winterhalter1Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("winterhalter");
     board->deactivateModes();
-    int cost = 9;
-    if (board->player1->myTurn(1) && board->player1->enoughCoins(cost)) {
+    int cost = 8;
+    
+    if(board->player1->verifyCredit(cost)){
+        board->player1->deductAction();
+        board->player1->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
 }
 
@@ -995,11 +1090,20 @@ void Board::winterhalter2Click(Fl_Widget* widget, void* actioned) {
     Board* board = static_cast<Board*>(actioned);
     board->setVesselClicked("winterhalter");
     board->deactivateModes();
-    int cost = 9;
-    if (board->player2->myTurn(2) && board->player2->enoughCoins(cost)) {
+    int cost = 8;
+    
+    if(board->player2->verifyCredit(cost)){
+        board->player2->deductAction();
+        board->player2->spendCredits(cost);
         board->dockingMode();
+    } else {
+        board->abortDocking();
     }
 }
+
+
+
+
 void Board::callPirates(Terrain* terrain, int pirates){
     unordered_set<int> initial_elements;
     int iterations = 0;
@@ -1023,6 +1127,8 @@ void Board::callPirates(Terrain* terrain, int pirates){
         iterations = 0;
     }
 }
+
+
 
 int Board::callAttack(Terrain* terrain){
     int iterations = 0;
@@ -1124,11 +1230,14 @@ void::Board::loadVessel(){
 void Board::clickSurrender(Fl_Widget*, void* actioned){
     Board* board = static_cast<Board*>(actioned);
     board->surrender = true;
-    board->window->hide();
 }
 
-bool Board::playerSurrender() const{
+bool Board::warMode() const{
     return surrender;
+}
+
+void Board::endWarMode() {
+    surrender = true;
 }
 
 void Board::show(){ 
@@ -1138,6 +1247,20 @@ void Board::show(){
 void Board::hide(){
     window->hide();
 }
+
+
+void Board::swapPlayer(){
+    if(player == 1){
+      player = 2;
+    } else {
+      player = 1;
+    }
+  }
+
+int Board::getPlayer(){
+    return player;
+}
+
 
 
 

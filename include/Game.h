@@ -12,11 +12,7 @@ private:
     Board board;
     Postgame postgame;
     
-    int rounds;
-    int turn;
-    
 public:
     Game();
     void run();
-
 };
