@@ -421,6 +421,9 @@ void Board::terrainVeil(int player) {
     for(int i = col; i < colEnd; ++i){
         for(int j = 0; j < 8; ++j){
             if(this->terrainGrid[j][i]->image() != nullptr){
+                // if(!this->terrainNodes[j][i]->isUnderFire()){
+                //     this->terrainGrid[j][i]->image(nullptr);
+                // }
                 this->terrainGrid[j][i]->image(nullptr);
             }
         }
@@ -499,7 +502,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
         board->abortMoving();
         return;
 
-    } else if(board->inspect && terrain->isOccupied()){
+    } else if(board->inspect && terrain->isOccupied() && !terrain->getDecoy()){
         if(board->isPositionValid(terrain)){
             cout<<"checking haul integrity"<<endl;
 
@@ -651,6 +654,12 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
                 }
             }
             terrain->terrainUnderFire();
+
+            if(!terrain->getDecoy() && terrain->isUnderFire()){
+                triggeredButton->image(board->vesselSprites[terrain->getVesselName()]);
+            }
+            
+
             board->abortAttaking();
             board->setDamage(0);
             // TODO: Cobrar coins
