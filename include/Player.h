@@ -17,12 +17,12 @@ public:
     int getPlayerID();
 
     int getActionPoints();
-    void setActionPoints(int actualPoints);
+    void setActionPoints(int actionPoints);
     void subtractActionPoints();
 
     void habilitateTurn();
     void inhabilitateTurn();
-    bool myTurn(int turn);
+    bool myTurn();
 
     void addCoins(int coins);
     void showCoins();

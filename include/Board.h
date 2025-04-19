@@ -85,7 +85,7 @@ private:
     bool surrender;
     bool goMenu;
 
-    void terrainVeil(Fl_Widget* widget, int player);
+
 
     static void clickSurrender(Fl_Widget*, void* action);
 
@@ -140,7 +140,7 @@ private:
     int player2StartCol;
     int player2EndCol;
     
-    public:
+public:
     Board();
     ~Board();
     
@@ -152,11 +152,12 @@ private:
     Player* player1;
     Player* player2;
     void createPlayers();
+    void terrainVeil(Fl_Widget* widget, int player);
 
     // Buscar posicion valida
-    int isPositionValid(int row, int col);
+    int isPositionValid(Terrain* terrain);
     // buscar posicion valida del ataque
-    int attackPositionValid(int row, int col);
+    int attackPositionValid(Terrain* terrain);
 
     void setVesselClicked(string nameVessel);
     

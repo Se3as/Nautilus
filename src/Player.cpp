@@ -16,8 +16,8 @@ int Player::getActionPoints() {
   return actionPoints;
 }
 
-void Player::setActionPoints(int actualPoints) {
-  this->actionPoints = actualPoints;
+void Player::setActionPoints(int actionPoints) {
+  this->actionPoints = actionPoints;
 }
 
 void Player::subtractActionPoints() {
@@ -30,17 +30,17 @@ void Player::habilitateTurn() {
 }
 
 void Player::inhabilitateTurn() {
-  cout << "Entre a inhabilidar" << endl;
+  cout << "Entre a inhabilitar" << endl;
   this->isMyTurn = false;
 }
 
-bool Player::myTurn(int turn) {
-  return this->isMyTurn == turn ? true : false;
+bool Player::myTurn() {
+  return this->isMyTurn;
 }
 
 void Player::addCoins(int coins) {
   cout << "Añadir monedas" << endl;
-  this->coins = coins;
+  this->coins += coins;
 }
 
 void Player::showCoins() {
