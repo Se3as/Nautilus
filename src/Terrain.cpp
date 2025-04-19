@@ -24,6 +24,10 @@ Terrain::~Terrain() {
   delete vessel;
 }
 
+void Terrain::vesselNuker() {
+  vessel = nullptr;
+}
+
 int Terrain::getPosX() {
   return posX;
 }
@@ -60,7 +64,7 @@ void Terrain::sendPirates(int& num, int& iterations){
   Log::getInstance().register_insert(iterations, vessel->getName(), elapsed.count());
 }
 
-void Terrain::callAttack(int iterations, int damage){
+void Terrain::callAttack(int& iterations, int damage){
   cout<<vessel->getName()<<" is attaccking"<<endl;
   int num = vessel->select_random();
   //empezar chrono

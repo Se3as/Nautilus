@@ -16,6 +16,8 @@ class Terrain {
       Terrain(int, int);
       ~Terrain();
       
+      void vesselNuker();
+
       int getPosX();
       int getPosY();
       void setIsVessel();
@@ -24,7 +26,7 @@ class Terrain {
       Vessel* getVessel();
 
       void sendPirates(int& num, int& iterations);
-      void callAttack(int iterations, int damage);
+      void callAttack(int& iterations, int damage);
       bool shooted(int damage);
       bool callUpgrade(int& iterations, int& upPoints);
 
