@@ -1,6 +1,4 @@
 #include "Terrain.h"
-#include "Game.h"
-#include "Board.h"
 #include "log.h"
 
 #include <iostream>
