@@ -1,12 +1,9 @@
 #include "Game.h"
-#include "Player.h"
-#include <Fl/Fl.H>
-#include <fstream>
 
 Game::Game() {
     music.toThePlaylist("assets/sfx/Barotrauma OST_ Embrace the Abyss (Menu Theme).mp3");
-    //music.toThePlaylist();
-    //music.play();
+    music.toThePlaylist("assets/sfx/Barotrauma OST_ Subaquatic Symphony for Hammer and Metal (Lobby & Editor Music).mp3");
+    music.play();
 }
 
 void Game::run(){
@@ -18,7 +15,7 @@ void Game::run(){
     }
 
     if (!menu.shouldQuitGame()) {
-
+        music.switchTrack();
         board.createPlayers();
         board.show();
     } else {
@@ -63,9 +60,35 @@ void Game::run(){
         }
 
         board.swapPlayer();
+        postgame.show();
+        //Fl::check(); 
+
+        for(int timeframe = 5; timeframe > 0; --timeframe){
+            if(board.warMode()){
+                board.hide();
+                break;
+            }
+            cout<<"Cambiando jugador en: "<< timeframe << endl;
+            sleep(1);
+            Fl::check(); 
+        }
+
+
+        postgame.hide();
 
         Fl::wait();
     }
+
+    if(!postgame.postgameStatus()){
+        postgame.endGame(board.getPlayer());
+    }
+
+    while(postgame.postgameStatus()){
+        postgame.show();
+        Fl::wait();
+    }
+
+
 
     Fl::run();
 }

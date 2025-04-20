@@ -4,6 +4,9 @@
 #include "Board.h"
 #include "Music.h"
 #include "Postgame.h"
+#include <unistd.h>
+#include "Player.h"
+#include <Fl/Fl.H>
 #include <fstream>
 
 class Game {
