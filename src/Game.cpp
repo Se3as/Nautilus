@@ -60,6 +60,13 @@ void Game::run(){
         }
 
         round++;
+
+        if(round > 2){
+            if(board.verifyWinner()){
+                board.endWarMode();
+            }
+        }
+
         board.swapPlayer();
         postgame.show();
         //Fl::check(); 
@@ -82,7 +89,6 @@ void Game::run(){
 
     if(!postgame.postgameStatus()){
         postgame.endGame(board.whoWon(round));
-        //postgame.endGame(board.getPlayer());
     }
 
     while(postgame.postgameStatus()){

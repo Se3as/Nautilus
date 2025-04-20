@@ -148,6 +148,8 @@ private:
     int player2StartCol;
     int player2EndCol;
     
+    bool winner;
+
     public:
 
     Board();
@@ -158,6 +160,8 @@ private:
     void hide();
 
     int whoWon(int round);
+
+    bool verifyWinner();
 
     void terrainVeil(int player);
 

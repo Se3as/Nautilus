@@ -12,7 +12,7 @@
 #define BUYREMORA 8
 #define BUYWINTERHALTER 9
 
-Board::Board() : window(nullptr), player(1), cost(0), surrenderButton(nullptr), menuButton(nullptr), 
+Board::Board() : window(nullptr), player(1), cost(0), winner(false), surrenderButton(nullptr), menuButton(nullptr), 
 surrender(false), goMenu(false), inspect(false), docking(false), attacking(false), spying(false),
 upgrading(false), decoying(false),moving(false), movingTerrain(nullptr){ 
     log = new Log();
@@ -350,11 +350,33 @@ int Board::whoWon(int round){
     return loser;
 }
 
+bool Board::verifyWinner(){
 
+    int empty1 = 0;
+    int empty2 = 0;
 
+    for(int i = 0; i < 8; ++i){
+        for(int j = 0; j < 6; ++j){
+            if(this->terrainNodes[i][j]->getVessel() == nullptr){
+                empty1 += 1;
+            }
+        }
+    }
 
+    for(int i = 0; i < 8; ++i){
+        for(int j = 6; j < 12; ++j){
+            if(this->terrainNodes[i][j]->getVessel() == nullptr){
+                empty2 += 1;
+            }
+        }
+    }
 
-
+    if(empty1 == 48 || empty2 == 48){
+        return true;
+    } else {
+        return false;
+    }
+}
 
 
 
