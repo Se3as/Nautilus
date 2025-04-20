@@ -311,6 +311,54 @@ Terrain* Board::getMovingTerrain(){
 }
 
 
+int Board::whoWon(int round){
+    //busca la win condition
+    int points1 = 0;
+    int points2 = 0;
+
+    int loser = 0;
+
+    if(round > 2){
+        for(int i = 0; i < 8; ++i){
+            for(int j = 0; j < 6; ++j){
+                if(this->terrainNodes[i][j]->getVessel() != nullptr){
+                    points1 += 1;
+                }
+            }
+        }
+
+        for(int i = 0; i < 8; ++i){
+            for(int j = 6; j < 12; ++j){
+                if(this->terrainNodes[i][j]->getVessel() != nullptr){
+                    points2 += 1;
+                }
+            }
+        }
+
+        if(points1 > points2){
+            loser = 1;
+        } else if(points1 < points2){
+            loser = 2;
+        } else if(points1 == points2){
+            loser = 0;
+        }
+
+    } else {
+        loser = getPlayer();
+    }
+    
+    return loser;
+}
+
+
+
+
+
+
+
+
+
+
 
 void Board::hudHide(int player) {
     
@@ -405,17 +453,18 @@ void Board::terrainVeil(int player) {
 
     if(player == 1){
         col = 6;
-        colEnd = 11;
+        colEnd = 12;
 
         reshowCol = 0;
-        reshowColEnd = 5;
+        //6 es el scopre total
+        reshowColEnd = 6;
 
     } else if(player == 2) {
         col = 0;
-        colEnd = 5;
+        colEnd = 6;
 
         reshowCol = 6;
-        reshowColEnd = 11;
+        reshowColEnd = 12;
     }
     //esto pone la imagen del boton nula
     for(int i = col; i < colEnd; ++i){

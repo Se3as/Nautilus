@@ -5,7 +5,7 @@
 Postgame::Postgame(): showQuit(false), endScreen(false){
 
     window = new Fl_Window(960, 540, "Analysis");
-    //window->position(100,100);
+    //window->position(150,100);
 
     Fl_JPEG_Image* nauti_lose1 = new Fl_JPEG_Image("assets/gfx/backgrounds/nauti_lose1.jpg");
     Fl_Image* endgameBg = nauti_lose1->copy(window->w(), window->h());
@@ -44,6 +44,8 @@ void Postgame::endGame(int player){
         this->results->copy_label("WINNER: PLAYER 1");
     } else if(player == 2){
         this->results->copy_label("WINNER: PLAYER 2");
+    } else if(player == 0){
+        this->results->copy_label("NO WINNER: DRAW");
     }
     this->results->show();
 }

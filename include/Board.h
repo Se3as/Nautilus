@@ -157,6 +157,8 @@ private:
 
     void hide();
 
+    int whoWon(int round);
+
     void terrainVeil(int player);
 
     void hudHide(int player);

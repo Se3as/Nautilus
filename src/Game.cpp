@@ -1,6 +1,6 @@
 #include "Game.h"
 
-Game::Game() {
+Game::Game(): round(1) {
     music.toThePlaylist("assets/sfx/Barotrauma OST_ Embrace the Abyss (Menu Theme).mp3");
     music.toThePlaylist("assets/sfx/Barotrauma OST_ Subaquatic Symphony for Hammer and Metal (Lobby & Editor Music).mp3");
     music.play();
@@ -24,7 +24,7 @@ void Game::run(){
     
 
     while(!board.warMode()){
-        
+
         cout<<"jugador ";
         cout<<board.getPlayer();
         cout<<" en turno" <<endl;
@@ -59,6 +59,7 @@ void Game::run(){
             board.player2->addCredits();
         }
 
+        round++;
         board.swapPlayer();
         postgame.show();
         //Fl::check(); 
@@ -80,7 +81,8 @@ void Game::run(){
     }
 
     if(!postgame.postgameStatus()){
-        postgame.endGame(board.getPlayer());
+        postgame.endGame(board.whoWon(round));
+        //postgame.endGame(board.getPlayer());
     }
 
     while(postgame.postgameStatus()){
