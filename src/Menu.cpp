@@ -2,6 +2,7 @@
 #include <Fl/Fl_JPEG_Image.H>
 #include <Fl/Fl_Box.H>
 
+//LOADS INITIAL MENU AND ALL NECESARY RESOURCES
 Menu::Menu() : window(nullptr), playButton(nullptr), quitButton(nullptr), startGame(false), quitGame(false){
     
     window = new Fl_Window(960, 540, "Menu");

@@ -18,7 +18,6 @@ using namespace std;
 
 struct TerrainPosition
 {
-
     // las filas horizontales
     int longitude;
     // las columnas veticales
@@ -30,7 +29,6 @@ class Board
 private:
     Fl_Window* window;
     
-
     int player;
 
     int cost;
@@ -94,6 +92,8 @@ private:
     Log* log;
 
     bool surrender;
+    bool defeat;
+
     bool goMenu;
 
     static void clickSurrender(Fl_Widget*, void* action);
@@ -148,6 +148,7 @@ private:
     int player2StartCol;
     int player2EndCol;
     
+    //booleano que indica si hay ganador
     bool winner;
 
     public:
@@ -158,6 +159,9 @@ private:
     void show();
 
     void hide();
+
+    bool getSurrender();
+    bool getDefeat();
 
     int whoWon(int round);
 

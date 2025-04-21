@@ -21,6 +21,7 @@ Terrain::~Terrain() {
   delete vessel;
 }
 
+//DELETES VESSEL FROM TERRAINS
 void Terrain::vesselNuker() {
   vessel = nullptr;
 }
@@ -32,6 +33,8 @@ int Terrain::getPosX() {
 int Terrain::getPosY() {
   return posY;
 }
+
+//CREATES VESSEL FOR TERRAIN
 void Terrain::setVessel(string& vesselName) {
   if (vesselName == "venture") {
       vessel = new VesselLinkedList("venture", 100, 3);
@@ -52,6 +55,8 @@ void Terrain::setVessel(string& vesselName) {
     vessel = new VesselSplay("winterhalter", 100, 12);  
   }
 }
+
+//USED FOR DEBUFFING
 void Terrain::sendPirates(int& num, int& iterations){
   //cout<<vessel->getName()<<" is being filled"<<endl;
   high_resolution_clock::time_point start = high_resolution_clock::now();
@@ -73,7 +78,8 @@ void Terrain::callAttack(int& iterations, int damage){
   //Log::getInstance().register_search(iterations, vessel->getName(), damage, elapsed.count());
 }
 
-bool Terrain::shooted(int damage){ //Interesting grammar
+//HANDLER FOR EVENT OF BEING HIT BY ATACKS
+bool Terrain::shooted(int damage) {
   cout<<vessel->getName()<<" is being attaccked"<<endl;
   vessel->setLife(vessel->getLife()-damage);
   cout<<vessel->getLife()<<endl;
@@ -84,6 +90,8 @@ bool Terrain::shooted(int damage){ //Interesting grammar
   }
   return false;
 }
+
+//HANDLER FOR UPGRADING VESSLES
 bool Terrain::callUpgrade(int& iterations, int& upPoints){
   //cout<<vessel->getName()<<" is being upgrading"<<endl;
   //cout<<vessel->getName()<<endl;

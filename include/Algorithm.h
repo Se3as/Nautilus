@@ -17,5 +17,3 @@ public:
     Node* right;
 	Node(int d) : data(d), left(NULL), right(NULL) {}
 };
-
-//bool search_element(int num);

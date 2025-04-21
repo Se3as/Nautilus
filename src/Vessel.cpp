@@ -11,6 +11,8 @@ int Vessel::select_random(){
     }
     return num;
 }
+
+//PROMARY WEAPON
 bool Vessel::search_element(int num){
 	return elements.find(num) != elements.end();
 }
@@ -77,7 +79,7 @@ bool VesselArray::remove_iterations(int num, int& up_points, int& iterations){
 }
 
 
-
+//DATA FOR ANALISIS OF ATACKS
 bool VesselSet::search_iterations(int num, int& iterations){
     iterations += 1;
     return 1;

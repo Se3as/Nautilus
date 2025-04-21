@@ -1,15 +1,11 @@
 #include "Player.h"
 
-
+//2 OF THEM ARE INSTANCED IN THE BOARD
 Player::Player(int player): playerID(player), actions(3), credits(12){}
-
-
 
 int Player::getID(){
   return playerID;
 }
-
-
 
 void Player::refreshActions(){
   actions = 3;
@@ -26,8 +22,6 @@ void Player::deductAction(){
   cout<<"action deducted, remaining: ";
   cout<<actions<<endl;
 }
-
-
 
 void Player::addCredits(){
   this->credits = credits + 3;

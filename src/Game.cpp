@@ -6,6 +6,7 @@ Game::Game(): round(1) {
     music.play();
 }
 
+//game central loop manager
 void Game::run(){
     
     menu.show();
@@ -22,7 +23,7 @@ void Game::run(){
         board.endWarMode();
     }
     
-
+    //veryfies none quit the game midway and exits if so
     while(!board.warMode()){
 
         cout<<"jugador ";
@@ -69,8 +70,8 @@ void Game::run(){
 
         board.swapPlayer();
         postgame.show();
-        //Fl::check(); 
-
+    
+        //this waits 5 seconds fro the second player to be on deck
         for(int timeframe = 5; timeframe > 0; --timeframe){
             if(board.warMode()){
                 board.hide();
@@ -81,14 +82,19 @@ void Game::run(){
             Fl::check(); 
         }
 
-
         postgame.hide();
 
         Fl::wait();
     }
 
+    //if the game is finished this shows the results
     if(!postgame.postgameStatus()){
-        postgame.endGame(board.whoWon(round));
+        if(board.getSurrender()){
+            postgame.endGame(board.getPlayer());
+        } else if(board.getDefeat()){
+            postgame.endGame(board.whoWon(round));
+        }
+        
     }
 
     while(postgame.postgameStatus()){

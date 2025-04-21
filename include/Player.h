@@ -6,11 +6,9 @@ using namespace std;
 
 class Player {
 private:
-    
     int playerID;
     int actions;
     int credits;
-
 
 public:
     Player(int player);

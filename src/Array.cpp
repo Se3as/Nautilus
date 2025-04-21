@@ -4,6 +4,7 @@ Array::~Array() {
     delete[] arr;
 }
 
+//binary search implementation
 bool Array::binary_search(int data, int& iterations, int& index) {
     int left = 0, right = size - 1;
     while (left <= right) {
@@ -38,7 +39,6 @@ bool Array::insert(int data, int& iterations) {
     
     arr[index] = data;
     size++;
-    //iterations++;
 
 return true;
 }

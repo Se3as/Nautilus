@@ -3,6 +3,7 @@
 #include <SDL2/SDL_mixer.h>
 #include <iostream>
 
+//LOADS SOUNDTRACKS
 Music::Music() : track1(nullptr), track2(nullptr), performing(false), channel(1) {
     
     SDL_Init(SDL_INIT_AUDIO);
@@ -11,6 +12,7 @@ Music::Music() : track1(nullptr), track2(nullptr), performing(false), channel(1)
 
 }
 
+//ADDS SOUNDTRACKS FOR USE
 void Music::toThePlaylist(const std::string& path) {
 
     if(!track1){

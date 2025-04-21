@@ -1,7 +1,6 @@
 #include "Postgame.h"
 
-
-//el problema es con la nueva window?
+//POSTGAME WINDOW FOR MIDGAME SWAPS AND ENDGAME RESULTS
 Postgame::Postgame(): showQuit(false), endScreen(false){
 
     window = new Fl_Window(960, 540, "Analysis");
@@ -37,6 +36,7 @@ void Postgame::clickJustQuit(Fl_Widget*, void* action){
     postgame->endScreen = false;
 }
 
+//SHOWS BUTTONS AND TEXT NECESARY WHEN FINAL SCREEN 
 void Postgame::endGame(int player){
     this->justQuitButton->show();
     endScreen = true;

@@ -12,8 +12,7 @@ using namespace std;
 
 class Vessel {
 private:
-    
-     //trabajar en estos set y get
+
     bool upgrading;
     bool weaponCooldown;
 
@@ -26,13 +25,10 @@ public:
     Vessel(string n, int l, int p): name(n), life(l), price(p) {}
     virtual ~Vessel() {}
 
-    bool weaponOnCooldown() const;
-
     virtual bool search_iterations(int num, int& iterations) = 0;
     virtual bool insert_iterations(int num, int& iterations) = 0;
     virtual bool remove_iterations(int num, int& up_points, int& iterations) = 0;
     
-        
     int getLife();
     void setLife(int l);
     string getName();
@@ -40,16 +36,13 @@ public:
     int select_random();
     bool search_element(int num);
 
-    //metodo set
     unordered_set<int> elements;
-
 };
-
 
 
 class VesselLinkedList: public Vessel{
 private:
-    //trabajar en estos set y get
+    
     Linked_list* linked_list;
     
 public:
