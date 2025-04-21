@@ -32,7 +32,7 @@ void Log::closeCsv() {
 
 // Register Insert Operation
 void Log::register_insert(int& iterations, string name, double time) {
-    std::cout << name << "," << "insert," << iterations << ",0," << time << "\n";
+    //std::cout << name << "," << "insert," << iterations << ",0," << time << "\n";
     csv << name << "," << "insert," << iterations << ",0," << time << "\n";
     csv.flush(); 
 }

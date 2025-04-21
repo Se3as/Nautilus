@@ -682,7 +682,7 @@ void Board::terrainClick(Fl_Widget* widget, void* actioned) {
             }
             terrain->terrainUnderFire();
 
-            if(!terrain->getDecoy() && terrain->isUnderFire()){
+            if(!terrain->getDecoy() && terrain->isUnderFire() && terrain->isOccupied()){
                 triggeredButton->image(board->vesselSprites[terrain->getVesselName()]);
             }
 
@@ -1113,7 +1113,7 @@ string Board::getDecoy(){
     case 5:
         return "remora";
     case 6:
-        return "winterhlater";
+        return "winterhalter";
     default:
     return "";
     }

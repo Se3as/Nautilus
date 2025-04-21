@@ -84,8 +84,9 @@ bool Terrain::shooted(int damage) {
   vessel->setLife(vessel->getLife()-damage);
   cout<<vessel->getLife()<<endl;
   if(vessel->getLife() <= 0){
-    delete vessel;
+    //delete vessel;
     vessel = nullptr;
+    
     return true;
   }
   return false;
