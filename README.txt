@@ -23,9 +23,21 @@ Requirements:
 
 - FLTK 1.3
 
+- SDL2
+
 - SDL2_mixer(for the rock&roll to work)
 
-- CMake (to compile)
+To  install the graphics libraries run these:
+
+- sudo apt install libsdl2-dev libsdl2-mixer-dev libfltk1.3-dev
+
+Then give permission to the compilation script with:
+
+- chmod +x build.sh  
+
+Now you can run the program with:
+
+- ./build.sh
 
 Game Controls:
 
@@ -87,6 +99,6 @@ Juan Sebastian Loaiza Ospina
 Luis Alfredo Arias
 Alexander Wang Wu
 
-Credtis:
+Credits:
 
 https://www.geeksforgeeks.org/
