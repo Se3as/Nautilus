@@ -3,7 +3,7 @@
 //POSTGAME WINDOW FOR MIDGAME SWAPS AND ENDGAME RESULTS
 Postgame::Postgame(): showQuit(false), endScreen(false){
 
-    window = new Fl_Window(960, 540, "Analysis");
+    window = new Fl_Window(1285, 609, "Analysis");
     //window->position(150,100);
 
     Fl_JPEG_Image* nauti_lose1 = new Fl_JPEG_Image("assets/gfx/backgrounds/nauti_lose1.jpg");
